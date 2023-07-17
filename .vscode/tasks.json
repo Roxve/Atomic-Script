@@ -1,0 +1,140 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Atomic/Atomic.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/Atomic/Atomic.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/Atomic/Atomic.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        }
+    ]
+}
