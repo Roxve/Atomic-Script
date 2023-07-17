@@ -1,0 +1,2 @@
+﻿write("0")
+write("sucess")
