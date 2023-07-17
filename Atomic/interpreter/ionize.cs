@@ -3,9 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using System.IO;
+using Ttype;
 namespace Atomic;
 
-public class ionizing
+public class Ionizing
 {
 	public void error(string message)
 	{
@@ -21,7 +22,7 @@ public class ionizing
 		Environment.Exit(1);
 
 	}
-	public ionizing(string code)
+	public Ionizing(string code)
 	{
 		atoms = code;
 	}
@@ -30,25 +31,7 @@ public class ionizing
 	public static List<(string value, TokenType type)> ions = new List<(string value, TokenType type)>();
 	public static int column = 1;
 	public static int line = 1;
-	public enum TokenType
-	{
-
-		id,
-		setter,
-		op,
-		//keyword
-		keyword,
-		//valueKeywords are keywords that give values for ex. random which gives a random number
-		returnKeyword,
-		//types
-		line,
-		num,
-		str,
-		//barackets
-		OpenParen,
-		CloseParen,
-		EOF,
-	}
+	
 
 
 	public bool isAllowedID(char x)

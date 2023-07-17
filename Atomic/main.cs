@@ -33,7 +33,7 @@ public static class Run
 		}
 		Console.WriteLine("running?: {0}", true);
 
-		var ionize = new ionizing(code);
+		var ionize = new Ionizing(code);
 		var ionized_code = ionize.ionize();
 		Console.WriteLine(string.Join(",", ionized_code));
 
