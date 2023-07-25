@@ -56,11 +56,11 @@ public class Ionizing
 	}
 	public bool isKeyword(string x)
 	{
-
+		
 		return keywords.Contains(x);
 	}
-
-
+	
+	
 	public static void move(int by = 1)
 	{
 		while (by != 0)
