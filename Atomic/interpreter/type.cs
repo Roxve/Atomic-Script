@@ -7,10 +7,12 @@ namespace Ttype {
 		id,
 		setter,
 		op,
-		//keyword
+		//keywords
 		keyword,
-		//returnKeywords are keywords that give values for ex. random which gives a random number
-		returnKeyword,
+		ignored_keyword, // keywords thats ignored to add code readabilty
+		
+		set,
+		write,
 		//types
 		line,
 		num,
