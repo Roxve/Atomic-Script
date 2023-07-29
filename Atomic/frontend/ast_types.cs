@@ -3,22 +3,27 @@ using System.Collections.Generic;
 
 
 
+
 namespace Atomic_AST {
 
 public class AST {
 
-    public static string[] NodeType = new string[4] {"Program","NumericLiteral","Identifier","BinaryExpr"};
+    public static string NodeType = "Program,NumericLiteral,NullLiteral,Identifier,BinaryExpr";
 
 
     public class Statement {
-         static string[] type = NodeType;    
+          public string type = NodeType;    
     }
 
 
 
     // a program contains many statements
     public class Program : Statement {
-        public string type = NodeType[0];
+		public Program() {
+			//modify inherited items
+			type = "Program";
+		}
+        
         public List<Statement> body {get; set;}
     }
 
@@ -32,7 +37,10 @@ public class AST {
 
 
     public class BinaryExpression : Expression {
-        public  static string type = NodeType[3];
+		public BinaryExpression() {
+			type = "BinaryExpr";
+		}
+        
         public  Expression left {get; set;}
         public  Expression right {get; set;}
         public  string Operator {get; set;}
@@ -42,17 +50,31 @@ public class AST {
 
 
     public class Identifier : Expression {
-        public static string type = NodeType[2];
+        public Identifier() {
+			type = "Identifier";
+		}
         public string symbol {get; set;}
     }
 
     public class Line : Identifier {
-		public static string type = "Line";
+		public Line() {
+			type = "Line";
+			symbol = "getLineNum?";
+		}
 	}
 
     public class NumericLiteral : Expression {
-        public static string type = NodeType[1];
-        public int value {get; set;}
+        public NumericLiteral() {
+			type = "NumericLiteral";
+		}
+        public long value {get; set;}
     }
+	
+	public class NullLiteral : Expression {
+		public NullLiteral() {
+			type = "NullLiteral";
+		}
+		public string value = "null";
+	}
 }
 }

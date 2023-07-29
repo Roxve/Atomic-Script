@@ -4,6 +4,8 @@ using System.IO;
 using Atomic;
 using Atomic_AST;
 using System.ComponentModel;
+using Atomic_debugger;
+using CSharpShellCore;
 
 
 namespace Atomic;
@@ -42,13 +44,10 @@ public static class Run
 		var parse = new Parser(ionized_code);
 		AST.Program Program = parse.productAST();
 		Console.WriteLine("parsed?: {0}", true);
-		foreach(PropertyDescriptor descriptor in TypeDescriptor.GetProperties(Program)) {
-			string name = descriptor.Name;
-			object value = descriptor.GetValue(Program);
-			
-			
-			Console.WriteLine("{0} = {1}", name,value);
-		}
+		
+		var dump = ObjectDumper.Dump(Program);
+		
+		Console.WriteLine(dump);
 
 	}
 }

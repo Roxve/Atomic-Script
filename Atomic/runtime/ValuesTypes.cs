@@ -1,26 +1,34 @@
+﻿using Atomic_AST;
 
 namespace ValueTypes;
 
 public class VT {
-    public static string[] ValueType = new string[3] {"null", "number","string"};
+    public static string ValueType = "null,number,string";
 
 
     public class RuntimeVal {
-        static string[] type = ValueType;
+        public static string type = ValueType;
     }
     public class NullVal : RuntimeVal {
-        public static string type = ValueType[0];
+        public NullVal() {
+			type = "null";
+		}
         public static string value = "null";
     }
 
 
     public class NumValue : RuntimeVal {
-        public static string type = ValueType[1];
-        public int value {get; set;}
+        public NumValue() {
+			type = "number";
+		}
+        public long value {get; set;}
+		
     }
 
     public class StringVal : RuntimeVal {
-        public static string type = ValueType[2];
+        public StringVal() {
+			type = "string";
+		}
 
         public string value {get; set;}
     }
