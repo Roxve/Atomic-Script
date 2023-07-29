@@ -1,2 +1,1 @@
-﻿write("0")
-write("sucess")
+﻿1 + 1

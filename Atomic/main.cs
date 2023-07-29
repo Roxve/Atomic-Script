@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using Atomic;
 
 
 namespace Atomic;
@@ -35,7 +36,9 @@ public static class Run
 
 		var ionize = new Ionizing(code);
 		var ionized_code = ionize.ionize();
-		Console.WriteLine(string.Join(",", ionized_code));
+		var parse = new Parser(ionized_code);
+		var parsed_code = parse.productAST();
+		Console.WriteLine(string.Join(",", parsed_code));
 
 	}
 }
