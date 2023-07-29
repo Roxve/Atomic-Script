@@ -39,10 +39,13 @@ public class Ionizing
 		//only english && langs that has upper and lower chars is allowed
 		return "_qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".Contains(x);
 	}
+	public bool isOp(char x) {
+		return "+-/*".Contains(x);
+	}
 	public bool IsSkippable(char n)
 	{
 		string x = n.ToString();
-		return x == " " || x == "\t" || x == "\r";
+		return x == " " || x == "\t" || x == "\r" || x == ";";
 	}
 	public bool IsLine(string x)
 	{
@@ -135,6 +138,7 @@ public class Ionizing
 			else if (isNum(atoms[0]))
 			{
 				string res = "";
+				
 				while (isNum(atoms[0]))
 				{
 					res += atoms[0];
@@ -149,7 +153,8 @@ public class Ionizing
 			else if (isAllowedID(atoms[0]))
 			{
 				string res = "";
-				while (isAllowedID(atoms[0]) && atoms.Length > 0)
+			   
+				while (isAllowedID(atoms[0]))
 				{
 					res += atoms[0];
 					move();
@@ -164,6 +169,16 @@ public class Ionizing
 					ions.Add((res, TokenType.id));
 
 				}
+			}
+			
+			
+			else if(isOp(atoms[0])) {
+				string res = atoms[0].ToString();
+				ions.Add((res, TokenType.op));
+				move();
+			}
+			else{
+				error("unknown char");
 			}
 		}
 		ions.Add(("END", TokenType.EOF));

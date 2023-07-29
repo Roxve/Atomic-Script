@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 
+
 namespace Atomic_AST {
 
 public class AST {
@@ -45,7 +46,9 @@ public class AST {
         public string symbol {get; set;}
     }
 
-
+    public class Line : Identifier {
+		public static string type = "Line";
+	}
 
     public class NumericLiteral : Expression {
         public static string type = NodeType[1];

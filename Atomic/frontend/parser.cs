@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Atomic_AST;
 using System.Threading;
 using CSharpShellCore;
+
 namespace Atomic;
 
 // producting a vaild AST from atoms
@@ -50,7 +51,7 @@ public class Parser {
         var prev = ions[0];
         
         ions.RemoveAt(0);
-
+		column++;
 
         return prev;
     }
@@ -61,19 +62,21 @@ public class Parser {
     private (string value, TokenType type) except(TokenType correct_type)
     {
         var prev = ions[0];
+		ions.RemoveAt(0);
         if(prev.type != correct_type) {
             error("Parser error, excepting " + correct_type + " " + "got => " + prev.type);
         }
-
+		column++;
         return prev;
     }
       
     public AST.Program productAST() {
        
-       AST.Program program = new AST.Program();
+        AST.Program program = new AST.Program();
+		program.body = new List<AST.Statement>();
         while(NotEOF()) {
             program.body.Add(parse_statement());
-			Console.WriteLine(program);
+			Console.WriteLine(string.Join(',',program.body.ToArray));
         }
         
         return program;       
@@ -128,13 +131,18 @@ public class Parser {
 				num.value = Convert.ToInt32(move().value);
 				Console.WriteLine(num.value);
 				return num;
+			case TokenType.line:
+			    AST.Line Line = new AST.Line();
+                line++;
+				move();
+				return Line;
 			case TokenType.OpenParen:
 				move();
 				var value = parse_expr();
 				except(TokenType.CloseParen);
 				return value;
 			default:
-				error("Unexpected token found during parsing! " + current_token_value);
+				error("Unexpected token found during parsing! " + current_token_value() + " " + current_token_type());
 				return 1;
 		}
 	}
