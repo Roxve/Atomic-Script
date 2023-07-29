@@ -40,11 +40,11 @@ public static class Run
 		var ionized_code = ionize.ionize();
 		Console.WriteLine("ionized?: {0}", true);
 		var parse = new Parser(ionized_code);
-		AST.Program parsed_code = parse.productAST();
+		AST.Program Program = parse.productAST();
 		Console.WriteLine("parsed?: {0}", true);
-		foreach(PropertyDescriptor descriptor in TypeDescriptor.GetProperties(parsed_code)) {
+		foreach(PropertyDescriptor descriptor in TypeDescriptor.GetProperties(Program)) {
 			string name = descriptor.Name;
-			object value = descriptor.GetValue(parsed_code);
+			object value = descriptor.GetValue(Program);
 			
 			
 			Console.WriteLine("{0} = {1}", name,value);

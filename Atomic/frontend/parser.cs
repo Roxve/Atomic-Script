@@ -3,7 +3,6 @@ using Ttype;
 using System.Collections.Generic;
 using Atomic_AST;
 using System.Threading;
-using CSharpShellCore;
 
 namespace Atomic;
 
