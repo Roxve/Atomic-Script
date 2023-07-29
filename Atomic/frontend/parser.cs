@@ -1,7 +1,9 @@
-using System;
+﻿using System;
 using Ttype;
 using System.Collections.Generic;
 using Atomic_AST;
+using System.Threading;
+using CSharpShellCore;
 namespace Atomic;
 
 // producting a vaild AST from atoms
@@ -18,7 +20,7 @@ public class Parser {
      Console.ForegroundColor = ConsoleColor.White;
      Console.WriteLine("press anything to exit");
      Console.ReadKey();
-     Environment.Exit(1);
+     Thread.CurrentThread.Interrupt();
  }
 
 
@@ -68,11 +70,12 @@ public class Parser {
       
     public AST.Program productAST() {
        
-         
+       AST.Program program = new AST.Program();
         while(NotEOF()) {
-            AST.Program.body.Add(parse_statement());
+            program.body.Add(parse_statement());
+			Console.WriteLine(program);
         }
-        var program = new AST.Program();
+        
         return program;       
     }
     private AST.Statement parse_statement() {
@@ -89,14 +92,52 @@ public class Parser {
       while(current_token_value() == "+" || current_token_value() == "-") {
          var ooperator = move().value;
          var right = this.parse_multiplicitave_expr();
-         AST.BinaryExpression.left = left;
-         AST.BinaryExpression.right = right;
-         AST.BinaryExpression.Operator = ooperator;
-        left = new AST.BinaryExpression(); 
+         AST.BinaryExpression BE = new AST.BinaryExpression();
+		 BE.left = left;
+		 BE.right = right;
+		 BE.Operator = ooperator;
+		 left = BE;
     }
     return left;
 }
+    
+	// handels multiplicitave and divison operations
     private AST.Expression parse_multiplicitave_expr() {
-         
+         var left = this.parse_primary_expr();
+		 while(current_token_value() == "/" || current_token_value() == "*" || current_token_value() == "%") {
+		 	var ooperator = move().value;
+         	var right = this.parse_primary_expr();
+        	 AST.BinaryExpression BE = new AST.BinaryExpression();
+		 	BE.left = left;
+		 	BE.right = right;
+		 	BE.Operator = ooperator;
+		 	left = BE;
+		 }
+		 return left;
     }
+	
+	private dynamic parse_primary_expr() {
+		TokenType token = current_token_type();
+		switch(token) {
+			case TokenType.id:
+				AST.Identifier id = new AST.Identifier();
+				id.symbol = move().value;
+				return id;
+			case TokenType.num:
+				AST.NumericLiteral num = new AST.NumericLiteral();
+				num.value = Convert.ToInt32(move().value);
+				Console.WriteLine(num.value);
+				return num;
+			case TokenType.OpenParen:
+				move();
+				var value = parse_expr();
+				except(TokenType.CloseParen);
+				return value;
+			default:
+				error("Unexpected token found during parsing! " + current_token_value);
+				return 1;
+		}
+	}
+	
+	
 }

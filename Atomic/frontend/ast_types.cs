@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 
@@ -18,7 +18,7 @@ public class AST {
     // a program contains many statements
     public class Program : Statement {
         public string type = NodeType[0];
-        public static List<Statement> body;
+        public List<Statement> body {get; set;}
     }
 
 
@@ -31,10 +31,10 @@ public class AST {
 
 
     public class BinaryExpression : Expression {
-        public static string type = NodeType[3];
-        public static Expression left;
-        public static Expression right;
-        public static string Operator;
+        public  static string type = NodeType[3];
+        public  Expression left {get; set;}
+        public  Expression right {get; set;}
+        public  string Operator {get; set;}
     }
 
 
@@ -42,14 +42,14 @@ public class AST {
 
     public class Identifier : Expression {
         public static string type = NodeType[2];
-        public static string symbol;
+        public string symbol {get; set;}
     }
 
 
 
     public class NumericLiteral : Expression {
         public static string type = NodeType[1];
-        public static int value;
+        public int value {get; set;}
     }
 }
 }
