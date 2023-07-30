@@ -56,18 +56,12 @@ public class AST {
         public string symbol {get; set;}
     }
 
-    public class Line : Identifier {
-		public Line() {
-			type = "Line";
-			symbol = "getLineNum?";
-		}
-	}
 
     public class NumericLiteral : Expression {
         public NumericLiteral() {
 			type = "NumericLiteral";
 		}
-        public long value {get; set;}
+        public int value {get; set;}
     }
 	
 	public class NullLiteral : Expression {

@@ -143,14 +143,9 @@ public class Parser
 				return id;
 			case TokenType.num:
 				AST.NumericLiteral num = new AST.NumericLiteral();
-				num.value = Convert.ToInt64(move().value);
+				num.value = Convert.ToInt32(move().value);
 				
 				return num;
-			case TokenType.line:
-				AST.Line Line = new AST.Line();
-				line++;
-				move();
-				return Line;
 			case TokenType.OpenParen:
 				move();
 				var value = parse_expr();

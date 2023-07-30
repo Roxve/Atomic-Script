@@ -7,7 +7,7 @@ public class VT {
 
 
     public class RuntimeVal {
-        public static string type = ValueType;
+        public string type = ValueType;
     }
     public class NullVal : RuntimeVal {
         public NullVal() {
@@ -21,7 +21,7 @@ public class VT {
         public NumValue() {
 			type = "number";
 		}
-        public long value {get; set;}
+        public int value {get; set;}
 		
     }
 

@@ -31,7 +31,7 @@ public class Ionizing
 	public static List<(string value, TokenType type)> ions = new List<(string value, TokenType type)>();
 	public static int column = 1;
 	public static int line = 1;
-	
+
 
 
 	public bool isAllowedID(char x)
@@ -39,8 +39,15 @@ public class Ionizing
 		//only english && langs that has upper and lower chars is allowed
 		return "_qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".Contains(x);
 	}
-	public bool isOp(char x) {
+	public bool isOp(char x)
+	{
 		return "+-/*".Contains(x);
+	}
+	public char current_atom() {
+		if(atoms.Length > 0) {
+			return atoms[0];
+		}
+		return ';';
 	}
 	public bool IsSkippable(char n)
 	{
@@ -59,11 +66,11 @@ public class Ionizing
 	}
 	public bool isKeyword(string x)
 	{
-		
+
 		return keywords.Contains(x);
 	}
-	
-	
+
+
 	public static void move(int by = 1)
 	{
 		while (by != 0)
@@ -73,39 +80,38 @@ public class Ionizing
 			by--;
 		}
 	}
-
 	public List<(string value, TokenType type)> ionize()
 	{
 
 		while (atoms.Length > 0)
 		{
 
-			if (IsLine(atoms[0].ToString()))
+			if (IsLine(current_atom().ToString()))
 			{
 				line++;
-				ions.Add((line.ToString(), TokenType.line));
+
 
 				column = 1;
 				move();
 			}
 
 
-			else if (IsSkippable(atoms[0]))
+			else if (IsSkippable(current_atom()))
 			{
 				move();
 			}
 
 
 			//detecting strings
-			else if (atoms[0] == '"')
+			else if (current_atom() == '"')
 			{
 				string res = "";
 				move();
 				try
 				{
-					while (atoms[0] != '"' && atoms.Length > 0)
+					while (current_atom() != '"' && atoms.Length > 0)
 					{
-						res += atoms[0];
+						res += current_atom();
 						move();
 					}
 				}
@@ -113,7 +119,7 @@ public class Ionizing
 				{
 					error("reached end of file and didnt finish string");
 				}
-				if (atoms[0] != '"')
+				if (current_atom() != '"')
 				{
 					error("unfinshed string");
 				}
@@ -123,25 +129,25 @@ public class Ionizing
 			}
 
 
-			else if (atoms[0] == '(')
+			else if (current_atom() == '(')
 			{
 				ions.Add(("(", TokenType.OpenParen));
 				move();
 			}
 
 
-			else if (atoms[0] == ')')
+			else if (current_atom() == ')')
 			{
 				ions.Add((")", TokenType.CloseParen));
 				move();
 			}
-			else if (isNum(atoms[0]))
+			else if (isNum(current_atom()))
 			{
 				string res = "";
-				
-				while (isNum(atoms[0]))
+
+				while (isNum(current_atom()))
 				{
-					res += atoms[0];
+					res += current_atom();
 					move();
 				}
 				ions.Add((res, TokenType.num));
@@ -150,13 +156,13 @@ public class Ionizing
 
 
 
-			else if (isAllowedID(atoms[0]))
+			else if (isAllowedID(current_atom()))
 			{
 				string res = "";
-			   
-				while (isAllowedID(atoms[0]))
+
+				while (isAllowedID(current_atom()))
 				{
-					res += atoms[0];
+					res += current_atom();
 					move();
 				}
 				if (isKeyword(res))
@@ -170,17 +176,21 @@ public class Ionizing
 
 				}
 			}
-			
-			
-			else if(isOp(atoms[0])) {
-				string res = atoms[0].ToString();
+
+
+			else if (isOp(current_atom()))
+			{
+				string res = current_atom().ToString();
 				ions.Add((res, TokenType.op));
 				move();
 			}
-			else{
+			else
+			{
 				error("unknown char");
 			}
 		}
+
+
 		ions.Add(("END", TokenType.EOF));
 		return ions;
 	}
