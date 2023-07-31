@@ -12,7 +12,7 @@
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Atomic/bin/Debug/net7.0/Atomic.dll",
-            "args": ["run","code.txt"],
+            "args": [],
             "cwd": "${workspaceFolder}/Atomic",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
