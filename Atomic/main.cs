@@ -6,7 +6,6 @@ using Atomic_AST;
 using System.ComponentModel;
 using Atomic_debugger;
 using System.Threading;
-using CSharpShellCore;
 
 
 namespace Atomic;
