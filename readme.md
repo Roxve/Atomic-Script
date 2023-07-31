@@ -12,6 +12,7 @@ simply use the command in your terminal ```dotnet run``` to enter repl mode
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
 or if you to read a file use ```dotnet run run {file}``` or pass this args using your debugger
 and if you want to test it for dev reasons ```dotnet run run? {file}``` 
+### if you are using a debugger and getting an error give invalid args (in vscode you can go to .vscode/launch.json and change ```args=[]``` to args=["random"]) (this is a bug i am too lazy to fix)
 
 # license:
 
