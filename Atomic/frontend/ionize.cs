@@ -25,6 +25,7 @@ public class Ionizing
 	public Ionizing(string code)
 	{
 		atoms = code;
+		ions.Clear();
 	}
 	public static string atoms { get; set; }
 	public string[] keywords = { "write", "set" };
@@ -79,9 +80,6 @@ public class Ionizing
 			column++;
 			by--;
 		}
-	}
-	public static void SetAtomsForRepl(string code) {
-		atoms = code;
 	}
 	public List<(string value, TokenType type)> ionize()
 	{
