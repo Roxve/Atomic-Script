@@ -80,9 +80,12 @@ public class Ionizing
 			by--;
 		}
 	}
+	public static void SetAtomsForRepl(string code) {
+		atoms = code;
+	}
 	public List<(string value, TokenType type)> ionize()
 	{
-
+		
 		while (atoms.Length > 0)
 		{
 

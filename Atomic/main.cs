@@ -92,16 +92,19 @@ public static class Run
 		Console.WriteLine("Type Commands to run in atomic! (.exit to exit)");
 		while (true)
 		{
+			//for now you can write one expr and it returns correctly but after that one it returns null?
 			Console.WriteLine("Atomic");
 			Console.Write("=>");
 			code = Console.ReadLine();
 			code = code.Trim();
-			if (code == ".exit")
+			if (code == "exit")
 			{
 				Thread.CurrentThread.Interrupt();
 			}
 			var ionize = new Ionizing(code);
+			Ionizing.SetAtomsForRepl(code);
 			var ionized_code = ionize.ionize();
+			Console.WriteLine(string.Join(" ", ionized_code));
 			var parse = new Parser(ionized_code);
 			AST.Program Program = parse.productAST();
 			var result = interpreter.evaluate(Program);
