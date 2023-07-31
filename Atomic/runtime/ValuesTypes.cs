@@ -3,7 +3,7 @@
 namespace ValueTypes;
 
 public class VT {
-    public static string ValueType = "null,number,string";
+    public static string ValueType = "null,number,string,bool";
 
 
     public class RuntimeVal {
@@ -32,5 +32,36 @@ public class VT {
 
         public string value {get; set;}
     }
-
+	public class BooleanVal : RuntimeVal
+	{
+		public BooleanVal() {
+			type = "bool";
+		}
+		public bool value {get; set;}
+	}
+	
+	
+	
+	
+	
+	public static BooleanVal MK_BOOL(bool value = false) {
+	    var Inew = new BooleanVal(); Inew.value = value;
+		return Inew;
+	}
+    
+	
+	public static StringVal MK_STR(string value = "unknown") {
+		var Inew = new StringVal(); Inew.value = value;
+		return Inew;
+	}
+	
+	public static NumValue MK_NUM(int num = 0) {
+		var Inew = new NumValue(); Inew.value = num;
+		
+		return Inew;
+	}
+	
+	public static NullVal MK_NULL() {
+		return new NullVal();
+	}
 }

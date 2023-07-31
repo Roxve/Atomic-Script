@@ -6,8 +6,8 @@ using Atomic_AST;
 using System.ComponentModel;
 using Atomic_debugger;
 using System.Threading;
-
-
+using ValueTypes;
+using static Atomic_AST.AST;
 namespace Atomic;
 
 public static class Run
@@ -57,14 +57,16 @@ public static class Run
 	}
 	public static void Runp(string code)
 	{
+		var env = new Enviroment(null);
 		var ionize = new Ionizing(code);
 		var ionized_code = ionize.ionize();
 		var parse = new Parser(ionized_code);
 		AST.Program Program = parse.productAST();
-		var result = interpreter.evaluate(Program);
+		var result = interpreter.evaluate(Program, env);
 	}
 	public static void TestRun(string code)
 	{
+		var env = new Enviroment(null);
 		vars.test = true;
 		Console.WriteLine("running?: {0}", true);
 
@@ -80,7 +82,7 @@ public static class Run
 		Console.WriteLine("Program?");
 		Console.WriteLine(dump);
 
-		var result = interpreter.evaluate(Program);
+		var result = interpreter.evaluate(Program, env);
 
 		Console.WriteLine("results?");
 		var dump_results = ObjectDumper.Dump(result);
@@ -88,6 +90,13 @@ public static class Run
 	}
 	public static void repl()
 	{
+		var env = new Enviroment(null);
+		
+		//default vars for testing
+		env.declareVar("def_bool", VT.MK_BOOL(true));
+		env.declareVar("def_num", VT.MK_NUM(100));
+		
+		
 		string code;
 		Console.WriteLine("Type Commands to run in atomic! (.exit to exit)");
 		while (true)
@@ -106,7 +115,7 @@ public static class Run
 			Console.WriteLine(string.Join(" ", ionized_code));
 			var parse = new Parser(ionized_code);
 			AST.Program Program = parse.productAST();
-			var result = interpreter.evaluate(Program);
+			var result = interpreter.evaluate(Program, env);
 			var dump_results = ObjectDumper.Dump(result);
 		    Console.WriteLine(dump_results);
 		}
