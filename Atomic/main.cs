@@ -102,7 +102,6 @@ public static class Run
 				Thread.CurrentThread.Interrupt();
 			}
 			var ionize = new Ionizing(code);
-			Ionizing.SetAtomsForRepl(code);
 			var ionized_code = ionize.ionize();
 			Console.WriteLine(string.Join(" ", ionized_code));
 			var parse = new Parser(ionized_code);
