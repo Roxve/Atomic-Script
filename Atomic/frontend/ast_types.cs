@@ -8,7 +8,7 @@ namespace Atomic_AST {
 
 public class AST {
 
-    public static string NodeType = "Program,NumericLiteral,NullLiteral,Identifier,BinaryExpr";
+    public static string NodeType = "Program,NumericLiteral,NullLiteral,Identifier,BinaryExpr,VarDeclaration‎";
 
 
     public class Statement {
@@ -46,7 +46,16 @@ public class AST {
         public  string Operator {get; set;}
     }
 
-
+    
+	
+	public class VarDeclaration‎ : Statement {
+		public VarDeclaration() {
+			type = "VarDeclaration‎";
+		}
+		public bool locked = false;
+		public string Id {get; set;}
+		public Expression? value {get; set;}
+	}
 
 
     public class Identifier : Expression {
@@ -54,6 +63,7 @@ public class AST {
 			type = "Identifier";
 		}
         public string symbol {get; set;}
+		public bool locked = false;
     }
 
 

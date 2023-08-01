@@ -93,8 +93,8 @@ public static class Run
 		var env = new Enviroment(null);
 		
 		//default vars for testing
-		env.declareVar("def_bool", VT.MK_BOOL(true));
-		env.declareVar("def_num", VT.MK_NUM(100));
+		env.declareVar("def_bool", VT.MK_BOOL(true),false);
+		env.declareVar("def_num", VT.MK_NUM(100), true);
 		
 		
 		string code;

@@ -26,14 +26,16 @@ public class Enviroment
 	}
 	private Enviroment? parent;
 	private Dictionary<string, RuntimeVal> variables;
-
+    private List<string> locked_variables;
+	
 	public Enviroment(Enviroment? parentENV)
 	{
 		this.parent = parentENV;
 		this.variables = new Dictionary<string, RuntimeVal>();
+		this.locked_variables = new List<string>();
 	}
 
-	public RuntimeVal declareVar(string name, RuntimeVal value)
+	public RuntimeVal declareVar(string name, RuntimeVal value, bool isLocked)
 	{
 		if (this.variables.ContainsKey(name))
 		{
@@ -42,12 +44,18 @@ public class Enviroment
 		}
 		
 		this.variables.Add(name, value);
+		if(isLocked) {
+			this.locked_variables.Add(name);
+		}
 		return value;
 	}
 	
 	
 	public RuntimeVal setVar(string name,RuntimeVal value) {
 		var env = this.resolve(name);
+		if(env.locked_variables.Any(t=>t == name)) {
+			error("cannot assign a value to a locked var!");
+		}
 		env.variables[name] = value;
 		return value;
 	}

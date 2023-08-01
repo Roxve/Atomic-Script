@@ -28,11 +28,24 @@ public class Ionizing
 		ions.Clear();
 	}
 	public static string atoms { get; set; }
-	public string[] keywords = { "write", "set" };
+	public string[] keywords = { "write", "set", "locked", "Null" };
 	public static List<(string value, TokenType type)> ions = new List<(string value, TokenType type)>();
 	public static int column = 1;
 	public static int line = 1;
 
+
+	public bool isSetter()
+	{
+		if (this.current_atom() == '>')
+		{
+			if (this.after_current_atom() == '>')
+			{
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
 
 
 	public bool isAllowedID(char x)
@@ -44,12 +57,27 @@ public class Ionizing
 	{
 		return "+-/*".Contains(x);
 	}
-	public char current_atom() {
-		if(atoms.Length > 0) {
+	public char current_atom()
+	{
+		if (atoms.Length > 0)
+		{
 			return atoms[0];
 		}
 		return ';';
 	}
+
+
+
+	public char after_current_atom()
+	{
+		if (atoms.Length > 1)
+		{
+			return atoms[1];
+		}
+		return ';';
+	}
+
+
 	public bool IsSkippable(char n)
 	{
 		string x = n.ToString();
@@ -71,7 +99,21 @@ public class Ionizing
 		return keywords.Contains(x);
 	}
 
-
+	public TokenType KeywordType(string x)
+	{
+		switch (x)
+		{
+			case "set":
+				return TokenType.set;
+			case "locked":
+				return TokenType.locked;
+			case "write":
+				return TokenType.write;
+			default:
+				error("unknown error please report this! code:unknown_02?" + x);
+				return TokenType.Null;
+		}
+	}
 	public static void move(int by = 1)
 	{
 		while (by != 0)
@@ -83,7 +125,7 @@ public class Ionizing
 	}
 	public List<(string value, TokenType type)> ionize()
 	{
-		
+
 		while (atoms.Length > 0)
 		{
 
@@ -168,7 +210,7 @@ public class Ionizing
 				}
 				if (isKeyword(res))
 				{
-					ions.Add((res, TokenType.keyword));
+					ions.Add((res, KeywordType(res)));
 
 				}
 				else
@@ -184,6 +226,17 @@ public class Ionizing
 				string res = current_atom().ToString();
 				ions.Add((res, TokenType.op));
 				move();
+			}
+
+			else if (current_atom() == '>')
+			{
+				move();
+				if (current_atom() == '>')
+				{
+					ions.Add((">>", TokenType.setter));
+					move();
+				}
+
 			}
 			else
 			{

@@ -3,7 +3,8 @@ using Ttype;
 using System.Collections.Generic;
 using Atomic_AST;
 using System.Threading;
-
+using static Atomic_AST.AST;
+using ValueTypes;
 namespace Atomic;
 
 // producting a vaild AST from atoms
@@ -37,16 +38,25 @@ public class Parser
 	//Checking if we reached didnt reach end of file yet?
 	private bool NotEOF()
 	{
+		if(ions.Count <= 0) {
+			return false;
+		}
 		return this.ions[0].type != TokenType.EOF;
 	}
 
 
 	private TokenType current_token_type()
 	{
+		if(ions.Count <= 0) {
+			return TokenType.EOF;
+		}
 		return ions[0].type;
 	}
 	private string current_token_value()
 	{
+		if(ions.Count <= 0) {
+			return "END";
+		}
 		return ions[0].value;
 	}
 
@@ -57,13 +67,14 @@ public class Parser
 
 		ions.RemoveAt(0);
 		column++;
-
+        
+		this.prev = prev;
 		return prev;
 	}
 
 
 	//removes first ion return it and check if its correct
-
+    (string value, TokenType type) prev;
 	private (string value, TokenType type) except(TokenType correct_type)
 	{
 		var prev = ions[0];
@@ -73,6 +84,7 @@ public class Parser
 			error("Parser error, excepting " + correct_type + " " + "got => " + prev.type);
 		}
 		column++;
+		this.prev = prev;
 		return prev;
 	}
 
@@ -90,8 +102,55 @@ public class Parser
 	}
 	private AST.Statement parse_statement()
 	{
-		return parse_expr();
+		switch(this.current_token_type()) {
+			case TokenType.set:
+				return this.parse_var_declaration();
+			default:
+				return this.parse_expr();
+		}
 	}
+	
+	
+	AST.Statement parse_var_declaration() {
+		 move();
+		 string id;
+		 bool locked = false;
+		 if(current_token_type() == TokenType.locked) {
+		 	move();
+			 id = except(TokenType.id).value;
+			 locked = true;
+		 }
+		 else {
+		 	id = except(TokenType.id).value;
+		 }
+		 
+		 AST.VarDeclaration declare = new AST.VarDeclaration();
+		 
+		 // also TODO: instead of checking id types for everything we can do (parse id) but this is an expirement
+		 declare.locked = locked;
+		 declare.Id = id;
+		 
+		 // TODO: request ';'
+		 if(current_token_type() != TokenType.setter) {
+		 	if(locked) {
+			 	error("must asinge value to locked vars");
+			 }
+			 
+			 //TODO request type for vars like this
+			 declare.value = null;
+			 return declare;
+		 }
+		 
+		 else {
+		 	move();
+			 
+			 declare.value = this.parse_expr();
+			 
+			 return declare;
+		 }
+		 
+	}
+	
 	private AST.Expression parse_expr()
 	{
 		return this.parse_additive_expr();

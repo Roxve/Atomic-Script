@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 namespace Ttype {
     public enum TokenType
@@ -7,13 +7,17 @@ namespace Ttype {
 		id,
 		setter,
 		op,
-		//keywords
-		keyword,
-		ignored_keyword, // keywords thats ignored to add code readabilty
-		
+		//keywords	
 		set,
 		write,
+		
+		
+		
+		locked, //makes stuff not modifable
+		static_word,
+		
 		//types
+		Null,
 		line,
 		num,
 		str,
