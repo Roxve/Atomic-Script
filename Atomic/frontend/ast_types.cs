@@ -8,7 +8,7 @@ namespace Atomic_AST {
 
 public class AST {
 
-    public static string NodeType = "Program,NumericLiteral,NullLiteral,Identifier,BinaryExpr,VarDeclaration‎";
+    public static string NodeType = "Program,NumericLiteral,NullLiteral,Identifier,BinaryExpr,VarDeclaration,AssignmentExpr";
 
 
     public class Statement {
@@ -33,7 +33,14 @@ public class AST {
     public class Expression : Statement {}
 
 
+	public class AssignmentExpr : Expression {
+		public AssignmentExpr() {
+			type = "AssignmentExpr";
+		}
 
+		public Expression assigne {get; set;}
+		public Expression value {get; set;}
+	}
 
 
     public class BinaryExpression : Expression {

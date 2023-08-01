@@ -153,9 +153,23 @@ public class Parser
 	
 	private AST.Expression parse_expr()
 	{
-		return this.parse_additive_expr();
+		return this.parse_assigment_expr();
 	}
 
+	private AST.Expression parse_assigment_expr() {
+		var left = this.parse_additive_expr();
+
+		if(this.current_token_type() == TokenType.setter) {
+			this.move();
+			var value = this.parse_assigment_expr();
+
+			AST.AssignmentExpr expr = new AST.AssignmentExpr();
+			expr.value = value;
+			expr.assigne = left;
+			return expr;
+		}
+		return left;
+	}
 
 	// handels additive ane subtraction operations
 	private AST.Expression parse_additive_expr()
