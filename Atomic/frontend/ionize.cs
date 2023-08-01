@@ -199,9 +199,23 @@ public class Ionizing
 			}
 
 
+			else if (current_atom() == '[')
+			{
+				ions.Add(("[", TokenType.OpenBracket));
+				move();
+			}
 
 
+			else if (current_atom() == ']')
+			{
+				ions.Add(("]", TokenType.CloseBracket));
+				move();
+			}
 
+
+			else if (current_atom() == '.') {
+				ions.Add((".", TokenType.Dot));
+			}
 			else if (current_atom() == ',')
 			{
 				ions.Add((",", TokenType.Comma));

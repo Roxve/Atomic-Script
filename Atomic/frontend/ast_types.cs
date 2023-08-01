@@ -8,11 +8,9 @@ namespace Atomic_AST {
 
 public class AST {
 
-    public static string NodeType = "Program,NumericLiteral,NullLiteral,ObjectLiteral,Property,Identifier,BinaryExpr,VarDeclaration,AssignmentExpr";
-
 
     public class Statement {
-          public string type = NodeType;    
+          public string type = "Statement";    
     }
 
 
@@ -54,6 +52,27 @@ public class AST {
     }
 
     
+	
+	public class CallExpr : Expression {
+		public CallExpr() {
+			type = "CallExpr";
+		}
+		public List<Expression> args {get; set;}
+		
+		public Expression caller {get; set;}
+	}
+	
+	public class MemberExpr : Expression {
+		public MemberExpr() {
+			type = "MemberExpr";
+		}
+		
+		public Expression Object {get; set;}
+		
+		public Expression property {get; set;}
+		
+		public bool computed {get; set;}
+	}
 	
 	public class VarDeclaration : Statement {
 		public VarDeclaration() {

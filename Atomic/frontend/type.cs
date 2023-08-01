@@ -29,12 +29,14 @@ namespace Ttype {
 
 		Comma,
   	  Colon,
+		Dot,
   	  Semicolon,
   	  OpenParen, // (
         CloseParen, // )
   	  OpenBrace, // {
   	  CloseBrace, // }
-
+        OpenBracket, // [
+		CloseBracket, // ]
 
 		//END OF FILE
 		EOF,
