@@ -33,7 +33,7 @@ public class expr
 	public static VT.RuntimeVal eval_binary_expr(AST.BinaryExpression binary, Enviroment env)
 	{
 		var lhs = evaluate(binary.left, env); var rhs = evaluate(binary.right, env);
-		if (lhs.type.ToString() == "number" && rhs.type.ToString() == "number")
+		if (lhs.type.ToString() == "num" && rhs.type.ToString() == "num")
 		{
 			return eval_numeric_binary_expr(lhs as VT.NumValue, rhs as VT.NumValue, binary.Operator);
 		}
@@ -50,11 +50,31 @@ public class expr
 		
 		return env.setVar(name, evaluate(node.value, env));
 	}
-
+	
+	
+	public static VT.RuntimeVal eval_object_expr(AST.ObjectLiteral obj, Enviroment env) {	
+		 VT.ObjectVal Obj = new VT.ObjectVal(); Obj.properties = new Dictionary<string,VT.RuntimeVal>();
+		 
+		 foreach(AST.Property property in obj.properties) {
+		 	VT.RuntimeVal runtimeVal = new VT.RuntimeVal();
+			 
+			 if(property.value == null) {
+			     runtimeVal = env.findVar(property.key);
+			 }
+			 else {
+			 	runtimeVal = evaluate(property.value, env);
+			 }
+			 
+			 Obj.properties.Add(property.key, runtimeVal);
+		 }
+		 return Obj;
+	}
+	
+	
 	public static VT.NumValue eval_numeric_binary_expr(VT.NumValue lhs, VT.NumValue rhs, string ooperator)
 	{
 
-		//our lang will only support 64bit
+		
 		int results;
 
 		switch (ooperator)

@@ -1,9 +1,13 @@
 ﻿using Atomic_AST;
+using System.Collections.Generic;
 
 namespace ValueTypes;
 
 public class VT {
-    public static string ValueType = "null,number,string,bool";
+	
+	
+	//just to remmber type names and we might need that later
+    public static string ValueType = "null,num,string,bool,obj";
 
 
     public class RuntimeVal {
@@ -19,7 +23,7 @@ public class VT {
 
     public class NumValue : RuntimeVal {
         public NumValue() {
-			type = "number";
+			type = "num";
 		}
         public int value {get; set;}
 		
@@ -40,6 +44,12 @@ public class VT {
 		public bool value {get; set;}
 	}
 	
+	public class ObjectVal : RuntimeVal {
+		public ObjectVal() {
+			type = "obj";
+		}
+		public Dictionary<string,RuntimeVal> properties {get; set;}
+	}
 	
 	
 	

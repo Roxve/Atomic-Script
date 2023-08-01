@@ -28,12 +28,12 @@ namespace Ttype {
 		//
 
 		Comma,
-  		Colon,
-  		Semicolon,
-  		OpenParen, // (
-  		CloseParen, // )
-  		OpenBrace, // {
-  		CloseBrace, // }
+  	  Colon,
+  	  Semicolon,
+  	  OpenParen, // (
+        CloseParen, // )
+  	  OpenBrace, // {
+  	  CloseBrace, // }
 
 
 		//END OF FILE

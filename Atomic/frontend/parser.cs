@@ -157,7 +157,7 @@ public class Parser
 			return this.parse_additive_expr();
 		}
 
-		move();
+		this.move();
 		var properties = new List<AST.Property>();
 		while(this.NotEOF() && this.current_token_type() != TokenType.CloseBrace) {
 			var key = this.except(TokenType.id).value;
@@ -165,7 +165,7 @@ public class Parser
 
 			AST.Property property = new AST.Property();
 			if(this.current_token_type() == TokenType.Comma) {
-				move();
+				this.move();
 				property.key = key;
 				properties.Add(property);
 				continue;

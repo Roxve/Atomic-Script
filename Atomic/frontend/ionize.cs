@@ -194,7 +194,7 @@ public class Ionizing
 
 			else if (current_atom() == '}')
 			{
-				ions.Add(("}", TokenType.OpenBrace));
+				ions.Add(("}", TokenType.CloseBrace));
 				move();
 			}
 
