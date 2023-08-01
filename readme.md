@@ -15,7 +15,7 @@ atomic also support immutable variables with ```set locked varname >> value``` â
 # TODO(next update):
 - add the ability to access and modify properties
 - add strings
-- make vars static (cannot change the var type after creation) and add the any type (i am trying to get a mix between dynamicly typed and statically typed idk if that is even possible)
+- make vars static (cannot change the var type after creation) and add the any type (i am trying to get a mix between dynamicly typed and statically typed (basically strongly dynamicly typed)idk if that is even possible)
 - built-in functions (maybe after the next one)
 
 # trying atomic:
