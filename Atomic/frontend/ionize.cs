@@ -184,6 +184,48 @@ public class Ionizing
 				ions.Add((")", TokenType.CloseParen));
 				move();
 			}
+
+			else if (current_atom() == '{')
+			{
+				ions.Add(("{", TokenType.OpenBrace));
+				move();
+			}
+
+
+			else if (current_atom() == '}')
+			{
+				ions.Add(("}", TokenType.OpenBrace));
+				move();
+			}
+
+
+
+
+
+			else if (current_atom() == ',')
+			{
+				ions.Add((",", TokenType.Comma));
+				move();
+			}
+
+
+			else if (current_atom() == ':')
+			{
+				ions.Add((":", TokenType.Colon));
+				move();
+			}
+
+
+
+
+			else if (current_atom() == ';')
+			{
+				ions.Add((";", TokenType.Semicolon));
+				move();
+			}
+
+
+
 			else if (isNum(current_atom()))
 			{
 				string res = "";

@@ -21,9 +21,20 @@ namespace Ttype {
 		line,
 		num,
 		str,
-		//barackets
-		OpenParen,
-		CloseParen,
+
+		
+		//
+
+		Comma,
+  		Colon,
+  		Semicolon,
+  		OpenParen, // (
+  		CloseParen, // )
+  		OpenBrace, // {
+  		CloseBrace, // }
+
+
+		//END OF FILE
 		EOF,
 	}
 }
