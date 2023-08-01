@@ -204,7 +204,7 @@ public class Parser
 	}
 
 	private AST.Expression parse_assigment_expr() {
-		var left = this.parse_additive_expr();
+		var left = this.parse_obj_expr();
 
 		if(this.current_token_type() == TokenType.setter) {
 			this.move();
