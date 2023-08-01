@@ -14,7 +14,7 @@ public class expr
 	{
 		Console.BackgroundColor = ConsoleColor.Red;
 		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine(message + "\nat => line:{0}, column:{1}", line, column);
+		Console.WriteLine(message);
 		Console.BackgroundColor = ConsoleColor.Black;
 		Console.ForegroundColor = ConsoleColor.White;
 		Console.WriteLine("press anything to exit");
@@ -46,6 +46,9 @@ public class expr
 			error("invaild token in assignment");
 		}
 		
+		var name = (node.assigne as AST.Identifier).symbol;
+		
+		return env.setVar(name, evaluate(node.value, env));
 	}
 
 	public static VT.NumValue eval_numeric_binary_expr(VT.NumValue lhs, VT.NumValue rhs, string ooperator)
