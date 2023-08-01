@@ -22,7 +22,9 @@ namespace Ttype {
 		num,
 		str,
 
-		
+		boolean,
+
+
 		//
 
 		Comma,
