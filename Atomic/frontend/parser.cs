@@ -111,7 +111,7 @@ public class Parser
 	}
 	
 	
-	AST.Statement parse_var_declaration() {
+	private AST.Statement parse_var_declaration() {
 		 move();
 		 string id;
 		 bool locked = false;
@@ -151,6 +151,53 @@ public class Parser
 		 
 	}
 	
+
+	private AST.Expression parse_obj_expr() {
+		if(this.current_token_type() != TokenType.OpenBrace) {
+			return this.parse_additive_expr();
+		}
+
+		move();
+		var properties = new List<AST.Property>();
+		while(this.NotEOF() && this.current_token_type() != TokenType.CloseBrace) {
+			var key = this.except(TokenType.id).value;
+
+
+			AST.Property property = new AST.Property();
+			if(this.current_token_type() == TokenType.Comma) {
+				move();
+				property.key = key;
+				properties.Add(property);
+				continue;
+			}
+			
+			else if(this.current_token_type() == TokenType.CloseBrace) {
+				property.key = key;
+				properties.Add(property);
+				continue;
+			}
+
+			this.except(TokenType.Colon);
+
+			var value = this.parse_expr();
+
+			property.key = key; property.value = value;
+
+			properties.Add(property);
+
+			if(this.current_token_type() != TokenType.CloseBrace) {
+				this.except(TokenType.Comma);
+			}
+		}
+		this.except(TokenType.CloseBrace);
+
+		AST.ObjectLiteral Obj = new AST.ObjectLiteral();
+
+		Obj.properties = properties;
+		return Obj;
+	}
+
+
 	private AST.Expression parse_expr()
 	{
 		return this.parse_assigment_expr();
