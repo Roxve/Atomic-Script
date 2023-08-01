@@ -40,7 +40,7 @@ public class interpreter
 				return new VT.NullVal();
 			case "Identifier":
 			    return eval_id(Statement as Identifier, env);
-			case "VarDeclaration‎":
+			case "VarDeclaration":
 			    return eval_var_declaration(Statement as AST.VarDeclaration, env);
 			case "BinaryExpr":
 				return eval_binary_expr(Statement as AST.BinaryExpression, env);

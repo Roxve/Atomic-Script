@@ -48,9 +48,9 @@ public class AST {
 
     
 	
-	public class VarDeclaration‎ : Statement {
+	public class VarDeclaration : Statement {
 		public VarDeclaration() {
-			type = "VarDeclaration‎";
+			type = "VarDeclaration";
 		}
 		public bool locked = false;
 		public string Id {get; set;}
