@@ -12,9 +12,10 @@ atomic also support immutable variables with ```set locked varname >> value``` â
 
 # Features(i want):
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
-#TODO(next update):
+# TODO(next update):
 - add the ability to access and modify properties
-- make vars static (cannot change the var type after creation) and add the any type
+- add strings
+- make vars static (cannot change the var type after creation) and add the any type (i am trying to get a mix between dynamicly typed and statically typed (basically strongly dynamicly typed))
 - built-in functions (maybe after the next one)
 
 # trying atomic:
