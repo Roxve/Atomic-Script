@@ -42,6 +42,8 @@ public class interpreter
 			    return eval_id(Statement as Identifier, env);
 			case "VarDeclaration":
 			    return eval_var_declaration(Statement as AST.VarDeclaration, env);
+			case "CallExpr":
+				return eval_call_expr(Statement as AST.CallExpr,env);
 			case "ObjectLiteral":
 				return eval_object_expr(Statement as AST.ObjectLiteral,env);
 			case "AssignmentExpr":

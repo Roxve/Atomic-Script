@@ -1,0 +1,14 @@
+{Atomic_AST.AST+Program}
+  body: ...
+    {Atomic_AST.AST+CallExpr}
+      args: ...
+        {Atomic_AST.AST+NumericLiteral}
+          value: 6
+          type: "NumericLiteral"
+      caller: { }
+        {Atomic_AST.AST+Identifier}
+          symbol: "write"
+          locked: False
+          type: "Identifier"
+      type: "CallExpr"
+  type: "Program"

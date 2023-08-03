@@ -1,12 +1,1 @@
-﻿set five >> 5
-
-set locked user >> {
-	num: five * 2,
-	pass: five * 22
-}
-
-set ten >> five * 2
-
-ten
-
-user
+﻿write(6)

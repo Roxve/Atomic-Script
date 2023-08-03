@@ -28,24 +28,10 @@ public class Ionizing
 		ions.Clear();
 	}
 	public static string atoms { get; set; }
-	public string[] keywords = { "write", "set", "locked", "Null" };
+	public string[] keywords = { "set", "locked", "Null" };
 	public static List<(string value, TokenType type)> ions = new List<(string value, TokenType type)>();
 	public static int column = 1;
 	public static int line = 1;
-
-
-	public bool isSetter()
-	{
-		if (this.current_atom() == '>')
-		{
-			if (this.after_current_atom() == '>')
-			{
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
 
 
 	public bool isAllowedID(char x)
@@ -83,21 +69,25 @@ public class Ionizing
 		string x = n.ToString();
 		return x == " " || x == "\t" || x == "\r" || x == ";";
 	}
+	
 	public bool IsLine(string x)
 	{
 		return x == "\n";
 	}
+	
 	public bool isNum(char n)
 	{
 		string x = n.ToString();
 		//getting int by checking if the char code of the string is begger or smaller or equal to (0-9) charcode
 		return "0123456789".Contains(x);
 	}
+	
 	public bool isKeyword(string x)
 	{
 
 		return keywords.Contains(x);
 	}
+
 
 	public TokenType KeywordType(string x)
 	{
@@ -215,6 +205,7 @@ public class Ionizing
 
 			else if (current_atom() == '.') {
 				ions.Add((".", TokenType.Dot));
+				move();
 			}
 			else if (current_atom() == ',')
 			{

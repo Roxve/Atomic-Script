@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using static ValueTypes.VT;
 using System.Threading;
+using CSharpShellCore;
+
 namespace Atomic;
 
 
@@ -10,6 +12,33 @@ namespace Atomic;
    and each class and each function contains their own env
    with the parent env (env contains functions and vars)
 */
+
+
+public partial class Global {
+	public partial class NativeFunc {
+		public static RuntimeVal write(RuntimeVal[] args, Enviroment env) {
+			Console.WriteLine(args.ToString());
+			return MK_NULL();
+		}
+    }
+	public static Enviroment createEnv() {
+		Enviroment env = new Enviroment(null);
+		
+		
+		
+		//functions
+		
+		var writeCall = new functionCall();
+	    
+		
+		
+		
+		env.declareVar("write", MK_NATIVE_FN(writeCall),true);
+		return env;
+	}
+}
+
+
 public class Enviroment
 {
 
@@ -76,3 +105,4 @@ public class Enviroment
 		return this.parent.resolve(name);
 	}
 }
+

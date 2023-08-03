@@ -51,6 +51,23 @@ public class expr
 		return env.setVar(name, evaluate(node.value, env));
 	}
 	
+	public static VT.RuntimeVal eval_call_expr(AST.CallExpr expr,Enviroment env) {
+		var args = expr.args.ConvertAll<VT.RuntimeVal>(arg => evaluate(arg,env)).ToArray();
+		
+		var fn = evaluate(expr.caller,env);
+		
+		if(fn.type != "native-fn") {
+			error("Cannot call a value that is not a Function \ngot => " + fn.type);
+		}
+		
+		
+		VT.functionCall results = (fn as VT.NativeFnVal).call;
+		
+		results.args = args;
+		results.env = env;
+		
+		return results;
+	}
 	
 	public static VT.RuntimeVal eval_object_expr(AST.ObjectLiteral obj, Enviroment env) {	
 		 VT.ObjectVal Obj = new VT.ObjectVal(); Obj.properties = new Dictionary<string,VT.RuntimeVal>();
@@ -99,6 +116,5 @@ public class expr
 
 		Results.value = results;
 		return Results;
-
 	}
 }

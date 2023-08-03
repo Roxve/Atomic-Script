@@ -17,7 +17,7 @@ public class Parser
 	{
 		Console.BackgroundColor = ConsoleColor.Red;
 		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine(message + "\nat => line:{0}, column:{1}", line, column);
+		Console.WriteLine(message + "\nat => line:{0}, ion:{1}", line, column);
 		Console.BackgroundColor = ConsoleColor.Black;
 		Console.ForegroundColor = ConsoleColor.White;
 		Console.WriteLine("press anything to exit");
@@ -38,7 +38,8 @@ public class Parser
 	//Checking if we reached didnt reach end of file yet?
 	private bool NotEOF()
 	{
-		if(ions.Count <= 0) {
+		if (ions.Count <= 0)
+		{
 			return false;
 		}
 		return this.ions[0].type != TokenType.EOF;
@@ -47,14 +48,16 @@ public class Parser
 
 	private TokenType current_token_type()
 	{
-		if(ions.Count <= 0) {
+		if (ions.Count <= 0)
+		{
 			return TokenType.EOF;
 		}
 		return ions[0].type;
 	}
 	private string current_token_value()
 	{
-		if(ions.Count <= 0) {
+		if (ions.Count <= 0)
+		{
 			return "END";
 		}
 		return ions[0].value;
@@ -67,14 +70,14 @@ public class Parser
 
 		ions.RemoveAt(0);
 		column++;
-        
+
 		this.prev = prev;
 		return prev;
 	}
 
 
 	//removes first ion return it and check if its correct
-    (string value, TokenType type) prev;
+	(string value, TokenType type) prev;
 	private (string value, TokenType type) except(TokenType correct_type)
 	{
 		var prev = ions[0];
@@ -100,78 +103,115 @@ public class Parser
 
 		return program;
 	}
+	
 	private AST.Statement parse_statement()
 	{
-		switch(this.current_token_type()) {
+		switch (this.current_token_type())
+		{
 			case TokenType.set:
 				return this.parse_var_declaration();
 			default:
 				return this.parse_expr();
 		}
 	}
-	
-	
-	private AST.Statement parse_var_declaration() {
-		 move();
-		 string id;
-		 bool locked = false;
-		 if(current_token_type() == TokenType.locked) {
-		 	move();
-			 id = except(TokenType.id).value;
-			 locked = true;
-		 }
-		 else {
-		 	id = except(TokenType.id).value;
-		 }
-		 
-		 AST.VarDeclaration declare = new AST.VarDeclaration();
-		 
-		 // also TODO: instead of checking id types for everything we can do (parse id) but this is an expirement
-		 declare.locked = locked;
-		 declare.Id = id;
-		 
-		 // TODO: request ';'
-		 if(current_token_type() != TokenType.setter) {
-		 	if(locked) {
-			 	error("must asinge value to locked vars");
-			 }
-			 
-			 //TODO request type for vars like this
-			 declare.value = null;
-			 return declare;
-		 }
-		 
-		 else {
-		 	move();
-			 
-			 declare.value = this.parse_expr();
-			 
-			 return declare;
-		 }
-		 
-	}
-	
 
-	private AST.Expression parse_obj_expr() {
-		if(this.current_token_type() != TokenType.OpenBrace) {
+
+	private AST.Statement parse_var_declaration()
+	{
+		move();
+		string id;
+		bool locked = false;
+		if (current_token_type() == TokenType.locked)
+		{
+			move();
+			id = except(TokenType.id).value;
+			locked = true;
+		}
+		else
+		{
+			id = except(TokenType.id).value;
+		}
+
+		AST.VarDeclaration declare = new AST.VarDeclaration();
+
+		// also TODO: instead of checking id types for everything we can do (parse id) but this is an expirement
+		declare.locked = locked;
+		declare.Id = id;
+
+		// TODO: request ';'
+		if (current_token_type() != TokenType.setter)
+		{
+			if (locked)
+			{
+				error("must asinge value to locked vars");
+			}
+
+			//TODO request type for vars like this
+			declare.value = null;
+			return declare;
+		}
+
+		else
+		{
+			move();
+
+			declare.value = this.parse_expr();
+
+			return declare;
+		}
+
+	}
+
+
+	private AST.Expression parse_expr()
+	{
+		return this.parse_assigment_expr();
+	}
+
+	private AST.Expression parse_assigment_expr()
+	{
+		var left = this.parse_obj_expr();
+
+		if (this.current_token_type() == TokenType.setter)
+		{
+			this.move();
+			var value = this.parse_assigment_expr();
+
+			AST.AssignmentExpr expr = new AST.AssignmentExpr();
+			expr.value = value;
+			expr.assigne = left;
+			return expr;
+		}
+		return left;
+	}
+
+
+
+	private AST.Expression parse_obj_expr()
+	{
+		if (this.current_token_type() != TokenType.OpenBrace)
+		{
 			return this.parse_additive_expr();
 		}
 
 		this.move();
 		var properties = new List<AST.Property>();
-		while(this.NotEOF() && this.current_token_type() != TokenType.CloseBrace) {
+		while (this.NotEOF() && this.current_token_type() != TokenType.CloseBrace)
+		{
 			var key = this.except(TokenType.id).value;
 
 
 			AST.Property property = new AST.Property();
-			if(this.current_token_type() == TokenType.Comma) {
+			if (this.current_token_type() == TokenType.Comma)
+			{
 				this.move();
 				property.key = key;
 				properties.Add(property);
 				continue;
 			}
-			
-			else if(this.current_token_type() == TokenType.CloseBrace) {
+
+			else if (this.current_token_type() == TokenType.CloseBrace)
+			{
 				property.key = key;
 				properties.Add(property);
 				continue;
@@ -185,7 +225,8 @@ public class Parser
 
 			properties.Add(property);
 
-			if(this.current_token_type() != TokenType.CloseBrace) {
+			if (this.current_token_type() != TokenType.CloseBrace)
+			{
 				this.except(TokenType.Comma);
 			}
 		}
@@ -198,25 +239,6 @@ public class Parser
 	}
 
 
-	private AST.Expression parse_expr()
-	{
-		return this.parse_assigment_expr();
-	}
-
-	private AST.Expression parse_assigment_expr() {
-		var left = this.parse_obj_expr();
-
-		if(this.current_token_type() == TokenType.setter) {
-			this.move();
-			var value = this.parse_assigment_expr();
-
-			AST.AssignmentExpr expr = new AST.AssignmentExpr();
-			expr.value = value;
-			expr.assigne = left;
-			return expr;
-		}
-		return left;
-	}
 
 	// handels additive ane subtraction operations
 	private AST.Expression parse_additive_expr()
@@ -235,14 +257,16 @@ public class Parser
 		return left;
 	}
 
+
+
 	// handels multiplicitave and divison operations
 	private AST.Expression parse_multiplicitave_expr()
 	{
-		var left = this.parse_primary_expr();
+		var left = this.parse_call_member_expr();
 		while (current_token_value() == "/" || current_token_value() == "*" || current_token_value() == "%")
 		{
 			var ooperator = move().value;
-			var right = this.parse_primary_expr();
+			var right = this.parse_call_member_expr();
 			AST.BinaryExpression BE = new AST.BinaryExpression();
 			BE.left = left;
 			BE.right = right;
@@ -251,8 +275,92 @@ public class Parser
 		}
 		return left;
 	}
+	
+	
+	private AST.Expression parse_call_member_expr() {
+		var member = this.parse_member_expr();
+		
+		if(this.current_token_type() == TokenType.OpenParen) {
+			return this.parse_call_expr(member);
+		}
+		return member;
+	}
 
-	private dynamic parse_primary_expr()
+	
+	private AST.Expression parse_call_expr(AST.Expression caller) {
+		AST.CallExpr call_expr = new AST.CallExpr();
+		
+		call_expr.caller = caller; call_expr.args = this.parse_args();
+		
+		if(this.current_token_type() == TokenType.OpenParen) {
+			call_expr = this.parse_call_expr(call_expr) as AST.CallExpr;
+		}
+		return call_expr;
+	}
+	
+	
+	private List<AST.Expression> parse_args() {
+		this.except(TokenType.OpenParen);
+		List<AST.Expression> args = new List<AST.Expression>();
+		if(this.current_token_type() != TokenType.CloseParen) {
+			args = this.parse_args_list();
+		}
+		
+		this.except(TokenType.CloseParen);
+		return args;
+	}
+	
+	private List<AST.Expression> parse_args_list() {
+		List<AST.Expression> args = new List<AST.Expression>();
+		args.Add(this.parse_assigment_expr());
+		
+		while(this.current_token_type() == TokenType.Comma) {
+			this.move();
+			args.Add(this.parse_assigment_expr());
+		}
+		return args;
+	}
+	
+	
+	private AST.Expression parse_member_expr() {
+		var obj = this.parse_primary_expr();
+		AST.MemberExpr memberExpr = new AST.MemberExpr();
+		while(this.current_token_type() == TokenType.Dot || this.current_token_type() == TokenType.OpenBracket) {
+			var ooperator = this.move();
+			AST.Expression property;
+			bool computed; // !computed => obj.expr,computed obj[]
+			
+			if(ooperator.type == TokenType.Dot) {
+				computed = false;
+				property = this.parse_primary_expr();
+				
+				if(property.type != "Identifier") {
+					error("excepted Identifier after dot");
+				}
+			}
+			
+			else {
+				computed = true;
+				property = this.parse_expr();
+				
+				this.except(TokenType.CloseBracket);
+			}
+			memberExpr.Object = obj; memberExpr.computed = computed; memberExpr.property = property;
+			
+			obj = memberExpr;
+		}
+		
+		return obj;
+	}
+	// Assignment
+	// Object
+	// AdditiveExpr
+	// MultiplicitaveExpr
+	// Call
+	// Member
+	// PrimaryExpr
+
+	private AST.Expression parse_primary_expr()
 	{
 		TokenType token = current_token_type();
 		switch (token)
@@ -264,7 +372,7 @@ public class Parser
 			case TokenType.num:
 				AST.NumericLiteral num = new AST.NumericLiteral();
 				num.value = Convert.ToInt32(move().value);
-				
+
 				return num;
 			case TokenType.OpenParen:
 				move();
@@ -273,7 +381,7 @@ public class Parser
 				return value;
 			default:
 				error("Unexpected token found during parsing! " + current_token_value() + " " + current_token_type());
-				return 1;
+				return new AST.NullLiteral();
 		}
 	}
 

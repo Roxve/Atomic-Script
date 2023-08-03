@@ -66,7 +66,7 @@ public static class Run
 	}
 	public static void TestRun(string code)
 	{
-		var env = new Enviroment(null);
+		var env = Global.createEnv();
 		vars.test = true;
 		Console.WriteLine("running?: {0}", true);
 
@@ -78,7 +78,7 @@ public static class Run
 		Console.WriteLine("parsed?: {0}", true);
 
 		var dump = ObjectDumper.Dump(Program);
-
+        File.WriteAllText(@"last_testrun.txt", dump);
 		Console.WriteLine("Program?");
 		Console.WriteLine(dump);
 
@@ -86,16 +86,14 @@ public static class Run
 
 		Console.WriteLine("results?");
 		var dump_results = ObjectDumper.Dump(result);
+		
 		Console.WriteLine(dump_results);
 	}
 	public static void repl()
 	{
-		var env = new Enviroment(null);
+		var env = Global.createEnv();
 		
 		//default vars for testing
-		env.declareVar("def_bool", VT.MK_BOOL(true),false);
-		env.declareVar("def_num", VT.MK_NUM(100), true);
-		
 		
 		string code;
 		Console.WriteLine("Type Commands to run in atomic! (.exit to exit)");
