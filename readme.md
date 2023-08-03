@@ -1,6 +1,8 @@
 # Atomic
 Atomic is a simple small programming lang made for fun! built-on c#
 
+### warning this branch contains unfinished code use main for the latest finished version
+
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
 # Features(right now):
