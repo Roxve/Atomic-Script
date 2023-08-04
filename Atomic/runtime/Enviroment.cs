@@ -13,12 +13,6 @@ namespace Atomic;
 
 
 public partial class Global {
-	public static partial class NativeFunc {
-		public static RuntimeVal write(RuntimeVal[] args, Enviroment? env) {
-			Console.WriteLine(string.Join(',', (object[])args));
-			return MK_NULL();
-		}
-    }
 	public static Enviroment createEnv() {
 		Enviroment env = new Enviroment(null);
 		

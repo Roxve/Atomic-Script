@@ -57,7 +57,7 @@ public static class Run
 	}
 	public static void Runp(string code)
 	{
-		var env = new Enviroment(null);
+		var env = Global.createEnv();
 		var ionize = new Ionizing(code);
 		var ionized_code = ionize.ionize();
 		var parse = new Parser(ionized_code);
@@ -104,18 +104,20 @@ public static class Run
 			Console.Write("=>");
 			code = Console.ReadLine();
 			code = code.Trim();
-			if (code == "exit")
+			if (code == ".exit")
 			{
 				Thread.CurrentThread.Interrupt();
 			}
+			else {
 			var ionize = new Ionizing(code);
 			var ionized_code = ionize.ionize();
-			Console.WriteLine(string.Join(" ", ionized_code));
+			
 			var parse = new Parser(ionized_code);
 			AST.Program Program = parse.productAST();
 			var result = interpreter.evaluate(Program, env);
 			var dump_results = ObjectDumper.Dump(result);
 		    Console.WriteLine(dump_results);
+			}
 		}
 	}
 }

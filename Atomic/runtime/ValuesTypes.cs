@@ -80,8 +80,6 @@ public class VT
 			get {return this.args;}
 			set {
 				this.args = value;
-				
-				Console.WriteLine("executing!!!");
 				execute(this.args,env);
 			}
 		}

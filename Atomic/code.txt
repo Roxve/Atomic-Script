@@ -1,2 +1,7 @@
-﻿set user >> {pass:666}
+﻿set user >> {pass:666, num: 1,id: 8891}
 user.pass >> 777
+
+
+write(user.pass)
+write(user.num,user.id)
+write(user.id)
