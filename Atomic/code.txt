@@ -1,1 +1,2 @@
-﻿write(6)
+﻿set user >> {pass:666}
+user.pass >> 777

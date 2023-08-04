@@ -1,14 +1,38 @@
 {Atomic_AST.AST+Program}
   body: ...
-    {Atomic_AST.AST+CallExpr}
-      args: ...
+    {Atomic_AST.AST+VarDeclaration}
+      Id: "user"
+      value: { }
+        {Atomic_AST.AST+ObjectLiteral}
+          properties: ...
+            {Atomic_AST.AST+Property}
+              key: "pass"
+              value: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 666
+                  type: "NumericLiteral"
+              type: "Property"
+          type: "ObjectLiteral"
+      locked: False
+      type: "VarDeclaration"
+    {Atomic_AST.AST+AssignmentExpr}
+      assigne: { }
+        {Atomic_AST.AST+MemberExpr}
+          Object: { }
+            {Atomic_AST.AST+Identifier}
+              symbol: "user"
+              locked: False
+              type: "Identifier"
+          property: { }
+            {Atomic_AST.AST+Identifier}
+              symbol: "pass"
+              locked: False
+              type: "Identifier"
+          computed: False
+          type: "MemberExpr"
+      value: { }
         {Atomic_AST.AST+NumericLiteral}
-          value: 6
+          value: 777
           type: "NumericLiteral"
-      caller: { }
-        {Atomic_AST.AST+Identifier}
-          symbol: "write"
-          locked: False
-          type: "Identifier"
-      type: "CallExpr"
+      type: "AssignmentExpr"
   type: "Program"

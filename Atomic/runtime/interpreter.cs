@@ -44,6 +44,8 @@ public class interpreter
 			    return eval_var_declaration(Statement as AST.VarDeclaration, env);
 			case "CallExpr":
 				return eval_call_expr(Statement as AST.CallExpr,env);
+			case "MemberExpr":
+				return eval_member_expr(Statement as AST.MemberExpr, env);
 			case "ObjectLiteral":
 				return eval_object_expr(Statement as AST.ObjectLiteral,env);
 			case "AssignmentExpr":
@@ -53,6 +55,8 @@ public class interpreter
 			case "Program":
 				return eval_program(Statement as AST.Program, env);
 			default:
+			    var dump = ObjectDumper.Dump(Statement);
+				Console.WriteLine("\ndump info:\n" + dump);
 				error("unknown error, please report this! error: unknown_01?" + Statement.type.ToString());
 				return new VT.NullVal();
 		}
