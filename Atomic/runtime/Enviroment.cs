@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
 using static ValueTypes.VT;
 using System.Threading;
-using CSharpShellCore;
-
+using System.Collections.Generic;
 namespace Atomic;
 
 
@@ -15,9 +13,9 @@ namespace Atomic;
 
 
 public partial class Global {
-	public partial class NativeFunc {
-		public static RuntimeVal write(RuntimeVal[] args, Enviroment env) {
-			Console.WriteLine(args.ToString());
+	public static partial class NativeFunc {
+		public static RuntimeVal write(RuntimeVal[] args, Enviroment? env) {
+			Console.WriteLine(string.Join(',', (object[])args));
 			return MK_NULL();
 		}
     }
@@ -30,7 +28,7 @@ public partial class Global {
 		
 		var writeCall = new functionCall();
 	    
-		
+		writeCall.execute = NativeFunc.write;
 		
 		
 		env.declareVar("write", MK_NATIVE_FN(writeCall),true);

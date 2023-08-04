@@ -63,7 +63,7 @@ public class expr
 		
 		VT.functionCall results = (fn as VT.NativeFnVal).call;
 		
-		results.args = args;
+		results.Args = args;
 		results.env = env;
 		
 		return results;

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 using Atomic;
+using CSharpShellCore;
 
 namespace ValueTypes;
 
@@ -72,13 +73,19 @@ public class VT
 		{
 			type = "functionCall";
 		}
-
-		public RuntimeVal[] args 
+		public Func<RuntimeVal[],Enviroment?,RuntimeVal> execute;
+		private RuntimeVal[] args;
+		public RuntimeVal[] Args
 		{
-			get {return args;}
-			set {args = value;}
+			get {return this.args;}
+			set {
+				this.args = value;
+				
+				Console.WriteLine("executing!!!");
+				execute(this.args,env);
+			}
 		}
-		public Enviroment env { get; set; }
+		public Enviroment? env { get; set; }
 
 
 	}
