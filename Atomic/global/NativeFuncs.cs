@@ -15,13 +15,24 @@ public partial class Global
 				switch (arg.type)
 				{
 					case "num":
+					    Console.ForegroundColor = ConsoleColor.Yellow;
 						Console.Write((arg as NumValue).value);
+						Console.ForegroundColor = ConsoleColor.White;
 						continue;
 					case "str":
+						Console.ForegroundColor = ConsoleColor.Green;
 						Console.Write((arg as StringVal).value);
+						Console.ForegroundColor = ConsoleColor.White;
+						continue;
+					case "null":
+						Console.ForegroundColor = ConsoleColor.Yellow;
+						Console.Write("null");
+						Console.ForegroundColor = ConsoleColor.White;
 						continue;
 					default:
+					    Console.ForegroundColor = ConsoleColor.Red;
 						Console.Write(arg.ToString());
+						Console.ForegroundColor = ConsoleColor.White;
 						continue;
 				}
 			}

@@ -10,11 +10,11 @@ namespace Ttype {
 		//keywords	
 		set,
 		func,
-		
+		return_kw,
 		
 		
 		locked, //makes stuff not modifable
-		static_word,
+		static_kw,
 		
 		//types
 		Null,

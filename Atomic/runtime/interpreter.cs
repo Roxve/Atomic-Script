@@ -17,14 +17,15 @@ public partial class interpreter
 	{
 		Console.BackgroundColor = ConsoleColor.Red;
 		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine("runtime error: "+ message + "\nat => line:{0}, column:{1}", line, column);
+		Console.WriteLine("runtime error: " + message + "\nat => line:{0}, column:{1}", line, column);
 		Console.BackgroundColor = ConsoleColor.Black;
 		Console.ForegroundColor = ConsoleColor.White;
-		
-		Console.WriteLine("press anything to exit");
-		Console.ReadKey();
-		
-		Thread.CurrentThread.Interrupt();
+		if (!(Global.Var.mode == "repl"))
+		{
+			Console.WriteLine("press anything to exit");
+			Console.ReadKey();
+			Thread.CurrentThread.Interrupt();
+		}
 	}
 
 
@@ -43,28 +44,28 @@ public partial class interpreter
 			case "NullLiteral":
 				return new VT.NullVal();
 			case "Identifier":
-			    return eval_id(Statement as Identifier, env);
+				return eval_id(Statement as Identifier, env);
 			case "VarDeclaration":
-			    return eval_var_declaration(Statement as AST.VarDeclaration, env);
+				return eval_var_declaration(Statement as AST.VarDeclaration, env);
 			case "CallExpr":
-				return eval_call_expr(Statement as AST.CallExpr,env);
+				return eval_call_expr(Statement as AST.CallExpr, env);
 			case "MemberExpr":
 				return eval_member_expr(Statement as AST.MemberExpr, env);
 			case "ObjectLiteral":
-				return eval_object_expr(Statement as AST.ObjectLiteral,env);
+				return eval_object_expr(Statement as AST.ObjectLiteral, env);
 			case "AssignmentExpr":
-				return eval_assignment(Statement as AssignmentExpr,env);
+				return eval_assignment(Statement as AssignmentExpr, env);
 			case "BinaryExpr":
 				return eval_binary_expr(Statement as AST.BinaryExpression, env);
 			case "Program":
 				return eval_program(Statement as AST.Program, env);
 			default:
-			    var dump = ObjectDumper.Dump(Statement);
+				var dump = ObjectDumper.Dump(Statement);
 				Console.WriteLine("\ndump info:\n" + dump);
 				error("unknown error, please report this! error: unknown_01?" + Statement.type.ToString());
 				return new VT.NullVal();
 		}
 	}
 
-  
+
 }

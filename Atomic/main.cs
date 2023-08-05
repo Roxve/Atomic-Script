@@ -104,12 +104,15 @@ public static class Run
 		//default vars for testing
 		Global.Var.mode = "repl";
 		string code;
+		Console.ForegroundColor = ConsoleColor.Green;
 		Console.WriteLine("Type Commands to run in atomic! (.exit to exit)");
 		while (true)
 		{
 			//for now you can write one expr and it returns correctly but after that one it returns null?
+			Console.ForegroundColor = ConsoleColor.Magenta;
 			Console.WriteLine("Atomic");
 			Console.Write("=>");
+			Console.ForegroundColor = ConsoleColor.White;
 			code = Console.ReadLine();
 			code = code.Trim();
 			if (code == ".exit")

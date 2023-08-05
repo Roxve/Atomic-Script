@@ -373,6 +373,10 @@ public class Parser
 				num.value = Convert.ToInt32(move().value);
 
 				return num;
+			case TokenType.Null:
+				AST.NullLiteral Null = new AST.NullLiteral();
+				move();
+				return Null;
 			case TokenType.str:
 				AST.StringLiteral str = new AST.StringLiteral();
 				
@@ -386,6 +390,7 @@ public class Parser
 				return value;
 			default:
 				error("Unexpected token found during parsing! " + current_token_value() + " " + current_token_type());
+				move();
 				return new AST.NullLiteral();
 		}
 	}

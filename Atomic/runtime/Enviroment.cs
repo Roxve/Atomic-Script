@@ -12,20 +12,22 @@ namespace Atomic;
 */
 
 
-public partial class Global {
-	public static Enviroment createEnv() {
+public partial class Global
+{
+	public static Enviroment createEnv()
+	{
 		Enviroment env = new Enviroment(null);
-		
-		
-		
+
+
+
 		//functions
-		
+
 		var writeCall = new functionCall();
-	    
+
 		writeCall.execute = NativeFunc.write;
-		
-		
-		env.declareVar("write", MK_NATIVE_FN(writeCall),true);
+
+
+		env.declareVar("write", MK_NATIVE_FN(writeCall), true);
 		return env;
 	}
 }
@@ -47,8 +49,8 @@ public class Enviroment
 	}
 	private Enviroment? parent;
 	private Dictionary<string, RuntimeVal> variables;
-    private List<string> locked_variables;
-	
+	private List<string> locked_variables;
+
 	public Enviroment(Enviroment? parentENV)
 	{
 		this.parent = parentENV;
@@ -63,34 +65,41 @@ public class Enviroment
 			this.error("var " + name + " already exit");
 			return new NullVal();
 		}
-		
+
 		this.variables.Add(name, value);
-		if(isLocked) {
+		if (isLocked)
+		{
 			this.locked_variables.Add(name);
 		}
 		return value;
 	}
-	
-	
-	public RuntimeVal setVar(string name,RuntimeVal value) {
+
+
+	public RuntimeVal setVar(string name, RuntimeVal value)
+	{
 		var env = this.resolve(name);
-		if(env.locked_variables.Any(t=>t == name)) {
+		if (env.locked_variables.Any(t => t == name))
+		{
 			error("cannot assign a value to a locked var!");
 		}
 		env.variables[name] = value;
 		return value;
 	}
-	
-	public RuntimeVal findVar(string name) {
+
+	public RuntimeVal findVar(string name)
+	{
 		var env = this.resolve(name);
 		return env.variables[name] as RuntimeVal;
 	}
-	
-	public Enviroment resolve(string name) {
-		if(this.variables.ContainsKey(name)) {
+
+	public Enviroment resolve(string name)
+	{
+		if (this.variables.ContainsKey(name))
+		{
 			return this;
 		}
-		if(this.parent == null) {
+		if (this.parent == null)
+		{
 			error("cannot resolve " + name);
 			return this;
 		}
