@@ -61,7 +61,14 @@ public static class Run
 		var ionize = new Ionizing(code);
 		var ionized_code = ionize.ionize();
 		var parse = new Parser(ionized_code);
+		
 		AST.Program Program = parse.productAST();
+		if (Global.Var.error)
+		{
+			Console.WriteLine("duo to the parser errors, press anything to exit");
+			Console.ReadKey();
+			Thread.CurrentThread.Interrupt();
+		}
 		var result = interpreter.evaluate(Program, env);
 	}
 	public static void TestRun(string code)
@@ -78,7 +85,7 @@ public static class Run
 		Console.WriteLine("parsed?: {0}", true);
 
 		var dump = ObjectDumper.Dump(Program);
-        File.WriteAllText(@"last_testrun.txt", dump);
+		File.WriteAllText(@"last_testrun.txt", dump);
 		Console.WriteLine("Program?");
 		Console.WriteLine(dump);
 
@@ -86,15 +93,15 @@ public static class Run
 
 		Console.WriteLine("results?");
 		var dump_results = ObjectDumper.Dump(result);
-		
+
 		Console.WriteLine(dump_results);
 	}
 	public static void repl()
 	{
 		var env = Global.createEnv();
-		
+
 		//default vars for testing
-		
+		Global.Var.mode = "repl";
 		string code;
 		Console.WriteLine("Type Commands to run in atomic! (.exit to exit)");
 		while (true)
@@ -108,15 +115,19 @@ public static class Run
 			{
 				Thread.CurrentThread.Interrupt();
 			}
-			else {
-			var ionize = new Ionizing(code);
-			var ionized_code = ionize.ionize();
-			
-			var parse = new Parser(ionized_code);
-			AST.Program Program = parse.productAST();
-			var result = interpreter.evaluate(Program, env);
-			var dump_results = ObjectDumper.Dump(result);
-		    Console.WriteLine(dump_results);
+			else
+			{
+				var ionize = new Ionizing(code);
+				var ionized_code = ionize.ionize();
+				var parse = new Parser(ionized_code);
+				AST.Program Program = parse.productAST();
+				if (Global.Var.error)
+				{
+					Global.Var.error = false;
+					continue;
+				}
+				
+				var result = interpreter.evaluate(Program, env);
 			}
 		}
 	}

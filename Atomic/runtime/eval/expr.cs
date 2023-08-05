@@ -37,6 +37,9 @@ public class expr
 		{
 			return eval_numeric_binary_expr(lhs as VT.NumValue, rhs as VT.NumValue, binary.Operator);
 		}
+		if(lhs.type == "str" && rhs.type == "str") {
+			return eval_string_binary_expr(lhs as VT.StringVal,rhs as VT.StringVal, binary.Operator);
+		}
 		return new VT.NullVal();
 	}
 
@@ -220,6 +223,26 @@ public class expr
 		}
 		VT.NumValue Results = new VT.NumValue();
 
+		Results.value = results;
+		return Results;
+	}
+	
+	public static VT.StringVal eval_string_binary_expr(VT.StringVal lhs,VT.StringVal rhs, string ooperator) {
+		string results;
+		
+		switch(ooperator)
+		{
+			case "+":
+				results = lhs.value + rhs.value;
+				break;
+			default:
+				error($"cannot peform operation {ooperator} on string\ngot => {lhs.value} {ooperator} {rhs.value}");
+				results = "null";
+			    break;
+		}
+		
+		VT.StringVal Results = new VT.StringVal();
+		
 		Results.value = results;
 		return Results;
 	}

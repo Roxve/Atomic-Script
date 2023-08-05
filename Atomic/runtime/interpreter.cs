@@ -36,6 +36,10 @@ public class interpreter
 				VT.NumValue num = new VT.NumValue();
 				num.value = (Statement as AST.NumericLiteral).value;
 				return num;
+			case "StringLiteral":
+				VT.StringVal str = new VT.StringVal();
+				str.value = (Statement as AST.StringLiteral).value;
+				return str;
 			case "NullLiteral":
 				return new VT.NullVal();
 			case "Identifier":

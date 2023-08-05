@@ -5,6 +5,7 @@ using Atomic_AST;
 using System.Threading;
 using static Atomic_AST.AST;
 using ValueTypes;
+using static Atomic.Global;
 namespace Atomic;
 
 // producting a vaild AST from atoms
@@ -15,14 +16,12 @@ public class Parser
 	private static int line = 1;
 	public void error(string message)
 	{
+		Global.Var.error = true;
 		Console.BackgroundColor = ConsoleColor.Red;
 		Console.ForegroundColor = ConsoleColor.Yellow;
 		Console.WriteLine(message + "\nat => line:{0}, ion:{1}", line, column);
 		Console.BackgroundColor = ConsoleColor.Black;
 		Console.ForegroundColor = ConsoleColor.White;
-		Console.WriteLine("press anything to exit");
-		Console.ReadKey();
-		Thread.CurrentThread.Interrupt();
 	}
 
 
@@ -374,6 +373,12 @@ public class Parser
 				num.value = Convert.ToInt32(move().value);
 
 				return num;
+			case TokenType.str:
+				AST.StringLiteral str = new AST.StringLiteral();
+				
+				str.value = move().value;
+				
+				return str;
 			case TokenType.OpenParen:
 				move();
 				var value = parse_expr();

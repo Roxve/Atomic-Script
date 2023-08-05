@@ -37,7 +37,7 @@ public class Ionizing
 	public bool isAllowedID(char x)
 	{
 		//only english && langs that has upper and lower chars is allowed
-		return "_qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM".Contains(x);
+		return "_qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789".Contains(x);
 	}
 	public bool isOp(char x)
 	{

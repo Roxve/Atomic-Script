@@ -114,7 +114,12 @@ public class AST {
 		}
         public int value {get; set;}
     }
-	
+	public class StringLiteral : Expression {
+		public StringLiteral() {
+			type = "StringLiteral";
+		}
+		public string value {get; set;}
+	}
 	public class NullLiteral : Expression {
 		public NullLiteral() {
 			type = "NullLiteral";

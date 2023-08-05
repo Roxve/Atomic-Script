@@ -13,7 +13,7 @@ public class VT
 
 
 	//just to remmber type names and we might need that later
-	public static string ValueType = "null,num,string,bool,obj";
+	public static string ValueType = "null,num,str,bool,obj";
 
 
 	public class RuntimeVal
@@ -44,7 +44,7 @@ public class VT
 	{
 		public StringVal()
 		{
-			type = "string";
+			type = "str";
 		}
 
 		public string value { get; set; }

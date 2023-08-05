@@ -1,7 +1,9 @@
-﻿set user >> {pass:666, num: 1,id: 8891}
+﻿set user >> {
+	name: "Thomas",
+	pass: 666,
+	num: 0
+}
 user.pass >> 777
 
 
-write(user.pass)
-write(user.num,user.id)
-write(user.id)
+write("user num ",user.num, ",","name:" + user.name,",","pass:",user.pass)

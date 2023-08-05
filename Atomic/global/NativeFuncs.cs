@@ -9,15 +9,20 @@ public partial class Global
 	public static class NativeFunc
 	{
 		public static RuntimeVal write(RuntimeVal[] args, Enviroment? env)
-		{		
-		    foreach(RuntimeVal arg in args) {
-				switch(arg.type) {
+		{
+			foreach (RuntimeVal arg in args)
+			{
+				switch (arg.type)
+				{
 					case "num":
-					Console.Write((arg as NumValue).value);
-					continue;
-				default:
-					Console.Write(arg.ToString());
-					continue;
+						Console.Write((arg as NumValue).value);
+						continue;
+					case "str":
+						Console.Write((arg as StringVal).value);
+						continue;
+					default:
+						Console.Write(arg.ToString());
+						continue;
 				}
 			}
 			//auto add a line at the end of executing
