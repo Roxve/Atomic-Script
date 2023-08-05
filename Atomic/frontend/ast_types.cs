@@ -82,7 +82,25 @@ public class AST {
 		public string Id {get; set;}
 		public Expression? value {get; set;}
 	}
-
+    
+	public class FuncDeclarartion : Statement {
+		public FuncDeclarartion() {
+			type = "FuncDeclarartion";
+		}
+		public string name {get; set;}
+		public string[] parameters {get; set;}
+		
+		private List<Statement> Body = new List<Statement>();
+		
+		public List<Statement> body {
+			get {
+				return this.Body;
+			}
+			set {
+				this.Body = value;
+			}
+		}
+	}
 
     public class Identifier : Expression {
         public Identifier() {

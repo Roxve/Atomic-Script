@@ -9,7 +9,7 @@ namespace Ttype {
 		op,
 		//keywords	
 		set,
-		write,
+		func,
 		
 		
 		

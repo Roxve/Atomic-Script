@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 using Atomic;
-using CSharpShellCore;
 
 namespace ValueTypes;
 
@@ -104,7 +103,27 @@ public class VT
 			return results;
 		}
 	}
-
+    
+	public class FuncVal : RuntimeVal {
+		public FuncVal() {
+			type = "func";
+		}
+		public string name {get; set;}
+		public string[] parameters {get; set;}
+		
+		public Enviroment env {get; set;}
+		
+		private List<AST.Statement> Body = new List<AST.Statement>();
+		
+		public List<AST.Statement> body {
+			get {
+				return this.Body;
+			}
+			set {
+				this.Body = value;
+			}
+		}
+	}
 
 	public static NativeFnVal MK_NATIVE_FN(functionCall call)
 	{

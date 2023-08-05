@@ -27,7 +27,7 @@ public class Ionizing
 		ions.Clear();
 	}
 	public static string atoms { get; set; }
-	public string[] keywords = { "set", "locked", "Null" };
+	public string[] keywords = { "set", "locked", "Null", "func" };
 	public static List<(string value, TokenType type)> ions = new List<(string value, TokenType type)>();
 	public static int column = 1;
 	public static int line = 1;
@@ -96,8 +96,8 @@ public class Ionizing
 				return TokenType.set;
 			case "locked":
 				return TokenType.locked;
-			case "write":
-				return TokenType.write;
+			case "func":
+				return TokenType.func;
 			default:
 				error("unknown error please report this! code:unknown_02?" + x);
 				return TokenType.Null;
