@@ -1,5 +1,5 @@
 # Atomic
-Atomic is a simple small programming lang made for fun! built-on c#
+Atomic is a simple small dynamic programming lang made for fun! built-on c#
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate ðŸ¥³
 
 # Features(right now):
@@ -16,6 +16,7 @@ atomic also support immutable variables with ```set locked varname >> value``` â
 - add the ability to create functions
 - add strings
 - functions return values!
+- better errors? (skip errors until finished running, repl mode = no errors, better error locationing?)
 # trying atomic:
 simply use the command in your terminal ```dotnet run``` to enter repl mode
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
