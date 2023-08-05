@@ -18,7 +18,7 @@ atomic also support immutable variables with ```set locked varname >> value``` â
 - functions return values!
 - better errors? (skip errors until finished running, repl mode = no errors, better error locationing?)
 # trying atomic:
-simply use the command in your terminal ```dotnet run``` to enter repl mode
+simply use the command in your terminal ```dotnet run``` to enter repl mode (repl mode is buggy for mow i recommed reading from a file)
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
 or if you to read a file use ```dotnet run run {file}``` or pass this args using your debugger
 and if you want to test it for dev reasons ```dotnet run run? {file}``` 
