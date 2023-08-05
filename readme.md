@@ -8,13 +8,13 @@ Atomic is a simple small dynamic programming lang made for fun! built-on c#
 - enviroments and vars! declared with ```set varname >> value``` and to change values use ```varname >> value```😁
 atomic also support immutable variables with ```set locked varname >> value``` ✅✅
 - objects! Declared and assign the same way as vars but they contains properties ```set locked user >> {num: 1,pass: 2235}```;
-- (latest addition) i have given myself the power to easily add built-in functions the first one is ```write(thing, another_one)```
+- (latest addition) i have given myself the power to easily add built-in functions the first one is ```write("Hello, World!")```
 
 # Features(i want):
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
 # TODO(next update):
 - add the ability to create functions
-- add strings
+- add strings (done ✅)
 - functions return values!
 - better errors? (skip errors until finished running, repl mode = no errors, better error locationing?)
 # trying atomic:
