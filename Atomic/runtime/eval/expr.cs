@@ -4,23 +4,11 @@ using System.Collections.Generic;
 using ValueTypes;
 using Atomic_AST;
 using System.Threading;
-using static Atomic.statement;
-using static Atomic.interpreter;
+
 namespace Atomic;
 
-public class expr
+public partial class interpreter
 {
-	private static void error(string message)
-	{
-		Console.BackgroundColor = ConsoleColor.Red;
-		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine(message);
-		Console.BackgroundColor = ConsoleColor.Black;
-		Console.ForegroundColor = ConsoleColor.White;
-		Console.WriteLine("press anything to exit");
-		Console.ReadKey();
-		Thread.CurrentThread.Interrupt();
-	}
 	public static VT.RuntimeVal eval_id(AST.Identifier id, Enviroment env)
 	{
 		var value = env.findVar(id.symbol);
@@ -65,6 +53,7 @@ public class expr
 			if (Obj.type != "obj")
 			{
 				error($"excepted 'obj'\ngot => {expr.Object.type}");
+				return new VT.NullVal();
 			}
 			 
 
@@ -78,6 +67,7 @@ public class expr
 				if (!obj.properties.ContainsKey(property.symbol))
 				{
 					error($"{(expr.Object as AST.Identifier).symbol} doesnt contain property {property.symbol}");
+					return new VT.NullVal();
 				}
 
                  
@@ -91,6 +81,7 @@ public class expr
 				if (!isNum)
 				{
 					error($"excepeted index of property in object {(expr.Object as AST.Identifier).symbol}");
+					return new VT.NullVal();
 				}
 
 				int Index = (expr.property as AST.NumericLiteral).value;
@@ -99,6 +90,7 @@ public class expr
 				if (!IsVaildIndex)
 				{
 					error($"{(expr.Object as AST.Identifier).symbol} doesnt contains an index of {Index}");
+					return new VT.NullVal();
 				}
 				var name = obj.properties.ElementAt(Index).Key;
 				obj.properties[name] = evaluate(node.value,env);
@@ -122,13 +114,13 @@ public class expr
 		if (fn.type != "native-fn")
 		{
 			error("Cannot call a value that is not a Function \ngot => " + fn.type);
+			return new VT.NullVal();
 		}
 
 
-		VT.functionCall results = (fn as VT.NativeFnVal).call;
+		var results = (fn as VT.NativeFnVal).call(args, env);
 
-		results.Args = args;
-		results.env = env;
+		
 
 		return results;
 	}
@@ -162,6 +154,7 @@ public class expr
 		if (Obj.type != "obj")
 		{
 			error($"excepted 'obj'\ngot => {expr.Object.type}");
+			return new VT.NullVal();
 		}
 
 		VT.ObjectVal obj = Obj as VT.ObjectVal;
@@ -173,6 +166,7 @@ public class expr
 			if (!obj.properties.ContainsKey(property.symbol))
 			{
 				error($"{(expr.Object as AST.Identifier).symbol} doesnt contain property {property.symbol}");
+				return new VT.NullVal();
 			}
 
 
@@ -184,6 +178,7 @@ public class expr
 			if (!isNum)
 			{
 				error($"excepeted index of property in object {(expr.Object as AST.Identifier).symbol}");
+				return new VT.NullVal();
 			}
 
 			int Index = (expr.property as AST.NumericLiteral).value;
@@ -192,6 +187,7 @@ public class expr
 			if (!IsVaildIndex)
 			{
 				error($"{(expr.Object as AST.Identifier).symbol} doesnt contains an index of {Index}");
+				return new VT.NullVal();
 			}
 			return obj.properties.ElementAt(Index).Value;
 		}
@@ -227,7 +223,7 @@ public class expr
 		return Results;
 	}
 	
-	public static VT.StringVal eval_string_binary_expr(VT.StringVal lhs,VT.StringVal rhs, string ooperator) {
+	public static VT.RuntimeVal eval_string_binary_expr(VT.StringVal lhs,VT.StringVal rhs, string ooperator) {
 		string results;
 		
 		switch(ooperator)
@@ -237,8 +233,7 @@ public class expr
 				break;
 			default:
 				error($"cannot peform operation {ooperator} on string\ngot => {lhs.value} {ooperator} {rhs.value}");
-				results = "null";
-			    break;
+				return new VT.NullVal();
 		}
 		
 		VT.StringVal Results = new VT.StringVal();

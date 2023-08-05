@@ -3,14 +3,12 @@ using Atomic_AST;
 using System;
 using System.Threading;
 using Atomic_debugger;
-using static Atomic.expr;
-using static Atomic.statement;
 using static Atomic_AST.AST;
 
 
 namespace Atomic;
 
-public class interpreter
+public partial class interpreter
 {
 	//for now interpreter cant detect where is errors i need this fixed asap
 	private static int column = 1;
@@ -19,11 +17,13 @@ public class interpreter
 	{
 		Console.BackgroundColor = ConsoleColor.Red;
 		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine(message + "\nat => line:{0}, column:{1}", line, column);
+		Console.WriteLine("runtime error: "+ message + "\nat => line:{0}, column:{1}", line, column);
 		Console.BackgroundColor = ConsoleColor.Black;
 		Console.ForegroundColor = ConsoleColor.White;
+		
 		Console.WriteLine("press anything to exit");
 		Console.ReadKey();
+		
 		Thread.CurrentThread.Interrupt();
 	}
 

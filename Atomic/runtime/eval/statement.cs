@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using ValueTypes;
 using Atomic_debugger;
 using Atomic_AST;
-using static Atomic.expr;
-using static Atomic.interpreter;
+
 namespace Atomic;
 
-public class statement
+public partial class interpreter
 {
 	public static VT.RuntimeVal eval_program(AST.Program program, Enviroment env)
 	{

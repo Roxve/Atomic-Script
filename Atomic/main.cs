@@ -65,11 +65,12 @@ public static class Run
 		AST.Program Program = parse.productAST();
 		if (Global.Var.error)
 		{
-			Console.WriteLine("duo to the parser errors, press anything to exit");
+			Console.WriteLine("duo to errors, press anything to exit");
 			Console.ReadKey();
 			Thread.CurrentThread.Interrupt();
 		}
 		var result = interpreter.evaluate(Program, env);
+		
 	}
 	public static void TestRun(string code)
 	{

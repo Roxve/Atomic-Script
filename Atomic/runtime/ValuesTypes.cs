@@ -80,7 +80,6 @@ public class VT
 			get {return this.args;}
 			set {
 				this.args = value;
-				execute(this.args,env);
 			}
 		}
 		public Enviroment? env { get; set; }
@@ -95,7 +94,15 @@ public class VT
 			type = "native-fn";
 		}
 
-		public functionCall call { get; set; }
+		public functionCall callVal {get; set;}
+		
+		public VT.RuntimeVal call(RuntimeVal[] args,Enviroment env) {
+			callVal.Args = args;
+			callVal.env = env;
+			var results = callVal.execute(args,env);
+		
+			return results;
+		}
 	}
 
 
@@ -103,7 +110,7 @@ public class VT
 	{
 		NativeFnVal func = new NativeFnVal();
 
-		func.call = call;
+		func.callVal = call;
 
 		return func;
 	}

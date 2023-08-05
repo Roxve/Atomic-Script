@@ -6,4 +6,4 @@
 user.pass >> 777
 
 
-write("user num ",user.num, ",","name:" + user.name,",","pass:",user.pass)
+write("user num ",user.num, " ," ,"name:" + user.name, " ," ,"pass:",user.pass)

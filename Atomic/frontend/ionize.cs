@@ -17,9 +17,8 @@ public class Ionizing
 		Console.BackgroundColor = ConsoleColor.Black;
 		Console.ForegroundColor = ConsoleColor.White;
 
-		Console.WriteLine("press anything to exit");
-		Console.ReadKey();
-		Environment.Exit(1);
+		Global.Var.error = true;
+		move();
 
 	}
 	public Ionizing(string code)
@@ -69,19 +68,19 @@ public class Ionizing
 		string x = n.ToString();
 		return x == " " || x == "\t" || x == "\r" || x == ";";
 	}
-	
+
 	public bool IsLine(string x)
 	{
 		return x == "\n";
 	}
-	
+
 	public bool isNum(char n)
 	{
 		string x = n.ToString();
 		//getting int by checking if the char code of the string is begger or smaller or equal to (0-9) charcode
 		return "0123456789".Contains(x);
 	}
-	
+
 	public bool isKeyword(string x)
 	{
 
@@ -108,7 +107,14 @@ public class Ionizing
 	{
 		while (by != 0)
 		{
-			atoms = atoms.Substring(1);
+			try
+			{
+				atoms = atoms.Substring(1);
+			}
+			catch
+			{
+
+			}
 			column++;
 			by--;
 		}
@@ -203,7 +209,8 @@ public class Ionizing
 			}
 
 
-			else if (current_atom() == '.') {
+			else if (current_atom() == '.')
+			{
 				ions.Add((".", TokenType.Dot));
 				move();
 			}
