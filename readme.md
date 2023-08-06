@@ -22,10 +22,10 @@ write("8 + 8 is equal to",add(8,8))
 - user defined functions return the value after return keyword not the last line
 - better errors? (skip errors until finished running, repl mode = no errors, better error locationing?)
 # trying atomic:
-simply use the command in your terminal ```dotnet run``` to enter repl mode (repl mode is buggy for mow i recommed reading from a file)
+simply use the command in your terminal ```dotnet run``` to enter repl mode
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
 or if you to read a file use ```dotnet run run {file}``` or pass this args using your debugger
-and if you want to test it for dev reasons ```dotnet run run? {file}``` 
+and if you want to test it for dev reasons ```dotnet run run? {file}``` (test run is buggy right now)
 ### if you are using a debugger and getting an error give invalid args (in vscode you can go to .vscode/launch.json and change ```args=[]``` to args=["random"]) (this is a bug i am too lazy to fix)
 
 # license:
