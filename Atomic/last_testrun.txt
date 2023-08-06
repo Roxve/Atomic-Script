@@ -1,38 +1,127 @@
 {Atomic_AST.AST+Program}
   body: ...
-    {Atomic_AST.AST+VarDeclaration}
-      Id: "user"
-      value: { }
-        {Atomic_AST.AST+ObjectLiteral}
-          properties: ...
-            {Atomic_AST.AST+Property}
-              key: "pass"
-              value: { }
+    {Atomic_AST.AST+FuncDeclarartion}
+      name: "add"
+      parameters: ...
+        "a"
+        "b"
+      body: ...
+        {Atomic_AST.AST+ReturnStmt}
+          value: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "a"
+                  locked: False
+                  type: "Identifier"
+              right: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "b"
+                  locked: False
+                  type: "Identifier"
+              Operator: "+"
+              type: "BinaryExpr"
+          type: "ReturnStmt"
+      type: "FuncDeclarartion"
+    {Atomic_AST.AST+FuncDeclarartion}
+      name: "multiply"
+      parameters: ...
+        "a"
+        "b"
+      body: ...
+        {Atomic_AST.AST+ReturnStmt}
+          value: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "a"
+                  locked: False
+                  type: "Identifier"
+              right: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "b"
+                  locked: False
+                  type: "Identifier"
+              Operator: "*"
+              type: "BinaryExpr"
+          type: "ReturnStmt"
+      type: "FuncDeclarartion"
+    {Atomic_AST.AST+FuncDeclarartion}
+      name: "main"
+      parameters: ...
+      body: ...
+        {Atomic_AST.AST+VarDeclaration}
+          Id: "thing"
+          value: { }
+            {Atomic_AST.AST+Identifier}
+              symbol: "add"
+              locked: False
+              type: "Identifier"
+          locked: False
+          type: "VarDeclaration"
+        {Atomic_AST.AST+CallExpr}
+          args: ...
+            {Atomic_AST.AST+CallExpr}
+              args: ...
                 {Atomic_AST.AST+NumericLiteral}
-                  value: 666
+                  value: 5
                   type: "NumericLiteral"
-              type: "Property"
-          type: "ObjectLiteral"
-      locked: False
-      type: "VarDeclaration"
-    {Atomic_AST.AST+AssignmentExpr}
-      assigne: { }
-        {Atomic_AST.AST+MemberExpr}
-          Object: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 5
+                  type: "NumericLiteral"
+              caller: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "thing"
+                  locked: False
+                  type: "Identifier"
+              type: "CallExpr"
+          caller: { }
             {Atomic_AST.AST+Identifier}
-              symbol: "user"
+              symbol: "write"
               locked: False
               type: "Identifier"
-          property: { }
+          type: "CallExpr"
+        {Atomic_AST.AST+AssignmentExpr}
+          assigne: { }
             {Atomic_AST.AST+Identifier}
-              symbol: "pass"
+              symbol: "thing"
               locked: False
               type: "Identifier"
-          computed: False
-          type: "MemberExpr"
-      value: { }
-        {Atomic_AST.AST+NumericLiteral}
-          value: 777
-          type: "NumericLiteral"
-      type: "AssignmentExpr"
+          value: { }
+            {Atomic_AST.AST+Identifier}
+              symbol: "multiply"
+              locked: False
+              type: "Identifier"
+          type: "AssignmentExpr"
+        {Atomic_AST.AST+CallExpr}
+          args: ...
+            {Atomic_AST.AST+CallExpr}
+              args: ...
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 5
+                  type: "NumericLiteral"
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 5
+                  type: "NumericLiteral"
+              caller: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "thing"
+                  locked: False
+                  type: "Identifier"
+              type: "CallExpr"
+          caller: { }
+            {Atomic_AST.AST+Identifier}
+              symbol: "write"
+              locked: False
+              type: "Identifier"
+          type: "CallExpr"
+      type: "FuncDeclarartion"
+    {Atomic_AST.AST+CallExpr}
+      args: ...
+      caller: { }
+        {Atomic_AST.AST+Identifier}
+          symbol: "main"
+          locked: False
+          type: "Identifier"
+      type: "CallExpr"
   type: "Program"

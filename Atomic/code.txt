@@ -1,18 +1,21 @@
 ﻿func add(a,b) {
-	a + b;
+	return a + b;
 }
 func multiply(a,b) {
-	a * b;
+	return a * b;
 }
 
 func main() {
 	set thing >> add
 
-    write(thing(5,5))
+	set a >> prompt("enter first num: ")
+	set b >> prompt("enter second num: ")
+	
+    write("a + b: ",thing(a,b))
 
     thing >> multiply
 
-    write(thing(5,5))
+    write("a * b: ",thing(a,b))
 }
 
 main()

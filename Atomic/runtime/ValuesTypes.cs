@@ -155,6 +155,20 @@ public class VT
 
 		return Inew;
 	}
+	public static RuntimeVal MK_TYPE(string? obj) {
+		int num;
+		
+		if(obj is null) {
+			return MK_NULL();
+		}
+		else if(int.TryParse(obj,out num)) {
+			return MK_NUM(num);
+		}
+		
+		else {
+			return MK_STR(obj);
+		}
+	}
 
 	public static NullVal MK_NULL()
 	{

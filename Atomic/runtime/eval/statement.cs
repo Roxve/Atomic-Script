@@ -45,4 +45,8 @@ public partial class interpreter
 		
 		return env.declareVar(declaration.name, fn ,true);
 	}
+	
+	public static VT.RuntimeVal eval_return_stmt(AST.ReturnStmt stmt, Enviroment env) {
+		return evaluate(stmt.value, env);
+	}
 }

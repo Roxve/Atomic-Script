@@ -21,13 +21,20 @@ public partial class Global
 
 
 		//functions
+		
+		//write
 
 		var writeCall = new functionCall();
-
-		writeCall.execute = NativeFunc.write;
-
-
-		env.declareVar("write", MK_NATIVE_FN(writeCall), true);
+		writeCall.execute = NativeFunc.write; env.declareVar("write", MK_NATIVE_FN(writeCall), true);
+		
+		//prompt
+		var promptCall = new functionCall();
+		promptCall.execute = NativeFunc.prompt; env.declareVar("prompt", MK_NATIVE_FN(promptCall), true);
+		
+		
+		//read
+		var readCall = new functionCall();
+		readCall.execute = NativeFunc.read; env.declareVar("read", MK_NATIVE_FN(readCall), true);
 		return env;
 	}
 }

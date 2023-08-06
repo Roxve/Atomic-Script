@@ -69,7 +69,7 @@ namespace Atomic_AST
 			public ReturnStmt() {
 				type = "ReturnStmt";
 			}
-			public Expression expr {get; set;}
+			public Expression value {get; set;}
 		}
 	}
 }

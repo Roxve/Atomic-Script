@@ -111,6 +111,8 @@ public class Parser
 				return this.parse_var_declaration();
 			case TokenType.func:
 				return this.parse_func_declaration();
+			case TokenType.return_kw:
+				return this.parse_return_stmt();
 			default:
 				return this.parse_expr();
 		}
@@ -144,6 +146,7 @@ public class Parser
 		
 		return func;
 	}
+	
 	private AST.Statement parse_var_declaration()
 	{
 		move();
@@ -188,6 +191,16 @@ public class Parser
 			return declare;
 		}
 
+	}
+	
+	private AST.Statement parse_return_stmt() {
+		move();
+		
+		AST.ReturnStmt stmt = new AST.ReturnStmt();
+		
+		stmt.value = this.parse_expr();
+		
+		return stmt;
 	}
 
 

@@ -1,0 +1,5 @@
+﻿set name >> prompt("enter your name:")
+
+set age >> prompt("enter your age:")
+
+write("Your age is ", age, ", your name is ", name)

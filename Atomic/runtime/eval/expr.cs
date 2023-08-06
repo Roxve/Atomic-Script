@@ -127,7 +127,12 @@ public partial class interpreter
 				VT.RuntimeVal result = VT.MK_NULL();
 				
 				foreach(AST.Statement stmt in func.body) {
-					result = evaluate(stmt, funcEnv);
+					//TODO add unreachable code warning
+					if(stmt.type == "ReturnStmt") {
+						result = evaluate(stmt,funcEnv);
+						break;
+					}
+					evaluate(stmt, funcEnv);
 				}
 				return result;
 			default:
