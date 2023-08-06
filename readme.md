@@ -14,7 +14,8 @@ func add(a,b) {
   a + b
 }
 write("8 + 8 is equal to",add(8,8))
-``` for now functions returns the last line value (16) i am working on return keyword ✅
+```
+ for now functions returns the last line value (16) i am working on return keyword ✅
 # Features(i want):
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
 # TODO(next update):
