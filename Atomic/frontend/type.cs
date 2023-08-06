@@ -12,20 +12,19 @@ namespace Ttype {
 		func,
 		return_kw,
 		
-		
 		locked, //makes stuff not modifable
 		static_kw,
+		
 		
 		//types
 		Null,
 		line,
 		num,
 		str,
+		Bool,
 
-		boolean,
 
-
-		//
+		//symbols
 
 		Comma,
   	  Colon,

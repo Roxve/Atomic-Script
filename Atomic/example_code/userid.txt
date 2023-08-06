@@ -1,5 +1,20 @@
-﻿set name >> prompt("enter your name:")
+﻿set user >> {
+	name: "default",
+	age: 0,
+	pass: 000,
+	isHuman: false
+}
 
-set age >> prompt("enter your age:")
 
-write("Your age is ", age, ", your name is ", name)
+user.name >> prompt("enter your name: ")
+
+user.age >> prompt("enter your age: ")
+
+user.pass >> prompt("enter your password: ")
+
+user.isHuman >> prompt("are you a human? ")
+
+
+set printCuzWriteIsBad >> write
+
+printCuzWriteIsBad("Your age is ", user.age, ", your name is ", user.name," , your new pass is ", user.pass)

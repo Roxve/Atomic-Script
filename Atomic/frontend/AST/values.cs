@@ -44,6 +44,14 @@ public partial class AST
 		}
 		public int value { get; set; }
 	}
+	
+	public class Bool : Expression {
+		public Bool() {
+			type = "Bool";
+		}
+		
+		public bool value {get; set;}
+	}
 	public class StringLiteral : Expression
 	{
 		public StringLiteral()
@@ -59,5 +67,13 @@ public partial class AST
 			type = "NullLiteral";
 		}
 		public string value = "null";
+	}
+	
+	public class Line : Expression {
+		public Line()
+		{
+			type = "line";
+		}
+		public int line {get; set;}
 	}
 }

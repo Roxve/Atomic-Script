@@ -43,6 +43,15 @@ public partial class interpreter
 				return str;
 			case "NullLiteral":
 				return new VT.NullVal();
+			case "Bool":
+				VT.BooleanVal Bool = new VT.BooleanVal();
+				Bool.value = (Statement as AST.Bool).value;
+				return Bool;
+			case "line":
+				VT.LineNum Line = new VT.LineNum();
+				line++;
+				Line.num = (Statement as AST.Line).line;
+				return Line;
 			case "Identifier":
 				return eval_id(Statement as Identifier, env);
 			case "VarDeclaration":

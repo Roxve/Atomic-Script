@@ -81,6 +81,7 @@ public static class Run
 		var ionize = new Ionizing(code);
 		var ionized_code = ionize.ionize();
 		Console.WriteLine("ionized?: {0}", true);
+		Console.WriteLine(string.Join(',', ionized_code));
 		var parse = new Parser(ionized_code);
 		AST.Program Program = parse.productAST();
 		Console.WriteLine("parsed?: {0}", true);

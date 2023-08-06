@@ -5,6 +5,8 @@ func multiply(a,b) {
 	return a * b;
 }
 
+# this is a comment
+
 func main() {
 	set thing >> add
 

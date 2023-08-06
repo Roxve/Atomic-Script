@@ -27,7 +27,7 @@ public class Ionizing
 		ions.Clear();
 	}
 	public static string atoms { get; set; }
-	public string[] keywords = { "set", "locked", "Null", "func","return","null" };
+	public string[] keywords = { "set", "locked", "Null", "func", "return", "null" };
 	public static List<(string value, TokenType type)> ions = new List<(string value, TokenType type)>();
 	public static int column = 1;
 	public static int line = 1;
@@ -51,6 +51,15 @@ public class Ionizing
 		return ';';
 	}
 
+
+	public bool isBool(string x)
+	{
+		if (x == "true" || x == "false")
+		{
+			return true;
+		}
+		return false;
+	}
 
 
 	public char after_current_atom()
@@ -132,9 +141,9 @@ public class Ionizing
 			if (IsLine(current_atom().ToString()))
 			{
 				line++;
-
-
 				column = 1;
+				
+				ions.Add((line.ToString(), TokenType.line));
 				move();
 			}
 
@@ -169,6 +178,17 @@ public class Ionizing
 
 				ions.Add((res, TokenType.str));
 				move();
+			}
+
+			//detecting comments
+			else if (current_atom() == '#')
+			{
+				move();
+
+				while (atoms.Length > 0 && current_atom().ToString() != "\n")
+				{
+					move();
+				}
 			}
 
 
@@ -232,16 +252,6 @@ public class Ionizing
 			}
 
 
-
-
-			else if (current_atom() == ';')
-			{
-				ions.Add((";", TokenType.Semicolon));
-				move();
-			}
-
-
-
 			else if (isNum(current_atom()))
 			{
 				string res = "";
@@ -270,6 +280,10 @@ public class Ionizing
 				{
 					ions.Add((res, KeywordType(res)));
 
+				}
+				else if (isBool(res))
+				{
+					ions.Add((res, TokenType.Bool));
 				}
 				else
 				{

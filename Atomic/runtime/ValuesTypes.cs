@@ -103,7 +103,12 @@ public class VT
 			return results;
 		}
 	}
-    
+    public class LineNum : RuntimeVal {
+		public LineNum() {
+			type = "line";
+		}
+		public int num {get; set;}
+	}
 	public class FuncVal : RuntimeVal {
 		public FuncVal() {
 			type = "func";

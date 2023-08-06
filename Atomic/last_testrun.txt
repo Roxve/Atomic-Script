@@ -59,16 +59,53 @@
               type: "Identifier"
           locked: False
           type: "VarDeclaration"
-        {Atomic_AST.AST+CallExpr}
-          args: ...
+        {Atomic_AST.AST+VarDeclaration}
+          Id: "a"
+          value: { }
             {Atomic_AST.AST+CallExpr}
               args: ...
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 5
-                  type: "NumericLiteral"
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 5
-                  type: "NumericLiteral"
+                {Atomic_AST.AST+StringLiteral}
+                  value: "enter first num: "
+                  type: "StringLiteral"
+              caller: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "prompt"
+                  locked: False
+                  type: "Identifier"
+              type: "CallExpr"
+          locked: False
+          type: "VarDeclaration"
+        {Atomic_AST.AST+VarDeclaration}
+          Id: "b"
+          value: { }
+            {Atomic_AST.AST+CallExpr}
+              args: ...
+                {Atomic_AST.AST+StringLiteral}
+                  value: "enter second num: "
+                  type: "StringLiteral"
+              caller: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "prompt"
+                  locked: False
+                  type: "Identifier"
+              type: "CallExpr"
+          locked: False
+          type: "VarDeclaration"
+        {Atomic_AST.AST+CallExpr}
+          args: ...
+            {Atomic_AST.AST+StringLiteral}
+              value: "a + b: "
+              type: "StringLiteral"
+            {Atomic_AST.AST+CallExpr}
+              args: ...
+                {Atomic_AST.AST+Identifier}
+                  symbol: "a"
+                  locked: False
+                  type: "Identifier"
+                {Atomic_AST.AST+Identifier}
+                  symbol: "b"
+                  locked: False
+                  type: "Identifier"
               caller: { }
                 {Atomic_AST.AST+Identifier}
                   symbol: "thing"
@@ -95,14 +132,19 @@
           type: "AssignmentExpr"
         {Atomic_AST.AST+CallExpr}
           args: ...
+            {Atomic_AST.AST+StringLiteral}
+              value: "a * b: "
+              type: "StringLiteral"
             {Atomic_AST.AST+CallExpr}
               args: ...
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 5
-                  type: "NumericLiteral"
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 5
-                  type: "NumericLiteral"
+                {Atomic_AST.AST+Identifier}
+                  symbol: "a"
+                  locked: False
+                  type: "Identifier"
+                {Atomic_AST.AST+Identifier}
+                  symbol: "b"
+                  locked: False
+                  type: "Identifier"
               caller: { }
                 {Atomic_AST.AST+Identifier}
                   symbol: "thing"

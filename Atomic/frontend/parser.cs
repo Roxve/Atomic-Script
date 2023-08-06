@@ -425,11 +425,22 @@ public class Parser
 				str.value = move().value;
 				
 				return str;
+			case TokenType.Bool:
+				AST.Bool Bool = new AST.Bool();
+				Bool.value = Convert.ToBoolean(this.move().value);
+				return Bool;
 			case TokenType.OpenParen:
 				move();
 				var value = parse_expr();
 				except(TokenType.CloseParen);
 				return value;
+			case TokenType.line:
+				line++;
+				column = 1;
+				move();
+				AST.Line Line = new AST.Line();
+			    Line.line = line;
+				return Line;
 			default:
 				error("Unexpected token found during parsing! " + current_token_value() + " " + current_token_type());
 				move();
