@@ -86,11 +86,12 @@ public class AST {
 	public class FuncDeclarartion : Statement {
 		public FuncDeclarartion() {
 			type = "FuncDeclarartion";
+			this.Body = new List<Statement>();
 		}
 		public string name {get; set;}
-		public string[] parameters {get; set;}
+		public List<string> parameters {get; set;}
 		
-		private List<Statement> Body = new List<Statement>();
+		private List<Statement> Body;
 		
 		public List<Statement> body {
 			get {

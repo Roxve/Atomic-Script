@@ -111,18 +111,29 @@ public partial class interpreter
 
 		var fn = evaluate(expr.caller, env);
 
-		if (fn.type != "native-fn")
-		{
-			error("Cannot call a value that is not a Function \ngot => " + fn.type);
-			return new VT.NullVal();
+		switch(fn.type) {
+			case "native-fn":
+				var results = (fn as VT.NativeFnVal).call(args, env);
+				return results;
+			case "func":
+				var func = (fn as VT.FuncVal);
+				var funcEnv = new Enviroment(func.env);
+				
+				for(int x = 0; x < func.parameters.Count; x++) {
+					var name = func.parameters[x];
+					
+					funcEnv.declareVar(name, args[x], false);
+				}
+				VT.RuntimeVal result = VT.MK_NULL();
+				
+				foreach(AST.Statement stmt in func.body) {
+					result = evaluate(stmt, funcEnv);
+				}
+				return result;
+			default:
+				error("Cannot call a value that is not a Function \ngot => " + fn.type);
+				return new VT.NullVal();
 		}
-
-
-		var results = (fn as VT.NativeFnVal).call(args, env);
-
-		
-
-		return results;
 	}
 
 	public static VT.RuntimeVal eval_object_expr(AST.ObjectLiteral obj, Enviroment env)

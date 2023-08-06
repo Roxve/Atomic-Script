@@ -47,6 +47,8 @@ public partial class interpreter
 				return eval_id(Statement as Identifier, env);
 			case "VarDeclaration":
 				return eval_var_declaration(Statement as AST.VarDeclaration, env);
+			case "FuncDeclarartion":
+				return eval_func_declaration(Statement as AST.FuncDeclarartion, env);
 			case "CallExpr":
 				return eval_call_expr(Statement as AST.CallExpr, env);
 			case "MemberExpr":

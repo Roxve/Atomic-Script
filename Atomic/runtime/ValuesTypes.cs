@@ -107,13 +107,15 @@ public class VT
 	public class FuncVal : RuntimeVal {
 		public FuncVal() {
 			type = "func";
+			this.Body = new List<AST.Statement>();
+			this.parameters = new List<string>();
 		}
 		public string name {get; set;}
-		public string[] parameters {get; set;}
+		public List<string> parameters {get; set;}
 		
 		public Enviroment env {get; set;}
 		
-		private List<AST.Statement> Body = new List<AST.Statement>();
+		private List<AST.Statement> Body;
 		
 		public List<AST.Statement> body {
 			get {

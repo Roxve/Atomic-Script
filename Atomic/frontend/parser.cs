@@ -14,7 +14,7 @@ public class Parser
 {
 	private static int column = 1;
 	private static int line = 1;
-	public void error(string message)
+	private void error(string message)
 	{
 		Global.Var.error = true;
 		Console.BackgroundColor = ConsoleColor.Red;
@@ -83,7 +83,7 @@ public class Parser
 		ions.RemoveAt(0);
 		if (prev.type != correct_type)
 		{
-			error("Parser error, excepting " + correct_type + " " + "got => " + prev.type);
+			this.error("Parser error, excepting " + correct_type + " " + "got => " + prev.type);
 		}
 		column++;
 		this.prev = prev;
@@ -109,12 +109,41 @@ public class Parser
 		{
 			case TokenType.set:
 				return this.parse_var_declaration();
+			case TokenType.func:
+				return this.parse_func_declaration();
 			default:
 				return this.parse_expr();
 		}
 	}
 
-
+	private AST.Statement parse_func_declaration() {
+		this.move();
+		
+		var name = this.except(TokenType.id).value;
+		var args = this.parse_args();
+		
+		List<string> parameters = new List<string>();
+		foreach(AST.Expression arg in args) {
+			if(arg.type != "Identifier") {
+				this.error("inside func declaration parameters has to be identifiers\ngot => " + arg.type);
+			}
+			parameters.Add((arg as AST.Identifier).symbol);
+		}
+		
+		this.except(TokenType.OpenBrace);
+		List<AST.Statement> body = new List<AST.Statement>();
+		
+		while(current_token_type() != TokenType.EOF && current_token_type() != TokenType.CloseBrace) {
+			body.Add(this.parse_statement());
+		}
+		
+		this.except(TokenType.CloseBrace);
+		
+		AST.FuncDeclarartion func = new AST.FuncDeclarartion();
+		func.name = name; func.parameters = parameters; func.body = body;
+		
+		return func;
+	}
 	private AST.Statement parse_var_declaration()
 	{
 		move();

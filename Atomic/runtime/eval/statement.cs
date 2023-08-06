@@ -39,4 +39,10 @@ public partial class interpreter
 
 		return env.declareVar(declaration.Id, value, declaration.locked);
 	}
+	public static VT.RuntimeVal eval_func_declaration(AST.FuncDeclarartion declaration, Enviroment env) {
+		VT.FuncVal fn = new VT.FuncVal();
+		fn.name = declaration.name;fn.parameters = declaration.parameters; fn.body = declaration.body; fn.env = env;
+		
+		return env.declareVar(declaration.name, fn ,true);
+	}
 }
