@@ -1,9 +1,18 @@
-﻿set user >> {
-	name: "Thomas",
-	pass: 666,
-	num: 0
+﻿func add(a,b) {
+	a + b;
 }
-user.pass >> 777
+func multiply(a,b) {
+	a * b;
+}
 
+func main() {
+	set thing >> add
 
-write("user num ",user.num, " ," ,"name:" + user.name, " ," ,"pass:",user.pass)
+    write(thing(5,5))
+
+    thing >> multiply
+
+    write(thing(5,5))
+}
+
+main()

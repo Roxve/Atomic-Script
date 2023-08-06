@@ -3,19 +3,22 @@ Atomic is a simple small dynamic programming lang made for fun! built-on c#
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
 # Features(right now):
-- working ionizer (tokenizer) and a parser that can detect ions(tokens) and be able to know what is a statement what is an expression etc ☑️
-- ability to do math 💯
 - enviroments and vars! declared with ```set varname >> value``` and to change values use ```varname >> value```😁
 atomic also support immutable variables with ```set locked varname >> value``` ✅✅
 - objects! Declared and assign the same way as vars but they contains properties ```set locked user >> {num: 1,pass: 2235}```;
-- (latest addition) i have given myself the power to easily add built-in functions the first one is ```write("Hello, World!")```
-
+- built-in functions
+- user defined functions, example
+```atom
+write("Hello, world!")
+func add(a,b) {
+  a + b
+}
+write("8 + 8 is equal to",add(8,8))
+``` for now functions returns the last line value (16) i am working on return keyword ✅
 # Features(i want):
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
 # TODO(next update):
-- add the ability to create functions
-- add strings (done ✅)
-- functions return values!
+- user defined functions return the value after return keyword not the last line
 - better errors? (skip errors until finished running, repl mode = no errors, better error locationing?)
 # trying atomic:
 simply use the command in your terminal ```dotnet run``` to enter repl mode (repl mode is buggy for mow i recommed reading from a file)
