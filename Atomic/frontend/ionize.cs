@@ -331,7 +331,7 @@ public class Ionizing
 					ions.Add(("||", TokenType.op));
 				}
 				else {
-					ions.Add("|", TokenType.op);
+					ions.Add(("|", TokenType.op));
 				}
 			}
 			else
