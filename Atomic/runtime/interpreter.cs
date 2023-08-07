@@ -70,6 +70,8 @@ public partial class interpreter
 				return eval_assignment(Statement as AssignmentExpr, env);
 			case "BinaryExpr":
 				return eval_binary_expr(Statement as AST.BinaryExpression, env);
+			case "CompareExpr":
+				return eval_compare_expr(Statement as AST.CompareExpr, env);
 			case "Program":
 				return eval_program(Statement as AST.Program, env);
 			default:

@@ -232,7 +232,7 @@ public class Parser
 	{
 		if (this.current_token_type() != TokenType.OpenBrace)
 		{
-			return this.parse_additive_expr();
+			return this.parse_compare_expr();
 		}
 
 		this.move();
@@ -280,7 +280,21 @@ public class Parser
 	}
 
 
-
+		
+	//handles =/</>
+	private AST.Expression parse_compare_expr() {
+		var left = this.parse_additive_expr();
+		while (current_token_value() == "=" || current_token_value() == "<" || current_token_value() == ">") {
+			var ooperator = move().value;
+			var right = this.parse_additive_expr();
+			AST.CompareExpr BE = new AST.CompareExpr();
+			BE.left = left;
+			BE.right = right;
+			BE.Operator = ooperator;
+			left = BE;
+		}
+		return left;
+	}
 	// handels additive ane subtraction operations
 	private AST.Expression parse_additive_expr()
 	{
@@ -316,7 +330,7 @@ public class Parser
 		}
 		return left;
 	}
-	
+
 	
 	private AST.Expression parse_call_member_expr() {
 		var member = this.parse_member_expr();
@@ -395,6 +409,7 @@ public class Parser
 	}
 	// Assignment
 	// Object
+	// compare
 	// AdditiveExpr
 	// MultiplicitaveExpr
 	// Call

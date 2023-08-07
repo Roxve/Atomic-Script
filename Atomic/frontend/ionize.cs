@@ -40,8 +40,9 @@ public class Ionizing
 	}
 	public bool isOp(char x)
 	{
-		return "+-/*".Contains(x);
+		return "+-/*%<=".Contains(x);
 	}
+	
 	public char current_atom()
 	{
 		if (atoms.Length > 0)
@@ -132,6 +133,7 @@ public class Ionizing
 			by--;
 		}
 	}
+	//todo rewritw the ionizer
 	public List<(string value, TokenType type)> ionize()
 	{
 
@@ -308,11 +310,33 @@ public class Ionizing
 					ions.Add((">>", TokenType.setter));
 					move();
 				}
+				else {
+					ions.Add((">", TokenType.op));
+				}
 
+			}
+			else if(current_atom() == '&') {
+				move();
+				if(current_atom() == '&') {
+					ions.Add(("&&", TokenType.op));
+					move();
+				}
+				else {
+					ions.Add(("&", TokenType.op));
+				}
+			}
+			else if(current_atom() == '|') {
+				move();
+				if(current_atom() == '|') {
+					ions.Add(("||", TokenType.op));
+				}
+				else {
+					ions.Add("|", TokenType.op);
+				}
 			}
 			else
 			{
-				error("unknown char");
+				error("unknown char " + current_atom());
 			}
 		}
 

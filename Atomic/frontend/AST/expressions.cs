@@ -32,9 +32,19 @@ namespace Atomic_AST
 			public Expression right { get; set; }
 			public string Operator { get; set; }
 		}
+		
+		public class CompareExpr : Expression
+		{
+			public CompareExpr()
+			{
+				type = "CompareExpr";
+			}
 
-
-
+			public Expression left { get; set; }
+			public Expression right { get; set; }
+			public string Operator { get; set; }
+		}
+		
 		public class CallExpr : Expression
 		{
 			public CallExpr()
@@ -59,5 +69,6 @@ namespace Atomic_AST
 
 			public bool computed { get; set; }
 		}
+		
 	}
 }

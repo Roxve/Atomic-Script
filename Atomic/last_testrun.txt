@@ -1,168 +1,151 @@
 {Atomic_AST.AST+Program}
   body: ...
-    {Atomic_AST.AST+FuncDeclarartion}
-      name: "add"
-      parameters: ...
-        "a"
-        "b"
-      body: ...
-        {Atomic_AST.AST+ReturnStmt}
-          value: { }
-            {Atomic_AST.AST+BinaryExpression}
-              left: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "a"
-                  locked: False
-                  type: "Identifier"
-              right: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "b"
-                  locked: False
-                  type: "Identifier"
-              Operator: "+"
-              type: "BinaryExpr"
-          type: "ReturnStmt"
-      type: "FuncDeclarartion"
-    {Atomic_AST.AST+FuncDeclarartion}
-      name: "multiply"
-      parameters: ...
-        "a"
-        "b"
-      body: ...
-        {Atomic_AST.AST+ReturnStmt}
-          value: { }
-            {Atomic_AST.AST+BinaryExpression}
-              left: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "a"
-                  locked: False
-                  type: "Identifier"
-              right: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "b"
-                  locked: False
-                  type: "Identifier"
-              Operator: "*"
-              type: "BinaryExpr"
-          type: "ReturnStmt"
-      type: "FuncDeclarartion"
-    {Atomic_AST.AST+FuncDeclarartion}
-      name: "main"
-      parameters: ...
-      body: ...
-        {Atomic_AST.AST+VarDeclaration}
-          Id: "thing"
-          value: { }
-            {Atomic_AST.AST+Identifier}
-              symbol: "add"
-              locked: False
-              type: "Identifier"
-          locked: False
-          type: "VarDeclaration"
-        {Atomic_AST.AST+VarDeclaration}
-          Id: "a"
-          value: { }
-            {Atomic_AST.AST+CallExpr}
-              args: ...
-                {Atomic_AST.AST+StringLiteral}
-                  value: "enter first num: "
-                  type: "StringLiteral"
-              caller: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "prompt"
-                  locked: False
-                  type: "Identifier"
-              type: "CallExpr"
-          locked: False
-          type: "VarDeclaration"
-        {Atomic_AST.AST+VarDeclaration}
-          Id: "b"
-          value: { }
-            {Atomic_AST.AST+CallExpr}
-              args: ...
-                {Atomic_AST.AST+StringLiteral}
-                  value: "enter second num: "
-                  type: "StringLiteral"
-              caller: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "prompt"
-                  locked: False
-                  type: "Identifier"
-              type: "CallExpr"
-          locked: False
-          type: "VarDeclaration"
-        {Atomic_AST.AST+CallExpr}
-          args: ...
-            {Atomic_AST.AST+StringLiteral}
-              value: "a + b: "
-              type: "StringLiteral"
-            {Atomic_AST.AST+CallExpr}
-              args: ...
-                {Atomic_AST.AST+Identifier}
-                  symbol: "a"
-                  locked: False
-                  type: "Identifier"
-                {Atomic_AST.AST+Identifier}
-                  symbol: "b"
-                  locked: False
-                  type: "Identifier"
-              caller: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "thing"
-                  locked: False
-                  type: "Identifier"
-              type: "CallExpr"
-          caller: { }
-            {Atomic_AST.AST+Identifier}
-              symbol: "write"
-              locked: False
-              type: "Identifier"
-          type: "CallExpr"
-        {Atomic_AST.AST+AssignmentExpr}
-          assigne: { }
-            {Atomic_AST.AST+Identifier}
-              symbol: "thing"
-              locked: False
-              type: "Identifier"
-          value: { }
-            {Atomic_AST.AST+Identifier}
-              symbol: "multiply"
-              locked: False
-              type: "Identifier"
-          type: "AssignmentExpr"
-        {Atomic_AST.AST+CallExpr}
-          args: ...
-            {Atomic_AST.AST+StringLiteral}
-              value: "a * b: "
-              type: "StringLiteral"
-            {Atomic_AST.AST+CallExpr}
-              args: ...
-                {Atomic_AST.AST+Identifier}
-                  symbol: "a"
-                  locked: False
-                  type: "Identifier"
-                {Atomic_AST.AST+Identifier}
-                  symbol: "b"
-                  locked: False
-                  type: "Identifier"
-              caller: { }
-                {Atomic_AST.AST+Identifier}
-                  symbol: "thing"
-                  locked: False
-                  type: "Identifier"
-              type: "CallExpr"
-          caller: { }
-            {Atomic_AST.AST+Identifier}
-              symbol: "write"
-              locked: False
-              type: "Identifier"
-          type: "CallExpr"
-      type: "FuncDeclarartion"
     {Atomic_AST.AST+CallExpr}
       args: ...
+        {Atomic_AST.AST+CompareExpr}
+          left: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+BinaryExpression}
+                  left: { }
+                    {Atomic_AST.AST+NumericLiteral}
+                      value: 1
+                      type: "NumericLiteral"
+                  right: { }
+                    {Atomic_AST.AST+NumericLiteral}
+                      value: 6
+                      type: "NumericLiteral"
+                  Operator: "+"
+                  type: "BinaryExpr"
+              right: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 6
+                  type: "NumericLiteral"
+              Operator: "*"
+              type: "BinaryExpr"
+          right: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 1
+                  type: "NumericLiteral"
+              right: { }
+                {Atomic_AST.AST+BinaryExpression}
+                  left: { }
+                    {Atomic_AST.AST+NumericLiteral}
+                      value: 6
+                      type: "NumericLiteral"
+                  right: { }
+                    {Atomic_AST.AST+NumericLiteral}
+                      value: 6
+                      type: "NumericLiteral"
+                  Operator: "*"
+                  type: "BinaryExpr"
+              Operator: "+"
+              type: "BinaryExpr"
+          Operator: "="
+          type: "CompareExpr"
       caller: { }
         {Atomic_AST.AST+Identifier}
-          symbol: "main"
+          symbol: "write"
+          locked: False
+          type: "Identifier"
+      type: "CallExpr"
+    {Atomic_AST.AST+Line}
+      line: 2
+      type: "line"
+    {Atomic_AST.AST+CallExpr}
+      args: ...
+        {Atomic_AST.AST+CompareExpr}
+          left: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 6
+                  type: "NumericLiteral"
+              right: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 6
+                  type: "NumericLiteral"
+              Operator: "*"
+              type: "BinaryExpr"
+          right: { }
+            {Atomic_AST.AST+NumericLiteral}
+              value: 36
+              type: "NumericLiteral"
+          Operator: "="
+          type: "CompareExpr"
+      caller: { }
+        {Atomic_AST.AST+Identifier}
+          symbol: "write"
+          locked: False
+          type: "Identifier"
+      type: "CallExpr"
+    {Atomic_AST.AST+Line}
+      line: 3
+      type: "line"
+    {Atomic_AST.AST+CallExpr}
+      args: ...
+        {Atomic_AST.AST+CompareExpr}
+          left: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 6
+                  type: "NumericLiteral"
+              right: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 7
+                  type: "NumericLiteral"
+              Operator: "*"
+              type: "BinaryExpr"
+          right: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 6
+                  type: "NumericLiteral"
+              right: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 8
+                  type: "NumericLiteral"
+              Operator: "*"
+              type: "BinaryExpr"
+          Operator: ">"
+          type: "CompareExpr"
+      caller: { }
+        {Atomic_AST.AST+Identifier}
+          symbol: "write"
+          locked: False
+          type: "Identifier"
+      type: "CallExpr"
+    {Atomic_AST.AST+Line}
+      line: 4
+      type: "line"
+    {Atomic_AST.AST+CallExpr}
+      args: ...
+        {Atomic_AST.AST+CompareExpr}
+          left: { }
+            {Atomic_AST.AST+NumericLiteral}
+              value: 81
+              type: "NumericLiteral"
+          right: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 9
+                  type: "NumericLiteral"
+              right: { }
+                {Atomic_AST.AST+NumericLiteral}
+                  value: 10
+                  type: "NumericLiteral"
+              Operator: "*"
+              type: "BinaryExpr"
+          Operator: "<"
+          type: "CompareExpr"
+      caller: { }
+        {Atomic_AST.AST+Identifier}
+          symbol: "write"
           locked: False
           type: "Identifier"
       type: "CallExpr"

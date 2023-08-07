@@ -1,23 +1,8 @@
-﻿func add(a,b) {
-	return a + b;
-}
-func multiply(a,b) {
-	return a * b;
-}
+﻿# compare tests
 
-# this is a comment
+write("(1 + 6) * 6 =  1 + 6 * 6: ", (1 + 6) * 6 =  1 + 6 * 6) # false
+write("6 * 6 = 36: ",6 * 6 = 36) # true
+write("6 * 7 > 6 * 8: ",6 * 7 > 6 * 8) # false
+write("81 < 9 * 10: ",81 < 9 * 10) # true
 
-func main() {
-	set thing >> add
-
-	set a >> prompt("enter first num: ")
-	set b >> prompt("enter second num: ")
-	
-    write("a + b: ",thing(a,b))
-
-    thing >> multiply
-
-    write("a * b: ",thing(a,b))
-}
-
-main()
+# type 2 compare test
