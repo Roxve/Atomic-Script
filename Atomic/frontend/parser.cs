@@ -232,7 +232,7 @@ public class Parser
 	{
 		if (this.current_token_type() != TokenType.OpenBrace)
 		{
-			return this.parse_compare_expr();
+			return this.parse_compare_type1_expr();
 		}
 
 		this.move();
@@ -279,15 +279,28 @@ public class Parser
 		return Obj;
 	}
 
-
-		
+	//handles &/|/&&/||
+	private AST.Expression parse_compare_type1_expr() {
+		var left = this.parse_compare_type2_expr();
+		while (current_token_value() == "&" || current_token_value() == "&&" || current_token_value() == "|" || current_token_value() == "||") {
+			var ooperator = move().value;
+			var right = this.parse_compare_type2_expr();
+			AST.BinaryExpression BE = new AST.BinaryExpression();
+			BE.left = left;
+			BE.right = right;
+			BE.Operator = ooperator;
+			left = BE;
+		}
+		return left;
+	}
+    
 	//handles =/</>
-	private AST.Expression parse_compare_expr() {
+	private AST.Expression parse_compare_type2_expr() {
 		var left = this.parse_additive_expr();
 		while (current_token_value() == "=" || current_token_value() == "<" || current_token_value() == ">") {
 			var ooperator = move().value;
 			var right = this.parse_additive_expr();
-			AST.CompareExpr BE = new AST.CompareExpr();
+			AST.BinaryExpression BE = new AST.BinaryExpression();
 			BE.left = left;
 			BE.right = right;
 			BE.Operator = ooperator;

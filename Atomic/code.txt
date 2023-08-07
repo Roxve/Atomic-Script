@@ -5,4 +5,9 @@ write("6 * 6 = 36: ",6 * 6 = 36) # true
 write("6 * 7 > 6 * 8: ",6 * 7 > 6 * 8) # false
 write("81 < 9 * 10: ",81 < 9 * 10) # true
 
-# type 2 compare test
+# type 1 compare tests
+
+write("5 < 6 & 6 < 7: ", 5 < 6 & 6 < 7) # true
+write("5 < 6 && 6 < 7: ", 5 < 6 && 6 < 7) # true but worse peformance
+write("5 > 6 | 6 + 1 > 8: ", 5 > 6 | 6 + 1 > 8) # false
+write("5 > 6 || 6 + 1 > 8: ", 5 > 6 || 6 + 1 > 8)

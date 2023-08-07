@@ -20,6 +20,8 @@ namespace Atomic_AST
 			public Expression value { get; set; }
 		}
 
+		
+		//'+-/%'
 
 		public class BinaryExpression : Expression
 		{
@@ -33,16 +35,13 @@ namespace Atomic_AST
 			public string Operator { get; set; }
 		}
 		
-		public class CompareExpr : Expression
+		// a compare expr is a binaryExpr, but to make dev easier i made it a differnt type '<=>|&'
+		public class CompareExpr : BinaryExpression
 		{
 			public CompareExpr()
 			{
 				type = "CompareExpr";
 			}
-
-			public Expression left { get; set; }
-			public Expression right { get; set; }
-			public string Operator { get; set; }
 		}
 		
 		public class CallExpr : Expression

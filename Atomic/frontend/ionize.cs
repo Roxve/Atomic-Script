@@ -42,7 +42,7 @@ public class Ionizing
 	{
 		return "+-/*%<=".Contains(x);
 	}
-	
+
 	public char current_atom()
 	{
 		if (atoms.Length > 0)
@@ -139,205 +139,193 @@ public class Ionizing
 
 		while (atoms.Length > 0)
 		{
-
-			if (IsLine(current_atom().ToString()))
+			switch (current_atom())
 			{
-				line++;
-				column = 1;
-				
-				ions.Add((line.ToString(), TokenType.line));
-				move();
-			}
-
-
-			else if (IsSkippable(current_atom()))
-			{
-				move();
-			}
-
-
-			//detecting strings
-			else if (current_atom() == '"')
-			{
-				string res = "";
-				move();
-				try
-				{
-					while (current_atom() != '"' && atoms.Length > 0)
+				case '(':
+					ions.Add(("(", TokenType.OpenParen));
+					move();
+					continue;
+				case ')':
+					ions.Add((")", TokenType.CloseParen));
+					move();
+					continue;
+				case '{':
+					ions.Add(("{", TokenType.OpenBrace));
+					move();
+					continue;
+				case '}':
+					ions.Add(("}", TokenType.CloseBrace));
+					move();
+					continue;
+				case '[':
+					ions.Add(("[", TokenType.OpenBracket));
+					move();
+					continue;
+				case ']':
+					ions.Add(("]", TokenType.CloseBracket));
+					move();
+					continue;
+				case '.':
+					ions.Add((".", TokenType.Dot));
+					move();
+					continue;
+				case ',':
+					ions.Add((",", TokenType.Comma));
+					move();
+					continue;
+				case ':':
+					ions.Add((":", TokenType.Colon));
+					move();
+					continue;
+				case '#':
+					move();
+					while (atoms.Length > 0 && current_atom().ToString() != "\n")
 					{
-						res += current_atom();
 						move();
 					}
-				}
-				catch
-				{
-					error("reached end of file and didnt finish string");
-				}
-				if (current_atom() != '"')
-				{
-					error("unfinshed string");
-				}
+					continue;
+				default:
+				    
+					if (IsLine(current_atom().ToString()))
+					{
+						line++;
+						column = 1;
 
-				ions.Add((res, TokenType.str));
-				move();
+						ions.Add((line.ToString(), TokenType.line));
+						move();
+					}
+
+
+					else if (IsSkippable(current_atom()))
+					{
+						move();
+					}
+
+
+					//detecting strings
+					else if (current_atom() == '"')
+					{
+						string res = "";
+						move();
+						try
+						{
+							while (current_atom() != '"' && atoms.Length > 0)
+							{
+								res += current_atom();
+								move();
+							}
+						}
+						catch
+						{
+							error("reached end of file and didnt finish string");
+						}
+						if (current_atom() != '"')
+						{
+							error("unfinshed string");
+						}
+
+						ions.Add((res, TokenType.str));
+						move();
+					}
+
+					
+
+					else if (isNum(current_atom()))
+					{
+						string res = "";
+
+						while (isNum(current_atom()))
+						{
+							res += current_atom();
+							move();
+						}
+						ions.Add((res, TokenType.num));
+					}
+
+
+
+
+					else if (isAllowedID(current_atom()))
+					{
+						string res = "";
+
+						while (isAllowedID(current_atom()))
+						{
+							res += current_atom();
+							move();
+						}
+						if (isKeyword(res))
+						{
+							ions.Add((res, KeywordType(res)));
+
+						}
+						else if (isBool(res))
+						{
+							ions.Add((res, TokenType.Bool));
+						}
+						else
+						{
+							ions.Add((res, TokenType.id));
+
+						}
+					}
+
+
+					else if (isOp(current_atom()))
+					{
+						string res = current_atom().ToString();
+						ions.Add((res, TokenType.op));
+						move();
+					}
+
+					else if (current_atom() == '>')
+					{
+						move();
+						if (current_atom() == '>')
+						{
+							ions.Add((">>", TokenType.setter));
+							move();
+						}
+						else
+						{
+							ions.Add((">", TokenType.op));
+						}
+
+					}
+					else if (current_atom() == '&')
+					{
+						move();
+						if (current_atom() == '&')
+						{
+							ions.Add(("&&", TokenType.op));
+							move();
+						}
+						else
+						{
+							ions.Add(("&", TokenType.op));
+						}
+					}
+					else if (current_atom() == '|')
+					{
+						move();
+						if (current_atom() == '|')
+						{
+							ions.Add(("||", TokenType.op));
+							move();
+						}
+						else
+						{
+							ions.Add(("|", TokenType.op));
+						}
+					}
+					else
+					{
+						error("unknown char " + current_atom());
+					}
+					continue;
 			}
 
-			//detecting comments
-			else if (current_atom() == '#')
-			{
-				move();
 
-				while (atoms.Length > 0 && current_atom().ToString() != "\n")
-				{
-					move();
-				}
-			}
-
-
-			else if (current_atom() == '(')
-			{
-				ions.Add(("(", TokenType.OpenParen));
-				move();
-			}
-
-
-			else if (current_atom() == ')')
-			{
-				ions.Add((")", TokenType.CloseParen));
-				move();
-			}
-
-			else if (current_atom() == '{')
-			{
-				ions.Add(("{", TokenType.OpenBrace));
-				move();
-			}
-
-
-			else if (current_atom() == '}')
-			{
-				ions.Add(("}", TokenType.CloseBrace));
-				move();
-			}
-
-
-			else if (current_atom() == '[')
-			{
-				ions.Add(("[", TokenType.OpenBracket));
-				move();
-			}
-
-
-			else if (current_atom() == ']')
-			{
-				ions.Add(("]", TokenType.CloseBracket));
-				move();
-			}
-
-
-			else if (current_atom() == '.')
-			{
-				ions.Add((".", TokenType.Dot));
-				move();
-			}
-			else if (current_atom() == ',')
-			{
-				ions.Add((",", TokenType.Comma));
-				move();
-			}
-
-
-			else if (current_atom() == ':')
-			{
-				ions.Add((":", TokenType.Colon));
-				move();
-			}
-
-
-			else if (isNum(current_atom()))
-			{
-				string res = "";
-
-				while (isNum(current_atom()))
-				{
-					res += current_atom();
-					move();
-				}
-				ions.Add((res, TokenType.num));
-			}
-
-
-
-
-			else if (isAllowedID(current_atom()))
-			{
-				string res = "";
-
-				while (isAllowedID(current_atom()))
-				{
-					res += current_atom();
-					move();
-				}
-				if (isKeyword(res))
-				{
-					ions.Add((res, KeywordType(res)));
-
-				}
-				else if (isBool(res))
-				{
-					ions.Add((res, TokenType.Bool));
-				}
-				else
-				{
-					ions.Add((res, TokenType.id));
-
-				}
-			}
-
-
-			else if (isOp(current_atom()))
-			{
-				string res = current_atom().ToString();
-				ions.Add((res, TokenType.op));
-				move();
-			}
-
-			else if (current_atom() == '>')
-			{
-				move();
-				if (current_atom() == '>')
-				{
-					ions.Add((">>", TokenType.setter));
-					move();
-				}
-				else {
-					ions.Add((">", TokenType.op));
-				}
-
-			}
-			else if(current_atom() == '&') {
-				move();
-				if(current_atom() == '&') {
-					ions.Add(("&&", TokenType.op));
-					move();
-				}
-				else {
-					ions.Add(("&", TokenType.op));
-				}
-			}
-			else if(current_atom() == '|') {
-				move();
-				if(current_atom() == '|') {
-					ions.Add(("||", TokenType.op));
-				}
-				else {
-					ions.Add(("|", TokenType.op));
-				}
-			}
-			else
-			{
-				error("unknown char " + current_atom());
-			}
 		}
 
 

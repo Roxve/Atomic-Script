@@ -26,20 +26,17 @@ public partial class interpreter
 			return eval_numeric_binary_expr(lhs as VT.NumValue, rhs as VT.NumValue, binary.Operator);
 		}
 		
-		if(lhs.type == "str" && rhs.type == "str") {
+		else if(lhs.type == "str" && rhs.type == "str") {
 			return eval_string_binary_expr(lhs as VT.StringVal,rhs as VT.StringVal, binary.Operator);
 		}
+		
+		else if(lhs.type == "bool" && rhs.type == "bool") {
+			return eval_bool_binary_expr(lhs as VT.BooleanVal, rhs as VT.BooleanVal,binary.Operator);
+		}
+		
 		return new VT.NullVal();
 	}
 	
-	public static VT.RuntimeVal eval_compare_expr(AST.CompareExpr compare, Enviroment env) {
-		var lhs = evaluate(compare.left, env); var rhs = evaluate(compare.right, env);
-		if (lhs.type == "num" && rhs.type == "num") {
-			return eval_numeric_compare_expr(lhs as VT.NumValue, rhs as VT.NumValue, compare.Operator);
-		}
-		return VT.MK_NULL();
-	}
-
 
 	public static VT.RuntimeVal eval_assignment(AST.AssignmentExpr node, Enviroment env)
 	{
@@ -218,12 +215,11 @@ public partial class interpreter
 		}
 	}
 
-	public static VT.NumValue eval_numeric_binary_expr(VT.NumValue lhs, VT.NumValue rhs, string ooperator)
+	public static VT.RuntimeVal eval_numeric_binary_expr(VT.NumValue lhs, VT.NumValue rhs, string ooperator)
 	{
 
-
-		int results;
-
+        object? results = null;
+		
 		switch (ooperator)
 		{
 			case "+":
@@ -238,30 +234,55 @@ public partial class interpreter
 			case "-":
 				results = lhs.value - rhs.value;
 				break;
-			default:
+			case "%":
 				results = lhs.value % rhs.value;
 				break;
-		}
-		VT.NumValue Results = new VT.NumValue();
-
-		Results.value = results;
-		return Results;
-	}
-	public static VT.RuntimeVal eval_numeric_compare_expr(VT.NumValue lhs,VT.NumValue rhs, string ooperator) {
-		bool results = false;
-		switch(ooperator)
-		{
+			case "=":
+				results = lhs.value == rhs.value;
+				break;
 			case ">":
 				results = lhs.value > rhs.value;
 				break;
 			case "<":
 				results = lhs.value < rhs.value;
 				break;
+			default:
+				error($"Operation '{ooperator}' cannot be aplied on numbers\ngot => {rhs.value} {ooperator} {lhs.value}");
+				break;
+		}
+		
+		
+		if(results is int) {
+			return VT.MK_NUM((int) results);
+		}
+		else if(results is bool) {
+			return VT.MK_BOOL((bool) results);
+		}
+		else {
+			return VT.MK_NUM();
+		}
+	}
+
+	public static VT.RuntimeVal eval_bool_binary_expr(VT.BooleanVal lhs, VT.BooleanVal rhs, string ooperator) {
+		bool results = false;
+		switch(ooperator) {
+			case "&":
+				results = lhs.value && rhs.value;
+				break;
+			case "&&":
+				results = lhs.value & rhs.value;
+				break;
+			case "|":
+				results = lhs.value || rhs.value;
+				break;
+			case "||":
+				results = lhs.value | rhs.value;
+				break;
 			case "=":
 				results = lhs.value == rhs.value;
 				break;
 			default:
-				error($"cannot do operation {ooperator} on numbers");
+				error($"cannot do operation {ooperator} on booleans\ngot => {rhs.value} {ooperator} {lhs.value}");
 				break;
 		}
 		return VT.MK_BOOL(results);
