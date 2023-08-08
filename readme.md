@@ -16,8 +16,9 @@ write("Hello, world!")
 func add(a,b) {
   return a + b;
 }
-write("8 + 8 is equal to",add(8,8)) 🦜
+write("8 + 8 is equal to",add(8,8))
 ```
+🦜
 - if-else statement (making them an expression in the next update for more creativity)
 ```cs
 set name >> prompt("enter your name: ")
@@ -30,7 +31,8 @@ else if(name = "Thomas") {
 else {
  write("you are not an admin ):")
 }
-``` ✅
+```
+✅
 # Features(i want):
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
 # TODO(next update):
