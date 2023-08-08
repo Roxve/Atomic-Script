@@ -4,7 +4,7 @@ Atomic is a simple small dynamic programming lang made for fun! built-on c#
 
 # Features(basic syntax):
 ### TODO move the basic syntax to a website
-
+- customize your code with semicolons! Because i don't like the requirements of adding ; at the end of lines but i like how they look so i added ';' as a skippable character if you want to end a line with semicolon do it if you don't don't!
 - enviroments and vars! declared with ```set varname >> value``` and to change values use ```varname >> value```😁
 atomic also support immutable variables with ```set locked varname >> value``` ✅✅
 - objects! Declared and assign the same way as vars but they contains properties ```set locked user >> {num: 1,pass: 2235}```;
