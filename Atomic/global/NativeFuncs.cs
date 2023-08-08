@@ -2,13 +2,21 @@
 using System.Linq;
 using System.Collections.Generic;
 using static ValueTypes.VT;
-using CSharpShellCore;
-namespace Atomic;
 
+
+namespace Atomic;
+#nullable enable
+#nullable disable warnings
 public partial class Global
 {
 	public static class NativeFunc
 	{
+		private static NullVal error(string message) {
+			Console.ForegroundColor = ConsoleColor.DarkYellow;
+			Console.WriteLine("warning function error: ", message,"\nreturning null...");
+			Console.ForegroundColor = ConsoleColor.White;
+			return MK_NULL();
+		}
 		public static void print(string type, RuntimeVal arg)
 		{
 			switch (type)
@@ -55,7 +63,10 @@ public partial class Global
 
 		public static RuntimeVal prompt(RuntimeVal[] args, Enviroment? env)
 		{
-			print(args[0].type, args[0]);
+			foreach(RuntimeVal arg in args) {
+				print(arg.type, arg);
+			}
+			
 
 			var results = Console.ReadLine();
 
@@ -66,6 +77,24 @@ public partial class Global
 		{
 			var results = Console.ReadLine();
 			return MK_TYPE(results);
+		}
+		public static RuntimeVal toLower(RuntimeVal[] args, Enviroment? env) {
+			if(args.Length < 1) {
+				return error("toLower Takes one aurgment!");
+			}
+			if(args[0].type != "str") {
+				return error("excepted string in toLower function");
+			}
+			return MK_STR((args[0] as StringVal).value.ToLower());
+		}
+		public static RuntimeVal toUpper(RuntimeVal[] args, Enviroment? env) {
+			if(args.Length < 1) {
+				return error("toUpper Takes one aurgment!");
+			}
+			if(args[0].type != "str") {
+				return error("excepted string in toUpper function");
+			}
+			return MK_STR((args[0] as StringVal).value.ToUpper());
 		}
 	}
 }

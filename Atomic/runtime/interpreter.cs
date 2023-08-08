@@ -52,6 +52,11 @@ public partial class interpreter
 				line++;
 				Line.num = (Statement as AST.Line).line;
 				return Line;
+			case "elseStmt":
+				error("found else stmt without being in a if else block,excepted 'if' keyword before 'else' keyword!");
+				return VT.MK_NULL();
+			case "ifElseBlock":
+				return eval_if_else_block(Statement as AST.ifElseBlock, env);
 			case "Identifier":
 				return eval_id(Statement as Identifier, env);
 			case "VarDeclaration":

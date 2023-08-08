@@ -83,7 +83,12 @@ public class Parser
 		ions.RemoveAt(0);
 		if (prev.type != correct_type)
 		{
-			this.error("Parser error, excepting " + correct_type + " " + "got => " + prev.type);
+			if(prev.type == TokenType.line) {
+				return this.except(correct_type);
+			}
+			else {
+				this.error("Parser error, excepting " + correct_type + " " + "got => " + prev.type);
+			}
 		}
 		column++;
 		this.prev = prev;
@@ -102,7 +107,7 @@ public class Parser
 
 		return program;
 	}
-	
+
 	private AST.Statement parse_statement()
 	{
 		switch (this.current_token_type())
@@ -113,40 +118,117 @@ public class Parser
 				return this.parse_func_declaration();
 			case TokenType.return_kw:
 				return this.parse_return_stmt();
+			case TokenType.if_kw:
+				return this.parse_if_else_stmt();
+			case TokenType.else_kw:
+				return this.parse_else_stmt();
 			default:
 				return this.parse_expr();
 		}
 	}
-
-	private AST.Statement parse_func_declaration() {
-		this.move();
+	
+	private AST.Statement parse_if_else_stmt()
+	{
+		AST.ifElseBlock Block = new AST.ifElseBlock();
 		
+		var mainIf = this.parse_if_stmt();
+
+		Block.mainIfStmt = mainIf;
+
+		List<AST.Statement> body = new List<AST.Statement>();
+
+		while (current_token_type() != TokenType.EOF && current_token_type() == TokenType.else_kw)
+		{
+		   	
+			body.Add(this.parse_statement());
+			if(body[body.Count - 1].type == "elseStmt") {
+				Block.elseStmts.Add(body[body.Count - 1] as AST.elseStmt);
+			}
+			
+		}
+		
+		return Block;
+	}
+	
+	private AST.elseStmt parse_else_stmt() {
+		move();
+			
+		AST.elseStmt Else = new AST.elseStmt();
+		if (this.current_token_type() == TokenType.if_kw)
+		{
+			var ifStmt = this.parse_if_stmt();
+			Else.elseIfStmt = ifStmt;
+		}
+		else {
+			this.except(TokenType.OpenBrace);
+			List<AST.Statement> body = new List<AST.Statement>();
+
+			while (current_token_type() != TokenType.EOF && current_token_type() != TokenType.CloseBrace)
+			{
+				body.Add(this.parse_statement());
+			}
+
+			this.except(TokenType.CloseBrace);
+			Else.body = body;
+		}
+		return Else;
+	}
+	
+	private AST.ifStmt parse_if_stmt() {
+		AST.ifStmt If = new AST.ifStmt();
+
+		move();
+
+		this.except(TokenType.OpenParen);
+		var condition = this.parse_expr();
+		this.except(TokenType.CloseParen);
+
+		If.condition = condition;
+		this.except(TokenType.OpenBrace);
+		List<AST.Statement> body = new List<AST.Statement>();
+
+		while (current_token_type() != TokenType.EOF && current_token_type() != TokenType.CloseBrace)
+		{
+			body.Add(this.parse_statement());
+		}
+
+		this.except(TokenType.CloseBrace);
+		If.body = body;
+		return If;
+	}
+	private AST.Statement parse_func_declaration()
+	{
+		this.move();
+
 		var name = this.except(TokenType.id).value;
 		var args = this.parse_args();
-		
+
 		List<string> parameters = new List<string>();
-		foreach(AST.Expression arg in args) {
-			if(arg.type != "Identifier") {
+		foreach (AST.Expression arg in args)
+		{
+			if (arg.type != "Identifier")
+			{
 				this.error("inside func declaration parameters has to be identifiers\ngot => " + arg.type);
 			}
 			parameters.Add((arg as AST.Identifier).symbol);
 		}
-		
+
 		this.except(TokenType.OpenBrace);
 		List<AST.Statement> body = new List<AST.Statement>();
-		
-		while(current_token_type() != TokenType.EOF && current_token_type() != TokenType.CloseBrace) {
+
+		while (current_token_type() != TokenType.EOF && current_token_type() != TokenType.CloseBrace)
+		{
 			body.Add(this.parse_statement());
 		}
-		
+
 		this.except(TokenType.CloseBrace);
-		
+
 		AST.FuncDeclarartion func = new AST.FuncDeclarartion();
 		func.name = name; func.parameters = parameters; func.body = body;
-		
+
 		return func;
 	}
-	
+
 	private AST.Statement parse_var_declaration()
 	{
 		move();
@@ -192,14 +274,15 @@ public class Parser
 		}
 
 	}
-	
-	private AST.Statement parse_return_stmt() {
+
+	private AST.Statement parse_return_stmt()
+	{
 		move();
-		
+
 		AST.ReturnStmt stmt = new AST.ReturnStmt();
-		
+
 		stmt.value = this.parse_expr();
-		
+
 		return stmt;
 	}
 
@@ -280,9 +363,11 @@ public class Parser
 	}
 
 	//handles &/|/&&/||
-	private AST.Expression parse_compare_type1_expr() {
+	private AST.Expression parse_compare_type1_expr()
+	{
 		var left = this.parse_compare_type2_expr();
-		while (current_token_value() == "&" || current_token_value() == "&&" || current_token_value() == "|" || current_token_value() == "||") {
+		while (current_token_value() == "&" || current_token_value() == "&&" || current_token_value() == "|" || current_token_value() == "||")
+		{
 			var ooperator = move().value;
 			var right = this.parse_compare_type2_expr();
 			AST.BinaryExpression BE = new AST.BinaryExpression();
@@ -293,11 +378,13 @@ public class Parser
 		}
 		return left;
 	}
-    
+
 	//handles =/</>
-	private AST.Expression parse_compare_type2_expr() {
+	private AST.Expression parse_compare_type2_expr()
+	{
 		var left = this.parse_additive_expr();
-		while (current_token_value() == "=" || current_token_value() == "<" || current_token_value() == ">") {
+		while (current_token_value() == "=" || current_token_value() == "<" || current_token_value() == ">")
+		{
 			var ooperator = move().value;
 			var right = this.parse_additive_expr();
 			AST.BinaryExpression BE = new AST.BinaryExpression();
@@ -344,80 +431,93 @@ public class Parser
 		return left;
 	}
 
-	
-	private AST.Expression parse_call_member_expr() {
+
+	private AST.Expression parse_call_member_expr()
+	{
 		var member = this.parse_member_expr();
-		
-		if(this.current_token_type() == TokenType.OpenParen) {
+
+		if (this.current_token_type() == TokenType.OpenParen)
+		{
 			return this.parse_call_expr(member);
 		}
 		return member;
 	}
 
-	
-	private AST.Expression parse_call_expr(AST.Expression caller) {
+
+	private AST.Expression parse_call_expr(AST.Expression caller)
+	{
 		AST.CallExpr call_expr = new AST.CallExpr();
-		
+
 		call_expr.caller = caller; call_expr.args = this.parse_args();
-		
-		if(this.current_token_type() == TokenType.OpenParen) {
+
+		if (this.current_token_type() == TokenType.OpenParen)
+		{
 			call_expr = this.parse_call_expr(call_expr) as AST.CallExpr;
 		}
 		return call_expr;
 	}
-	
-	
-	private List<AST.Expression> parse_args() {
+
+
+	private List<AST.Expression> parse_args()
+	{
 		this.except(TokenType.OpenParen);
 		List<AST.Expression> args = new List<AST.Expression>();
-		if(this.current_token_type() != TokenType.CloseParen) {
+		if (this.current_token_type() != TokenType.CloseParen)
+		{
 			args = this.parse_args_list();
 		}
-		
+
 		this.except(TokenType.CloseParen);
 		return args;
 	}
-	
-	private List<AST.Expression> parse_args_list() {
+
+	private List<AST.Expression> parse_args_list()
+	{
 		List<AST.Expression> args = new List<AST.Expression>();
 		args.Add(this.parse_assigment_expr());
-		
-		while(this.current_token_type() == TokenType.Comma) {
+
+		while (this.current_token_type() == TokenType.Comma)
+		{
 			this.move();
 			args.Add(this.parse_assigment_expr());
 		}
 		return args;
 	}
-	
-	
-	private AST.Expression parse_member_expr() {
+
+
+	private AST.Expression parse_member_expr()
+	{
 		var obj = this.parse_primary_expr();
 		AST.MemberExpr memberExpr = new AST.MemberExpr();
-		while(this.current_token_type() == TokenType.Dot || this.current_token_type() == TokenType.OpenBracket) {
+		while (this.current_token_type() == TokenType.Dot || this.current_token_type() == TokenType.OpenBracket)
+		{
 			var ooperator = this.move();
 			AST.Expression property;
 			bool computed; // !computed => obj.expr,computed obj[]
-			
-			if(ooperator.type == TokenType.Dot) {
+
+			if (ooperator.type == TokenType.Dot)
+			{
 				computed = false;
 				property = this.parse_primary_expr();
-				
-				if(property.type != "Identifier") {
+
+				if (property.type != "Identifier")
+				{
 					error("excepted Identifier after dot");
 				}
 			}
-			
-			else {
+
+			else
+			{
 				computed = true;
 				property = this.parse_expr();
-				
+
 				this.except(TokenType.CloseBracket);
 			}
 			memberExpr.Object = obj; memberExpr.computed = computed; memberExpr.property = property;
-			
+
 			obj = memberExpr;
 		}
-		
+
 		return obj;
 	}
 	// Assignment
@@ -449,9 +549,9 @@ public class Parser
 				return Null;
 			case TokenType.str:
 				AST.StringLiteral str = new AST.StringLiteral();
-				
+
 				str.value = move().value;
-				
+
 				return str;
 			case TokenType.Bool:
 				AST.Bool Bool = new AST.Bool();
@@ -467,7 +567,7 @@ public class Parser
 				column = 1;
 				move();
 				AST.Line Line = new AST.Line();
-			    Line.line = line;
+				Line.line = line;
 				return Line;
 			default:
 				error("Unexpected token found during parsing! " + current_token_value() + " " + current_token_type());

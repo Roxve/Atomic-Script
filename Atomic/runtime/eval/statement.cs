@@ -47,6 +47,58 @@ public partial class interpreter
 	}
 	
 	public static VT.RuntimeVal eval_return_stmt(AST.ReturnStmt stmt, Enviroment env) {
-		return evaluate(stmt.value, env);
+		VT.ReturnVal toReturn = new VT.ReturnVal();
+		toReturn.value = evaluate(stmt.value, env);
+		return toReturn;
+	}
+	public static VT.RuntimeVal eval_if_stmt(AST.ifStmt Stmt, Enviroment env) {
+		VT.RuntimeVal results = VT.MK_NULL();
+		foreach(AST.Statement stmt in Stmt.body) {
+					results = evaluate(stmt, env);
+	    }
+		return results;
+	}
+	
+	public static VT.RuntimeVal eval_else_stmts(List<AST.elseStmt> Stmts,Enviroment env) {
+		VT.RuntimeVal results = VT.MK_NULL();
+		foreach(AST.elseStmt Else in Stmts) {
+			if(Else.body.Count > 0) {
+				foreach(AST.Statement stmt in Else.body) {
+					results = evaluate(stmt, env);
+				}
+				return results;
+			}
+			else {
+				var Condition = evaluate(Else.elseIfStmt.condition, env);
+				if(Condition.type != "bool") {
+					error($"excepted bool in if condition?\ngot => {Condition.type}");
+				}
+				switch((Condition as VT.BooleanVal).value) {
+					case true:
+						results = eval_if_stmt(Else.elseIfStmt,env);
+						return results;
+					case false:
+						continue;
+				}
+			}
+		}
+		return results;
+	}
+	public static VT.RuntimeVal eval_if_else_block(AST.ifElseBlock Block, Enviroment env) {
+		var mainCondition = evaluate(Block.mainIfStmt.condition, env);
+		
+		if(mainCondition.type != "bool") {
+			error($"excepted bool in if condition?\ngot => {mainCondition.type}");
+		}
+		VT.RuntimeVal results = VT.MK_NULL();
+		switch((mainCondition as VT.BooleanVal).value) {
+			case true:
+				results = eval_if_stmt(Block.mainIfStmt,env);
+				break;
+			case false:
+				 results = eval_else_stmts(Block.elseStmts, env);
+				 break;
+		}
+		return results;
 	}
 }

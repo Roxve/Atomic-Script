@@ -1,13 +1,20 @@
-﻿# compare tests
+﻿# if else tests
 
-write("(1 + 6) * 6 =  1 + 6 * 6: ", (1 + 6) * 6 =  1 + 6 * 6) # false
-write("6 * 6 = 36: ",6 * 6 = 36) # true
-write("6 * 7 > 6 * 8: ",6 * 7 > 6 * 8) # false
-write("81 < 9 * 10: ",81 < 9 * 10) # true
+set name >> prompt("enter your name: ")
 
-# type 1 compare tests
+if(name = "Thomas") {
+	write("You are an admin!")
+}
+else if(name = "Ahmed") {
+	write("You are an admin frined!")
+}
+else {
+	write(name," You are not an admin ):")
+}
 
-write("5 < 6 & 6 < 7: ", 5 < 6 & 6 < 7) # true
-write("5 < 6 && 6 < 7: ", 5 < 6 && 6 < 7) # true but worse peformance
-write("5 > 6 | 6 + 1 > 8: ", 5 > 6 | 6 + 1 > 8) # false
-write("5 > 6 || 6 + 1 > 8: ", 5 > 6 || 6 + 1 > 8)
+set isRobotQ >> prompt("are you a robot? Y/n")
+isRobotQ >> toLower(isRobotQ)
+
+# TODO: make if else expressions to allow this ): (forgot about how i am focusing on flexbility)
+# set isRobotA >> if(isRobotQ = "y") { true } else { false }
+# write("isRobot: ",isRobotA)

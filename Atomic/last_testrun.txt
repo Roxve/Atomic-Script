@@ -1,148 +1,153 @@
 {Atomic_AST.AST+Program}
   body: ...
-    {Atomic_AST.AST+CallExpr}
-      args: ...
-        {Atomic_AST.AST+CompareExpr}
-          left: { }
+    {Atomic_AST.AST+VarDeclaration}
+      Id: "name"
+      value: { }
+        {Atomic_AST.AST+CallExpr}
+          args: ...
+            {Atomic_AST.AST+StringLiteral}
+              value: "enter your name: "
+              type: "StringLiteral"
+          caller: { }
+            {Atomic_AST.AST+Identifier}
+              symbol: "prompt"
+              locked: False
+              type: "Identifier"
+          type: "CallExpr"
+      locked: False
+      type: "VarDeclaration"
+    {Atomic_AST.AST+ifElseBlock}
+      mainIfStmt: { }
+        {Atomic_AST.AST+ifStmt}
+          condition: { }
             {Atomic_AST.AST+BinaryExpression}
               left: { }
-                {Atomic_AST.AST+BinaryExpression}
-                  left: { }
-                    {Atomic_AST.AST+NumericLiteral}
-                      value: 1
-                      type: "NumericLiteral"
-                  right: { }
-                    {Atomic_AST.AST+NumericLiteral}
-                      value: 6
-                      type: "NumericLiteral"
-                  Operator: "+"
-                  type: "BinaryExpr"
+                {Atomic_AST.AST+Identifier}
+                  symbol: "name"
+                  locked: False
+                  type: "Identifier"
               right: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 6
-                  type: "NumericLiteral"
-              Operator: "*"
+                {Atomic_AST.AST+StringLiteral}
+                  value: "Thomas"
+                  type: "StringLiteral"
+              Operator: "="
               type: "BinaryExpr"
-          right: { }
-            {Atomic_AST.AST+BinaryExpression}
-              left: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 1
-                  type: "NumericLiteral"
-              right: { }
+          body: ...
+            {Atomic_AST.AST+CallExpr}
+              args: ...
+                {Atomic_AST.AST+StringLiteral}
+                  value: "You are an admin!"
+                  type: "StringLiteral"
+              caller: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "write"
+                  locked: False
+                  type: "Identifier"
+              type: "CallExpr"
+          type: "ifStmt"
+      elseStmts: ...
+        {Atomic_AST.AST+elseStmt}
+          elseIfStmt: { }
+            {Atomic_AST.AST+ifStmt}
+              condition: { }
                 {Atomic_AST.AST+BinaryExpression}
                   left: { }
-                    {Atomic_AST.AST+NumericLiteral}
-                      value: 6
-                      type: "NumericLiteral"
+                    {Atomic_AST.AST+Identifier}
+                      symbol: "name"
+                      locked: False
+                      type: "Identifier"
                   right: { }
-                    {Atomic_AST.AST+NumericLiteral}
-                      value: 6
-                      type: "NumericLiteral"
-                  Operator: "*"
+                    {Atomic_AST.AST+StringLiteral}
+                      value: "Ahmed"
+                      type: "StringLiteral"
+                  Operator: "="
                   type: "BinaryExpr"
+              body: ...
+                {Atomic_AST.AST+CallExpr}
+                  args: ...
+                    {Atomic_AST.AST+StringLiteral}
+                      value: "You are an admin frined!"
+                      type: "StringLiteral"
+                  caller: { }
+                    {Atomic_AST.AST+Identifier}
+                      symbol: "write"
+                      locked: False
+                      type: "Identifier"
+                  type: "CallExpr"
+              type: "ifStmt"
+          body: ...
+          type: "elseStmt"
+        {Atomic_AST.AST+elseStmt}
+          elseIfStmt: { }
+            null
+          body: ...
+            {Atomic_AST.AST+CallExpr}
+              args: ...
+                {Atomic_AST.AST+Identifier}
+                  symbol: "name"
+                  locked: False
+                  type: "Identifier"
+                {Atomic_AST.AST+StringLiteral}
+                  value: " You are not an admin ):"
+                  type: "StringLiteral"
+              caller: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "write"
+                  locked: False
+                  type: "Identifier"
+              type: "CallExpr"
+          type: "elseStmt"
+      type: "ifElseBlock"
+    {Atomic_AST.AST+FuncDeclarartion}
+      name: "addf"
+      parameters: ...
+        "x"
+        "y"
+      body: ...
+        {Atomic_AST.AST+ReturnStmt}
+          value: { }
+            {Atomic_AST.AST+BinaryExpression}
+              left: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "x"
+                  locked: False
+                  type: "Identifier"
+              right: { }
+                {Atomic_AST.AST+Identifier}
+                  symbol: "y"
+                  locked: False
+                  type: "Identifier"
               Operator: "+"
               type: "BinaryExpr"
-          Operator: "="
-          type: "CompareExpr"
-      caller: { }
-        {Atomic_AST.AST+Identifier}
-          symbol: "write"
-          locked: False
-          type: "Identifier"
-      type: "CallExpr"
-    {Atomic_AST.AST+Line}
-      line: 2
-      type: "line"
+          type: "ReturnStmt"
+      type: "FuncDeclarartion"
     {Atomic_AST.AST+CallExpr}
       args: ...
-        {Atomic_AST.AST+CompareExpr}
-          left: { }
-            {Atomic_AST.AST+BinaryExpression}
-              left: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 6
-                  type: "NumericLiteral"
-              right: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 6
-                  type: "NumericLiteral"
-              Operator: "*"
-              type: "BinaryExpr"
-          right: { }
+        {Atomic_AST.AST+CallExpr}
+          args: ...
             {Atomic_AST.AST+NumericLiteral}
-              value: 36
+              value: 10
               type: "NumericLiteral"
-          Operator: "="
-          type: "CompareExpr"
-      caller: { }
-        {Atomic_AST.AST+Identifier}
-          symbol: "write"
-          locked: False
-          type: "Identifier"
-      type: "CallExpr"
-    {Atomic_AST.AST+Line}
-      line: 3
-      type: "line"
-    {Atomic_AST.AST+CallExpr}
-      args: ...
-        {Atomic_AST.AST+CompareExpr}
-          left: { }
-            {Atomic_AST.AST+BinaryExpression}
-              left: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 6
-                  type: "NumericLiteral"
-              right: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 7
-                  type: "NumericLiteral"
-              Operator: "*"
-              type: "BinaryExpr"
-          right: { }
-            {Atomic_AST.AST+BinaryExpression}
-              left: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 6
-                  type: "NumericLiteral"
-              right: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 8
-                  type: "NumericLiteral"
-              Operator: "*"
-              type: "BinaryExpr"
-          Operator: ">"
-          type: "CompareExpr"
-      caller: { }
-        {Atomic_AST.AST+Identifier}
-          symbol: "write"
-          locked: False
-          type: "Identifier"
-      type: "CallExpr"
-    {Atomic_AST.AST+Line}
-      line: 4
-      type: "line"
-    {Atomic_AST.AST+CallExpr}
-      args: ...
-        {Atomic_AST.AST+CompareExpr}
-          left: { }
             {Atomic_AST.AST+NumericLiteral}
-              value: 81
+              value: 10
               type: "NumericLiteral"
-          right: { }
-            {Atomic_AST.AST+BinaryExpression}
-              left: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 9
-                  type: "NumericLiteral"
-              right: { }
-                {Atomic_AST.AST+NumericLiteral}
-                  value: 10
-                  type: "NumericLiteral"
-              Operator: "*"
-              type: "BinaryExpr"
-          Operator: "<"
-          type: "CompareExpr"
+          caller: { }
+            {Atomic_AST.AST+Identifier}
+              symbol: "addf"
+              locked: False
+              type: "Identifier"
+          type: "CallExpr"
+      caller: { }
+        {Atomic_AST.AST+Identifier}
+          symbol: "write"
+          locked: False
+          type: "Identifier"
+      type: "CallExpr"
+    {Atomic_AST.AST+CallExpr}
+      args: ...
+        {Atomic_AST.AST+StringLiteral}
+          value: "test"
+          type: "StringLiteral"
       caller: { }
         {Atomic_AST.AST+Identifier}
           symbol: "write"

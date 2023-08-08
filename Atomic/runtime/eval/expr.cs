@@ -131,14 +131,13 @@ public partial class interpreter
 					funcEnv.declareVar(name, args[x], false);
 				}
 				VT.RuntimeVal result = VT.MK_NULL();
-				
+				VT.RuntimeVal last;
 				foreach(AST.Statement stmt in func.body) {
 					//TODO add unreachable code warning
-					if(stmt.type == "ReturnStmt") {
-						result = evaluate(stmt,funcEnv);
-						break;
+					last = evaluate(stmt, funcEnv);
+					if(last.type == "return") {
+						result = (last as VT.ReturnVal).value;
 					}
-					evaluate(stmt, funcEnv);
 				}
 				return result;
 			default:
@@ -288,21 +287,29 @@ public partial class interpreter
 		return VT.MK_BOOL(results);
 	}
 	public static VT.RuntimeVal eval_string_binary_expr(VT.StringVal lhs,VT.StringVal rhs, string ooperator) {
-		string results;
+		object? results = null;
 		
 		switch(ooperator)
 		{
 			case "+":
 				results = lhs.value + rhs.value;
 				break;
+			case "=":
+				results = lhs.value == rhs.value;
+				break;
 			default:
 				error($"cannot peform operation {ooperator} on string\ngot => {lhs.value} {ooperator} {rhs.value}");
 				return new VT.NullVal();
 		}
 		
-		VT.StringVal Results = new VT.StringVal();
-		
-		Results.value = results;
-		return Results;
+		if(results is string) {
+			return VT.MK_NUM((int) results);
+		}
+		else if(results is bool) {
+			return VT.MK_BOOL((bool) results);
+		}
+		else {
+			return VT.MK_NULL();
+		}
 	}
 }

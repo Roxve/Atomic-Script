@@ -11,7 +11,8 @@ namespace Ttype {
 		set,
 		func,
 		return_kw,
-		
+		if_kw,
+		else_kw,
 		locked, //makes stuff not modifable
 		static_kw,
 		

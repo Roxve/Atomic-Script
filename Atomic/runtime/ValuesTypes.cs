@@ -131,7 +131,12 @@ public class VT
 			}
 		}
 	}
-
+    public class ReturnVal : RuntimeVal {
+		public ReturnVal() {
+			type = "return";
+		}
+		public RuntimeVal value {get; set;}
+	}
 	public static NativeFnVal MK_NATIVE_FN(functionCall call)
 	{
 		NativeFnVal func = new NativeFnVal();

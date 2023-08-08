@@ -35,6 +35,10 @@ public partial class Global
 		//read
 		var readCall = new functionCall();
 		readCall.execute = NativeFunc.read; env.declareVar("read", MK_NATIVE_FN(readCall), true);
+		
+		//toLower
+		var toLowerCall = new functionCall();
+		toLowerCall.execute = NativeFunc.toLower; env.declareVar("toLower", MK_NATIVE_FN(toLowerCall), true);
 		return env;
 	}
 }
