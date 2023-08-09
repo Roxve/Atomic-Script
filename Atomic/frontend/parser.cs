@@ -12,7 +12,7 @@ namespace Atomic;
 
 public class Parser
 {
-	private static int column = 1;
+	private static int column = 0;
 	private static int line = 1;
 	private void error(string message)
 	{
@@ -94,15 +94,28 @@ public class Parser
 		this.prev = prev;
 		return prev;
 	}
-
+	private bool CheckLine() {
+		if(current_token_type() == TokenType.line) {
+			line++;
+			column = 0;
+			move();
+			AST.Line Line = new AST.Line();
+			Line.line = line;
+			
+			this.program.body.Add(Line);
+			return true;
+		}
+		return false;
+	}
+	private AST.Program program = new AST.Program();
 	public AST.Program productAST()
 	{
 
-		AST.Program program = new AST.Program();
-		program.body = new List<AST.Statement>();
+		
+		this.program.body = new List<AST.Statement>();
 		while (NotEOF())
 		{
-			program.body.Add(parse_statement());
+			this.program.body.Add(parse_statement());
 		}
 
 		return program;
@@ -137,8 +150,11 @@ public class Parser
 
 		List<AST.Statement> body = new List<AST.Statement>();
 
-		while (current_token_type() != TokenType.EOF && current_token_type() == TokenType.else_kw)
+		while (current_token_type() != TokenType.EOF && (current_token_type() == TokenType.else_kw || current_token_type() == TokenType.line))
 		{
+			if(CheckLine()) {
+				continue;
+			}
 		   	
 			body.Add(this.parse_statement());
 			if(body[body.Count - 1].type == "elseStmt") {
@@ -564,7 +580,7 @@ public class Parser
 				return value;
 			case TokenType.line:
 				line++;
-				column = 1;
+				column = 0;
 				move();
 				AST.Line Line = new AST.Line();
 				Line.line = line;

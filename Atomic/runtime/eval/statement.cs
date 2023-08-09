@@ -55,6 +55,9 @@ public partial class interpreter
 		VT.RuntimeVal results = VT.MK_NULL();
 		foreach(AST.Statement stmt in Stmt.body) {
 					results = evaluate(stmt, env);
+					if(results.type == "return") {
+						break;
+					}
 	    }
 		return results;
 	}
@@ -65,6 +68,9 @@ public partial class interpreter
 			if(Else.body.Count > 0) {
 				foreach(AST.Statement stmt in Else.body) {
 					results = evaluate(stmt, env);
+					if(results.type == "return") {
+						break;
+					}
 				}
 				return results;
 			}

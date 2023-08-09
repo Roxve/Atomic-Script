@@ -194,7 +194,7 @@ public class Ionizing
 					{
 						line++;
 						column = 1;
-
+						ions.Add(("line", TokenType.line));
 						
 						move();
 					}

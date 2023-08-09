@@ -7,15 +7,16 @@ func question(message) {
 	if(toLower(results) = "y") {
 		return true;
 	}
-	else if(toLower(results) = "n") {
+	else if(toLower(results) = "n") {	
 		return false;
 	}
-	else {
-		return null;
+	else {	
+		return true;
 	}
 }
 
 set isRobot >> question("are you a robot?")
+write(isRobot)
 if(isRobot) {
 	write("you are a robot ):")
 }
