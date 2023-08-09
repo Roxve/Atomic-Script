@@ -11,7 +11,7 @@ func question(message) {
 		return false;
 	}
 	else {	
-		return true;
+		return null;
 	}
 }
 

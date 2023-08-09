@@ -137,6 +137,7 @@ public partial class interpreter
 					last = evaluate(stmt, funcEnv);
 					if(last.type == "return") {
 						result = (last as VT.ReturnVal).value;
+						break;
 					}
 				}
 				return result;
