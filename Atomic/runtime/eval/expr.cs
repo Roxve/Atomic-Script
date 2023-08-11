@@ -7,12 +7,12 @@ using Atomic_AST;
 using System.Threading;
 
 namespace Atomic_lang;
-
-public partial class interpreter
+#nullable enable annotations
+public partial class Interpreter
 {
 	public static RuntimeVal eval_id(Identifier id, Enviroment env)
 	{
-		var value = env.findVar(id.symbol);
+		var value = env.findVar(id.symbol,id);
 		return value;
 	}
 
@@ -47,7 +47,7 @@ public partial class interpreter
 		if (node.assigne.type == "Identifier")
 		{
 			var name = (node.assigne as Identifier).symbol;
-			return env.setVar(name, evaluate(node.value, env));
+			return env.setVar(name, evaluate(node.value, env),node.value);
 		}
 		
 		else if (node.assigne.type == "MemberExpr")
@@ -129,7 +129,7 @@ public partial class interpreter
 				for(int x = 0; x < func.parameters.Count; x++) {
 					var name = func.parameters[x];
 					
-					funcEnv.declareVar(name, args[x], false);
+					funcEnv.declareVar(name, args[x], false,expr);
 				}
 				RuntimeVal result = MK_NULL();
 				RuntimeVal last;
@@ -158,7 +158,7 @@ public partial class interpreter
 
 			if (property.value == null)
 			{
-				runtimeVal = env.findVar(property.key);
+				runtimeVal = env.findVar(property.key,property);
 			}
 			else
 			{

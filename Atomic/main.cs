@@ -55,10 +55,12 @@ public static class Run
 	public static int Repl()
 	{
 		ConsoleExtensions.Enable();
+		var env = Enviroment.createEnv();
 		Console.WriteLine("entered repl mode! use '?' for commands(outside repl)\n.exit to exit".Pastel(Color.DarkOrange));
 		string code;
 		while (true)
 		{
+			
 			Console.WriteLine("Atomic".Pastel(Color.Magenta));
 			Console.Write("=>".Pastel(Color.Magenta));
 			code = Console.ReadLine();
@@ -68,7 +70,7 @@ public static class Run
 			}
 			else
 			{
-				var env = Enviroment.createEnv();
+				
 
 				var ionizer = new Ionizer(code);
 				var ionized_atoms = ionizer.ionize();
@@ -77,7 +79,7 @@ public static class Run
 				var parser = new Parser(ionized_atoms);
 				var parsed_ions = parser.productAST();
 
-				var run = interpreter.evaluate(parsed_ions, env);
+				var run = Interpreter.evaluate(parsed_ions, env);
 
 				switch (run.type)
 				{
@@ -106,7 +108,7 @@ public static class Run
 		var parsed_ions = parser.productAST();
 		Console.WriteLine(ObjectDumper.Dump(parsed_ions));
 
-		var run = interpreter.evaluate(parsed_ions, env);
+		var run = Interpreter.evaluate(parsed_ions, env);
 
 		return 0;
 	}

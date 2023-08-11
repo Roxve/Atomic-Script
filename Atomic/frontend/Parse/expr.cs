@@ -11,7 +11,7 @@ public partial class Parser
 	{
 		var left = this.parse_obj_expr();
 
-		if (this.at().type == TokenType.setter)
+		if (this.at().type == IonType.setter)
 		{
 			this.take();
 			var value = this.parse_assigment_expr();
@@ -28,20 +28,20 @@ public partial class Parser
 
 	private Expression parse_obj_expr()
 	{
-		if (this.at().type != TokenType.OpenBrace)
+		if (this.at().type != IonType.OpenBrace)
 		{
 			return this.parse_compare_type1_expr();
 		}
 
 		this.take();
 		var properties = new List<Property>();
-		while (this.NotEOF() && this.at().type != TokenType.CloseBrace)
+		while (this.NotEOF() && this.at().type != IonType.CloseBrace)
 		{
-			var key = this.except(TokenType.id).value;
+			var key = this.except(IonType.id).value;
 
 
 			Property property =  Create<Property>();
-			if (this.at().type == TokenType.Comma)
+			if (this.at().type == IonType.Comma)
 			{
 				this.take();
 				property.key = key;
@@ -49,14 +49,14 @@ public partial class Parser
 				continue;
 			}
 
-			else if (this.at().type == TokenType.CloseBrace)
+			else if (this.at().type == IonType.CloseBrace)
 			{
 				property.key = key;
 				properties.Add(property);
 				continue;
 			}
 
-			this.except(TokenType.Colon);
+			this.except(IonType.Colon);
 
 			var value = this.parse_expr();
 
@@ -64,12 +64,12 @@ public partial class Parser
 
 			properties.Add(property);
 
-			if (this.at().type != TokenType.CloseBrace)
+			if (this.at().type != IonType.CloseBrace)
 			{
-				this.except(TokenType.Comma);
+				this.except(IonType.Comma);
 			}
 		}
-		this.except(TokenType.CloseBrace);
+		this.except(IonType.CloseBrace);
 
 		ObjectLiteral Obj = Create<ObjectLiteral>();
 
@@ -141,13 +141,13 @@ public partial class Parser
 	// handels multiplicitave and divison operations
 	private Expression parse_multiplicitave_expr()
 	{
-		var left = this.parse_primary_expr();
+		var left = this.parse_call_member_expr();
 		while (this.at().value == "/" || this.at().value == "*" || this.at().value == "%")
 		{
 			var Opeartor = Create<BinaryOperator>();
 			Opeartor.value = this.take().value;
 			
-			var right = this.parse_primary_expr();
+			var right = this.parse_call_member_expr();
 			var BE = Create<BinaryExpression>();
 			
 			BE.left = left;
@@ -157,6 +157,104 @@ public partial class Parser
 		}
 		return left;
 	}
+	
+	private Expression parse_call_member_expr()
+	{
+		var member = this.parse_member_expr();
+
+		if (this.at().type == IonType.OpenParen)
+		{
+			return this.parse_call_expr(member);
+		}
+		return member;
+	}
+
+
+	private Expression parse_call_expr(Expression caller)
+	{
+		CallExpr call_expr = Create<CallExpr>();
+
+		call_expr.caller = caller; call_expr.args = this.parse_args();
+
+		if (this.at().type == IonType.OpenParen)
+		{
+			call_expr = this.parse_call_expr(call_expr) as CallExpr;
+		}
+		return call_expr;
+	}
+
+
+	private List<Expression> parse_args()
+	{
+		this.except(IonType.OpenParen);
+		List<Expression> args = new List<Expression>();
+		if (this.at().type != IonType.CloseParen)
+		{
+			args = this.parse_args_list();
+		}
+
+		this.except(IonType.CloseParen);
+		return args;
+	}
+
+	private List<Expression> parse_args_list()
+	{
+		List<Expression> args = new List<Expression>();
+		args.Add(this.parse_assigment_expr());
+
+		while (this.at().type == IonType.Comma)
+		{
+			this.take();
+			args.Add(this.parse_assigment_expr());
+		}
+		return args;
+	}
+
+
+	private Expression parse_member_expr()
+	{
+		var obj = this.parse_primary_expr();
+		MemberExpr memberExpr = Create<MemberExpr>();
+		while (this.at().type == IonType.Dot || this.at().type == IonType.OpenBracket)
+		{
+			var ooperator = this.take();
+			Expression property;
+			bool computed; // !computed => obj.expr,computed obj[]
+
+			if (ooperator.type == IonType.Dot)
+			{
+				computed = false;
+				property = this.parse_primary_expr();
+
+				if (property.type != "Identifier")
+				{
+					error("excepted Identifier after dot", ooperator);
+				}
+			}
+
+			else
+			{
+				computed = true;
+				property = this.parse_expr();
+
+				this.except(IonType.CloseBracket);
+			}
+			memberExpr.Object = obj; memberExpr.computed = computed; memberExpr.property = property;
+
+			obj = memberExpr;
+		}
+
+		return obj;
+	}
+	
+	// Assignment
+	// Object
+	// compare
+	// AdditiveExpr
+	// MultiplicitaveExpr
+	// Call
+	// Member
+	// PrimaryExpr
 	
     private Expression parse_primary_expr()
 	{

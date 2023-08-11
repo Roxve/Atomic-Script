@@ -8,7 +8,7 @@ using Atomic_AST;
 
 namespace Atomic_lang;
 
-public partial class interpreter
+public partial class Interpreter
 {
 	public static RuntimeVal eval_program(Program program, Enviroment env)
 	{
@@ -38,13 +38,13 @@ public partial class interpreter
 			value = MK_NULL();
 		}
 
-		return env.declareVar(declaration.Id, value, declaration.locked);
+		return env.declareVar(declaration.Id, value, declaration.locked, declaration.value);
 	}
 	public static RuntimeVal eval_func_declaration(FuncDeclarartion declaration, Enviroment env) {
 		FuncVal fn = new FuncVal();
 		fn.name = declaration.name;fn.parameters = declaration.parameters; fn.body = declaration.body; fn.env = env;
 		
-		return env.declareVar(declaration.name, fn ,true);
+		return env.declareVar(declaration.name, fn ,true,declaration);
 	}
 	
 	public static RuntimeVal eval_return_stmt(ReturnStmt stmt, Enviroment env) {

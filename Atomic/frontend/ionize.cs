@@ -86,6 +86,8 @@ public class Ionizer
 	//keywords and their tokens
 	private List<(string value, IonType type)> keywords = new List<(string value, IonType type)> {
 			("set", IonType.set_kw),
+			("locked", IonType.locked_kw),
+			("func", IonType.func_kw),
 			("null", IonType.null_type),
 			("true", IonType.bool_type),
 			("false", IonType.bool_type)
@@ -175,6 +177,18 @@ public class Ionizer
 			{
 				add(atom().ToString(), IonType.Comma);
 				take();
+			}
+			
+			
+			else if(atom() == '>') {
+				take();
+				if(atom() == '>') {
+					add(">>", IonType.setter);
+					take();
+				}
+				else {
+					add(">", IonType.ooperator);
+				}
 			}
 			else if(isOp(atom())) {
 				add(atom().ToString(), IonType.ooperator);

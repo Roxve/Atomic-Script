@@ -3,21 +3,17 @@ using Atomic_AST;
 using System;
 using System.Threading;
 using Atomic_debugger;
-using Atomic_AST;
 using System.Drawing;
 using Pastel;
 
 namespace Atomic_lang;
 
-public partial class interpreter
+public partial class Interpreter
 {
-	//for now interpreter cant detect where is errors i need this fixed asap
-	private static int column = 1;
-	private static int line = 1;
 	private static void error(string message, Statement stmt)
 	{
 		
-		Console.WriteLine(($"runtime error: " + message + $"\nat => line:{stmt.line}, column:{stmt.column}").Pastel(Color.Yellow).PastelBg(Color.Red));
+		Console.WriteLine(($"runtime error:\n" + message + $"\nat => line:{stmt.line}, column:{stmt.column}").Pastel(Color.Yellow).PastelBg(Color.Red));
 		
 		if (!(Vars.mode == "repl"))
 		{

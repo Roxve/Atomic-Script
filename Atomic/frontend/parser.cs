@@ -63,8 +63,17 @@ public partial class Parser
 	Ion previous_ion;
 	
 	private Ion except(IonType correct_type) {
-		var prev = ions[0];
-		ions.RemoveAt(0);
+		
+		Ion prev = new Ion();
+		if(ions.Count > 0) {
+			prev = ions[0];
+			ions.RemoveAt(0);
+		}
+		else {
+			prev.type = IonType.EOF;
+			prev.value = "END"; 
+			prev.line = this.line; prev.column = this.column;
+		}
 		if (prev.type != correct_type)
 		{	
 			this.error("Parser error, excepting " + correct_type,prev);
@@ -87,13 +96,17 @@ public partial class Parser
 	public Program productAST() {
 		Program program = Create<Program>();
 		while(NotEOF()) {
-			program.body.Add(this.parse_statment());
+			program.body.Add(this.parse_statement());
 		}
 		return program;
 	}
 	
-	private Statement parse_statment() {
+	private Statement parse_statement() {
 		switch(this.at().type) {
+			case IonType.func_kw:
+				return this.parse_func_declaration();
+			case IonType.set_kw:
+				return this.parse_var_declaration();
 			default:
 				return this.parse_expr();
 		}
