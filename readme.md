@@ -41,8 +41,6 @@ set isRobotA >> if isRobotQ = 'y': { true } else { false }
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
 # TODO(next update):
 - make a website for the language as it's going tough it's early usable stage faster than i tough
-- else if is an expr not a statement (returns a value)
-- better errors? (skip errors until finished running, repl mode = no errors, better error locationing?)(already done that but it needs more work)
 # trying atomic:
 simply use the command in your terminal ```dotnet run``` to enter repl mode
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
