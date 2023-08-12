@@ -314,4 +314,30 @@ public partial class Interpreter
 			return VT.MK_NULL();
 		}
 	}
+	public static RuntimeVal eval_if_expr(ifExpr expr, Enviroment env) {
+		var test = evaluate(expr.test, env);
+		if(test.type != "bool") {
+			error("excepted test of type bool in if-else expr",expr.test);
+			return MK_NULL();
+		}
+		RuntimeVal results = MK_NULL();
+		switch((test as BooleanVal).value) {
+			case true:
+				foreach(Statement stmt in expr.body) {
+					results = evaluate(stmt,env);
+				}
+				break;
+			case false:
+				if(expr.alternative.type == "ifExpr") {
+					results = eval_if_expr(expr.alternative as ifExpr, env);
+				}
+				else {
+					foreach(Statement stmt in (expr.alternative as elseExpr).body) {
+						results = evaluate(stmt, env);
+					}
+				}
+				break;
+		}
+		return results;
+	}
 }

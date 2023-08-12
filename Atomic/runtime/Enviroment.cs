@@ -6,6 +6,7 @@ using System.Threading;
 using System.Drawing;
 using Pastel;
 using Atomic_AST;
+using Atomic_debugger;
 using System.Collections.Generic;
 namespace Atomic_lang;
 
@@ -52,10 +53,11 @@ public class Enviroment
 	{
 		
 		Console.WriteLine(("runtime error:\n" + message + $"\nat => line:{stmt.line} column:{stmt.column}").Pastel(Color.Yellow).PastelBg(Color.Red));
-		
-		Console.WriteLine("press anything to exit".Pastel(Color.Gold));
-		Console.ReadKey();
-		Thread.CurrentThread.Interrupt();
+		if(!(Vars.mode == "repl")) {
+			Console.WriteLine("press anything to exit".Pastel(Color.Gold));
+			Console.ReadKey();
+			Thread.CurrentThread.Interrupt();
+		}
 	}
 	private Enviroment? parent;
 	private Dictionary<string, RuntimeVal> variables;

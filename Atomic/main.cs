@@ -5,6 +5,7 @@ using System.Drawing;
 using Pastel;
 using ValueTypes;
 using System.IO;
+using System.Diagnostics;
 
 
 
@@ -58,7 +59,7 @@ public static class Run
 		var env = Enviroment.createEnv();
 		Console.WriteLine("entered repl mode! use '?' for commands(outside repl)\n.exit to exit".Pastel(Color.DarkOrange));
 		string code;
-		while (true)
+		Vars.mode = "repl";		while (true)
 		{
 			
 			Console.WriteLine("Atomic".Pastel(Color.Magenta));
@@ -114,6 +115,23 @@ public static class Run
 	}
 	public static int aFile(string code)
 	{
-		return 0;
+		var env = Enviroment.createEnv();
+
+		var ionizer = new Ionizer(code);
+		var ionized_atoms = ionizer.ionize();
+		
+		
+		var parser = new Parser(ionized_atoms);
+		var parsed_ions = parser.productAST();
+		if(Vars.error) {
+			return 1;
+		}
+		else {
+			var run = Interpreter.evaluate(parsed_ions, env);
+			if(Vars.error) {
+				return 1;
+			}
+			return 0;
+		}
 	}
 }

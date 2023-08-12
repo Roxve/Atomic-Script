@@ -68,37 +68,26 @@ public class MemberExpr : Expression
 }
 
 
-public class ifStmt : Expression
+public class ifExpr : Expression
 {
-	public ifStmt()
+	public ifExpr()
 	{
-		type = "ifStmt";
+		type = "ifExpr";
 		this.body = new List<Statement>();
 	}
-	public Expression condition { get; set; }
+	public Expression test { get; set; }
+	public List<Statement> body { get; set; }
+	public Expression alternative { get; set; }
+}
+
+//else {}, else if {} is considered an ifexpr
+public class elseExpr : Expression
+{
+	public elseExpr()
+	{
+		type = "elseExpr";
+		this.body = new List<Statement>();
+	}
 	public List<Statement> body { get; set; }
 }
 
-//else {} || else if {}
-public class elseStmt : Expression
-{
-	public elseStmt()
-	{
-		type = "elseStmt";
-		this.body = new List<Statement>();
-	}
-	public ifStmt IfStmt { get; set; }
-	public List<Statement> body { get; set; }
-}
-
-// a block containing many if / else if / else statments
-public class ifElseBlock : Expression
-{
-	public ifElseBlock()
-	{
-		type = "ifElseBlock";
-		elseStmts = new List<elseStmt>();
-	}
-	public ifStmt mainIfStmt { get; set; }
-	public List<elseStmt> elseStmts { get; set; }
-}

@@ -48,12 +48,8 @@ public partial class Interpreter
 				BooleanVal Bool = new BooleanVal();
 				Bool.value = (Statement as Bool).value;
 				return Bool;
-			//this should be a parser error?
-			case "elseStmt":
-				error("found else stmt without being in a if else block,excepted 'if' keyword before 'else' keyword!", Statement);
-				return VT.MK_NULL();
-			/*case "ifElseBlock":
-				return eval_if_else_block(Statement as ifElseBlock, env);*/
+		    case "ifExpr":
+				return eval_if_expr(Statement as ifExpr, env);
 			case "Identifier":
 				return eval_id(Statement as Identifier, env);
 			case "VarDeclaration":

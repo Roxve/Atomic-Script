@@ -1,3 +1,19 @@
-﻿6 * 6
-7 + 7
-print >> "test"
+﻿# if else tests
+
+set name >> prompt("enter your name: ")
+
+if name = "Thomas": {
+	write("You are an admin!")
+}
+else if name = "Ahmed": {
+	write("You are an admin frined!")
+}
+else {
+	write(name," You are not an admin ):")
+}
+
+set isRobotQ >> prompt("are you a robot? Y/n")
+isRobotQ >> toLower(isRobotQ)
+
+set isRobotA >> if isRobotQ = "y": { true } else { false }
+write("isRobot: ",isRobotA)

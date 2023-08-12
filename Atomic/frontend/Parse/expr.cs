@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Atomic_lang;
 
 public partial class Parser
-{         
+{
 	private Expression parse_assigment_expr()
 	{
 		var left = this.parse_obj_expr();
@@ -30,7 +30,7 @@ public partial class Parser
 	{
 		if (this.at().type != IonType.OpenBrace)
 		{
-			return this.parse_compare_type1_expr();
+			return this.parse_if_expr();
 		}
 
 		this.take();
@@ -40,7 +40,7 @@ public partial class Parser
 			var key = this.except(IonType.id).value;
 
 
-			Property property =  Create<Property>();
+			Property property = Create<Property>();
 			if (this.at().type == IonType.Comma)
 			{
 				this.take();
@@ -76,7 +76,58 @@ public partial class Parser
 		Obj.properties = properties;
 		return Obj;
 	}
-    //handles &/|/&&/||
+	
+	private Expression parse_if_expr()
+	{
+		if (this.at().type == IonType.if_kw)
+		{
+			take();
+			var test = this.parse_expr();
+			this.except(IonType.Colon);
+			this.except(IonType.OpenBrace);
+
+			List<Statement> body = new List<Statement>();
+
+			while (NotEOF() && this.at().type != IonType.CloseBrace)
+			{
+				body.Add(this.parse_statement());
+			}
+			this.except(IonType.CloseBrace);
+
+			ifExpr expr = Create<ifExpr>();
+			expr.test = test;
+			expr.body = body;
+			while (NotEOF() && this.at().type == IonType.else_kw)
+			{
+				take();
+				if (this.at().type == IonType.if_kw)
+				{
+					var alt = this.parse_if_expr();
+					expr.alternative = alt;
+				}
+				else
+				{
+					this.except(IonType.OpenBrace);
+					List<Statement> else_body = new List<Statement>();
+					while (NotEOF() && this.at().type != IonType.CloseBrace)
+					{
+						else_body.Add(this.parse_statement());
+					}
+					this.except(IonType.CloseBrace);
+					elseExpr Else = Create<elseExpr>();
+					Else.body = else_body;
+					expr.alternative = Else;
+				}
+			}
+			return expr;
+		}
+
+		else
+		{
+			return this.parse_compare_type1_expr();
+		}
+	}
+	//handles &/|/&&/||
 	private Expression parse_compare_type1_expr()
 	{
 		var left = this.parse_compare_type2_expr();
@@ -84,10 +135,10 @@ public partial class Parser
 		{
 			var Opeartor = Create<BinaryOperator>();
 			Opeartor.value = this.take().value;
-			
+
 			var right = this.parse_compare_type2_expr();
 			var BE = Create<BinaryExpression>();
-			
+
 			BE.left = left;
 			BE.right = right;
 			BE.Operator = Opeartor;
@@ -104,10 +155,10 @@ public partial class Parser
 		{
 			var Opeartor = Create<BinaryOperator>();
 			Opeartor.value = this.take().value;
-			
+
 			var right = this.parse_additive_expr();
 			var BE = Create<BinaryExpression>();
-			
+
 			BE.left = left;
 			BE.right = right;
 			BE.Operator = Opeartor;
@@ -121,13 +172,13 @@ public partial class Parser
 		var left = this.parse_multiplicitave_expr();
 		while (this.at().value == "+" || this.at().value == "-")
 		{
-			
+
 			var Opeartor = Create<BinaryOperator>();
 			Opeartor.value = this.take().value;
-			
+
 			var right = this.parse_multiplicitave_expr();
 			var BE = Create<BinaryExpression>();
-			
+
 			BE.left = left;
 			BE.right = right;
 			BE.Operator = Opeartor;
@@ -146,10 +197,10 @@ public partial class Parser
 		{
 			var Opeartor = Create<BinaryOperator>();
 			Opeartor.value = this.take().value;
-			
+
 			var right = this.parse_call_member_expr();
 			var BE = Create<BinaryExpression>();
-			
+
 			BE.left = left;
 			BE.right = right;
 			BE.Operator = Opeartor;
@@ -157,7 +208,7 @@ public partial class Parser
 		}
 		return left;
 	}
-	
+
 	private Expression parse_call_member_expr()
 	{
 		var member = this.parse_member_expr();
@@ -246,7 +297,7 @@ public partial class Parser
 
 		return obj;
 	}
-	
+
 	// Assignment
 	// Object
 	// compare
@@ -255,8 +306,8 @@ public partial class Parser
 	// Call
 	// Member
 	// PrimaryExpr
-	
-    private Expression parse_primary_expr()
+
+	private Expression parse_primary_expr()
 	{
 		IonType token = this.at().type;
 		switch (token)
@@ -287,7 +338,7 @@ public partial class Parser
 				except(IonType.CloseParen);
 				return value;
 			default:
-				error("Unexpected ion found during parsing! ",this.at());
+				error("Unexpected ion found during parsing! ", this.at());
 				this.take();
 				return Create<NullLiteral>();
 		}
