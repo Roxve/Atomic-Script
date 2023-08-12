@@ -103,8 +103,6 @@ public partial class Parser
 	
 	private Statement parse_statement() {
 		switch(this.at().type) {
-			case IonType.func_kw:
-				return this.parse_func_declaration();
 			case IonType.set_kw:
 				return this.parse_var_declaration();
 			case IonType.return_kw:

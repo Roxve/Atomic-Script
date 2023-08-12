@@ -13,7 +13,7 @@ atomic also support immutable variables with ```set locked varname >> value``` â
 - user defined functions, example
 ```cs
 write("Hello, world!")
-func add(a,b) {
+set add(a,b) {
   return a + b;
 }
 write("8 + 8 is equal to",add(8,8))

@@ -6,11 +6,7 @@ namespace Atomic_lang;
 
 public partial class Parser 
 {         
-        private Statement parse_func_declaration()
-	{
-		this.take();
-
-		var name = this.except(IonType.id).value;
+        private Statement parse_func_declaration(string name) {
 		var args = this.parse_args();
 
 		List<string> parameters = new List<string>();
@@ -53,6 +49,9 @@ public partial class Parser
 		else
 		{
 			id = except(IonType.id).value;
+			if(this.at().type == IonType.OpenParen) {
+				return this.parse_func_declaration(id);
+			}
 		}
 
 		VarDeclaration declare = new VarDeclaration();

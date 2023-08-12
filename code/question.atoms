@@ -1,4 +1,4 @@
-func question(message) {
+set question(message) {
    set results >> toLower(prompt(message + " Y/n?"))
    return if results = "y": { true } else { false }
 }

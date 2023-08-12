@@ -18,6 +18,8 @@ public class RuntimeVal
 {
 	public static string ValueType = "null,num,str,bool,obj";
 	public string type = ValueType;
+	//to allow memeber exprs like 5.toString()
+	public Dictionary<string, RuntimeVal> properties { get; set; }
 }
 public class NullVal : RuntimeVal
 {
@@ -63,7 +65,6 @@ public class ObjectVal : RuntimeVal
 	{
 		type = "obj";
 	}
-	public Dictionary<string, RuntimeVal> properties { get; set; }
 }
 
 public class functionCall : RuntimeVal
