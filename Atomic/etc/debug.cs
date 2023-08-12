@@ -3,11 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Atomic_lang;
+
 namespace Atomic_debugger;
 
 
-public class vars {
+public static class Vars {
+	public static bool error = false;
 	public static bool test = false;
+	public static bool repl = false;
+	public static string mode;
+}
+public class IonDumper {
+	public static string Dump(List<Ion> ions) {
+		string dump = "";
+		foreach(Ion ion in ions) {
+			
+			dump += "[" + ion.value + ',' + ion.type + "]";
+			dump += ',';
+		}
+		return dump;
+	}
 }
 public class ObjectDumper
 {

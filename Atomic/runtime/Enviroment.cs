@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Linq;
 using static ValueTypes.VT;
+using ValueTypes;
 using System.Threading;
+using System.Drawing;
+using Pastel;
+using Atomic_AST;
+using Atomic_debugger;
 using System.Collections.Generic;
-namespace Atomic;
+namespace Atomic_lang;
 
 
 /* the program contains a main env 
    and each class and each function contains their own env
    with the parent env (env contains functions and vars)
 */
+#nullable enable annotations
 
 
-public partial class Global
+
+public class Enviroment
 {
+	
 	public static Enviroment createEnv()
 	{
 		Enviroment env = new Enviroment(null);
@@ -25,55 +33,50 @@ public partial class Global
 		//write
 
 		var writeCall = new functionCall();
-		writeCall.execute = NativeFunc.write; env.declareVar("write", MK_NATIVE_FN(writeCall), true);
+		writeCall.execute = NativeFunc.write; env.declareVar("write", MK_NATIVE_FN(writeCall), true, null);
 		
 		//prompt
 		var promptCall = new functionCall();
-		promptCall.execute = NativeFunc.prompt; env.declareVar("prompt", MK_NATIVE_FN(promptCall), true);
+		promptCall.execute = NativeFunc.prompt; env.declareVar("prompt", MK_NATIVE_FN(promptCall), true, null);
 		
 		
 		//read
 		var readCall = new functionCall();
-		readCall.execute = NativeFunc.read; env.declareVar("read", MK_NATIVE_FN(readCall), true);
+		readCall.execute = NativeFunc.read; env.declareVar("read", MK_NATIVE_FN(readCall), true, null);
 		
 		//toLower
 		var toLowerCall = new functionCall();
-		toLowerCall.execute = NativeFunc.toLower; env.declareVar("toLower", MK_NATIVE_FN(toLowerCall), true);
+		toLowerCall.execute = NativeFunc.toLower; env.declareVar("toLower", MK_NATIVE_FN(toLowerCall), true, null);
 		return env;
 	}
-}
-
-
-public class Enviroment
-{
-
-	private void error(string message)
+	private void error(string message, Statement? stmt)
 	{
-		Console.BackgroundColor = ConsoleColor.Red;
-		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine(message);
-		Console.BackgroundColor = ConsoleColor.Black;
-		Console.ForegroundColor = ConsoleColor.White;
-		Console.WriteLine("press anything to exit");
-		Console.ReadKey();
-		Thread.CurrentThread.Interrupt();
+		
+		Console.WriteLine(("runtime error:\n" + message + $"\nat => line:{stmt.line} column:{stmt.column}").Pastel(Color.Yellow).PastelBg(Color.Red));
+		if(!(Vars.mode == "repl")) {
+			Console.WriteLine("press anything to exit".Pastel(Color.Gold));
+			Console.ReadKey();
+			Thread.CurrentThread.Interrupt();
+		}
 	}
 	private Enviroment? parent;
 	private Dictionary<string, RuntimeVal> variables;
 	private List<string> locked_variables;
+	private List<Enviroment> available_envs;
 
 	public Enviroment(Enviroment? parentENV)
 	{
 		this.parent = parentENV;
 		this.variables = new Dictionary<string, RuntimeVal>();
 		this.locked_variables = new List<string>();
+		this.available_envs = new List<Enviroment>();
 	}
 
-	public RuntimeVal declareVar(string name, RuntimeVal value, bool isLocked)
+	public RuntimeVal declareVar(string name, RuntimeVal value, bool isLocked, Statement? stmt)
 	{
 		if (this.variables.ContainsKey(name))
 		{
-			this.error("var " + name + " already exit");
+			this.error("var " + name + " already exit", stmt);
 			return new NullVal();
 		}
 
@@ -86,35 +89,42 @@ public class Enviroment
 	}
 
 
-	public RuntimeVal setVar(string name, RuntimeVal value)
+	public RuntimeVal setVar(string name, RuntimeVal value, Statement stmt)
 	{
-		var env = this.resolve(name);
+		var env = this.resolve(name, stmt);
 		if (env.locked_variables.Any(t => t == name))
 		{
-			error("cannot assign a value to a locked var!");
+			error("cannot assign a value to a locked var!", stmt);
 		}
 		env.variables[name] = value;
 		return value;
 	}
 
-	public RuntimeVal findVar(string name)
+	public RuntimeVal findVar(string name, Statement stmt)
 	{
-		var env = this.resolve(name);
+		var env = this.resolve(name, stmt);
 		return env.variables[name] as RuntimeVal;
 	}
 
-	public Enviroment resolve(string name)
+
+	public Enviroment resolve(string name, Statement stmt)
 	{
 		if (this.variables.ContainsKey(name))
 		{
 			return this;
 		}
+		foreach(Enviroment env in available_envs) {
+			if(env.variables.ContainsKey(name)) {
+				return env;
+			}
+		}
 		if (this.parent == null)
 		{
-			error("cannot resolve " + name);
-			return this;
+			 error("cannot resolve " + name, stmt);
+		     return this;
 		}
-		return this.parent.resolve(name);
+		
+		return this.parent.resolve(name, stmt);
 	}
 }
 

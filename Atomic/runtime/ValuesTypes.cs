@@ -3,140 +3,148 @@ using System;
 using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
-using Atomic;
+using Atomic_lang;
 
 namespace ValueTypes;
 
+
+
+
+//just to remmber type names and we might need that later
+
+
+
+public class RuntimeVal
+{
+	public static string ValueType = "null,num,str,bool,obj";
+	public string type = ValueType;
+}
+public class NullVal : RuntimeVal
+{
+	public NullVal()
+	{
+		type = "null";
+	}
+	public static string value = "null";
+}
+
+
+public class NumValue : RuntimeVal
+{
+	public NumValue()
+	{
+		type = "num";
+	}
+	public int value { get; set; }
+
+}
+
+public class StringVal : RuntimeVal
+{
+	public StringVal()
+	{
+		type = "str";
+	}
+
+	public string value { get; set; }
+}
+public class BooleanVal : RuntimeVal
+{
+	public BooleanVal()
+	{
+		type = "bool";
+	}
+	public bool value { get; set; }
+}
+
+public class ObjectVal : RuntimeVal
+{
+	public ObjectVal()
+	{
+		type = "obj";
+	}
+	public Dictionary<string, RuntimeVal> properties { get; set; }
+}
+
+public class functionCall : RuntimeVal
+{
+	public functionCall()
+	{
+		type = "functionCall";
+	}
+	public Func<RuntimeVal[], Enviroment, RuntimeVal> execute;
+	private RuntimeVal[] args;
+	public RuntimeVal[] Args
+	{
+		get { return this.args; }
+		set
+		{
+			this.args = value;
+		}
+	}
+	public Enviroment env { get; set; }
+
+
+}
+
+public class NativeFnVal : RuntimeVal
+{
+	public NativeFnVal()
+	{
+		type = "native-fn";
+	}
+
+	public functionCall callVal { get; set; }
+
+	public RuntimeVal call(RuntimeVal[] args, Enviroment env)
+	{
+		callVal.Args = args;
+		callVal.env = env;
+		var results = callVal.execute(args, env);
+
+		return results;
+	}
+}
+
+public class FuncVal : RuntimeVal
+{
+	public FuncVal()
+	{
+		type = "func";
+		this.Body = new List<Statement>();
+		this.parameters = new List<string>();
+	}
+	public string name { get; set; }
+	public List<string> parameters { get; set; }
+
+	public Enviroment env { get; set; }
+
+	private List<Statement> Body;
+
+	public List<Statement> body
+	{
+		get
+		{
+			return this.Body;
+		}
+		set
+		{
+			this.Body = value;
+		}
+	}
+}
+public class ReturnVal : RuntimeVal
+{
+	public ReturnVal()
+	{
+		type = "return";
+	}
+	public RuntimeVal value { get; set; }
+}
+
+
 public class VT
 {
-
-
-	//just to remmber type names and we might need that later
-	public static string ValueType = "null,num,str,bool,obj";
-
-
-	public class RuntimeVal
-	{
-		public string type = ValueType;
-	}
-	public class NullVal : RuntimeVal
-	{
-		public NullVal()
-		{
-			type = "null";
-		}
-		public static string value = "null";
-	}
-
-
-	public class NumValue : RuntimeVal
-	{
-		public NumValue()
-		{
-			type = "num";
-		}
-		public int value { get; set; }
-
-	}
-
-	public class StringVal : RuntimeVal
-	{
-		public StringVal()
-		{
-			type = "str";
-		}
-
-		public string value { get; set; }
-	}
-	public class BooleanVal : RuntimeVal
-	{
-		public BooleanVal()
-		{
-			type = "bool";
-		}
-		public bool value { get; set; }
-	}
-
-	public class ObjectVal : RuntimeVal
-	{
-		public ObjectVal()
-		{
-			type = "obj";
-		}
-		public Dictionary<string, RuntimeVal> properties { get; set; }
-	}
-
-	public class functionCall : RuntimeVal
-	{	
-		public functionCall()
-		{
-			type = "functionCall";
-		}
-		public Func<RuntimeVal[],Enviroment?,RuntimeVal> execute;
-		private RuntimeVal[] args;
-		public RuntimeVal[] Args
-		{
-			get {return this.args;}
-			set {
-				this.args = value;
-			}
-		}
-		public Enviroment? env { get; set; }
-
-
-	}
-
-	public class NativeFnVal : RuntimeVal
-	{
-		public NativeFnVal()
-		{
-			type = "native-fn";
-		}
-
-		public functionCall callVal {get; set;}
-		
-		public VT.RuntimeVal call(RuntimeVal[] args,Enviroment env) {
-			callVal.Args = args;
-			callVal.env = env;
-			var results = callVal.execute(args,env);
-		
-			return results;
-		}
-	}
-    public class LineNum : RuntimeVal {
-		public LineNum() {
-			type = "line";
-		}
-		public int num {get; set;}
-	}
-	public class FuncVal : RuntimeVal {
-		public FuncVal() {
-			type = "func";
-			this.Body = new List<AST.Statement>();
-			this.parameters = new List<string>();
-		}
-		public string name {get; set;}
-		public List<string> parameters {get; set;}
-		
-		public Enviroment env {get; set;}
-		
-		private List<AST.Statement> Body;
-		
-		public List<AST.Statement> body {
-			get {
-				return this.Body;
-			}
-			set {
-				this.Body = value;
-			}
-		}
-	}
-    public class ReturnVal : RuntimeVal {
-		public ReturnVal() {
-			type = "return";
-		}
-		public RuntimeVal value {get; set;}
-	}
 	public static NativeFnVal MK_NATIVE_FN(functionCall call)
 	{
 		NativeFnVal func = new NativeFnVal();
@@ -165,17 +173,22 @@ public class VT
 
 		return Inew;
 	}
-	public static RuntimeVal MK_TYPE(string? obj) {
+	#nullable enable
+	public static RuntimeVal MK_TYPE(string? obj)
+	{
 		int num;
-		
-		if(obj is null) {
+
+		if (obj is null)
+		{
 			return MK_NULL();
 		}
-		else if(int.TryParse(obj,out num)) {
+		else if (int.TryParse(obj, out num))
+		{
 			return MK_NUM(num);
 		}
-		
-		else {
+
+		else
+		{
 			return MK_STR(obj);
 		}
 	}

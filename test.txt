@@ -2,10 +2,10 @@
 
 set name >> prompt("enter your name: ")
 
-if(name = "Thomas") {
+if name = "Thomas": {
 	write("You are an admin!")
 }
-else if(name = "Ahmed") {
+else if name = "Ahmed": {
 	write("You are an admin frined!")
 }
 else {
@@ -15,6 +15,5 @@ else {
 set isRobotQ >> prompt("are you a robot? Y/n")
 isRobotQ >> toLower(isRobotQ)
 
-# TODO: make if else expressions to allow this ): (forgot about how i am focusing on flexbility)
-# set isRobotA >> if(isRobotQ = "y") { true } else { false }
-# write("isRobot: ",isRobotA)
+set isRobotA >> if isRobotQ = "y": { true } else { false }
+write("isRobot: ",isRobotA)

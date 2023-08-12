@@ -19,4 +19,7 @@
   <PropertyGroup>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Pastel" Version="4.1.0" />
+  </ItemGroup>
 </Project>

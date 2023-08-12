@@ -2,78 +2,79 @@
 using System.Linq;
 using System.Collections.Generic;
 using ValueTypes;
+using static ValueTypes.VT;
 using Atomic_AST;
 using System.Threading;
 
-namespace Atomic;
-
-public partial class interpreter
+namespace Atomic_lang;
+#nullable enable annotations
+public partial class Interpreter
 {
-	public static VT.RuntimeVal eval_id(AST.Identifier id, Enviroment env)
+	public static RuntimeVal eval_id(Identifier id, Enviroment env)
 	{
-		var value = env.findVar(id.symbol);
+		var value = env.findVar(id.symbol,id);
 		return value;
 	}
 
 
 
 	//acts as a return to the right
-	public static VT.RuntimeVal eval_binary_expr(AST.BinaryExpression binary, Enviroment env)
+	public static RuntimeVal eval_binary_expr(BinaryExpression binary, Enviroment env)
 	{
 		var lhs = evaluate(binary.left, env); var rhs = evaluate(binary.right, env);
 		if (lhs.type.ToString() == "num" && rhs.type.ToString() == "num")
 		{
-			return eval_numeric_binary_expr(lhs as VT.NumValue, rhs as VT.NumValue, binary.Operator);
+			return eval_numeric_binary_expr(lhs as NumValue, rhs as NumValue, binary.Operator.value, binary);
 		}
 		
 		else if(lhs.type == "str" && rhs.type == "str") {
-			return eval_string_binary_expr(lhs as VT.StringVal,rhs as VT.StringVal, binary.Operator);
+			return eval_string_binary_expr(lhs as StringVal,rhs as StringVal, binary.Operator.value, binary);
 		}
 		
 		else if(lhs.type == "bool" && rhs.type == "bool") {
-			return eval_bool_binary_expr(lhs as VT.BooleanVal, rhs as VT.BooleanVal,binary.Operator);
+			return eval_bool_binary_expr(lhs as BooleanVal, rhs as BooleanVal,binary.Operator.value, binary);
 		}
 		
-		return new VT.NullVal();
+		return new NullVal();
 	}
 	
 
-	public static VT.RuntimeVal eval_assignment(AST.AssignmentExpr node, Enviroment env)
+	public static RuntimeVal eval_assignment(AssignmentExpr node, Enviroment env)
 	{
 		
 		
 	
 		if (node.assigne.type == "Identifier")
 		{
-			var name = (node.assigne as AST.Identifier).symbol;
-			return env.setVar(name, evaluate(node.value, env));
+			var name = (node.assigne as Identifier).symbol;
+			return env.setVar(name, evaluate(node.value, env),node.value);
 		}
 		
 		else if (node.assigne.type == "MemberExpr")
 		{
 			 
-			var expr = (node.assigne as AST.MemberExpr);
+			var expr = (node.assigne as MemberExpr);
 
-			var Obj = eval_id(expr.Object as AST.Identifier, env);
+			var Obj = eval_id(expr.Object as Identifier, env);
 
 			if (Obj.type != "obj")
 			{
-				error($"excepted 'obj'\ngot => {expr.Object.type}");
-				return new VT.NullVal();
+				error($"excepted 'obj'\ngot => {expr.Object.type}", expr.Object);
+				return new NullVal();
 			}
 			 
 
-			VT.ObjectVal obj = Obj as VT.ObjectVal;
+			ObjectVal obj = Obj as ObjectVal;
 			if (!expr.computed)
 			{
 				 
-				AST.Identifier property = (expr.property as AST.Identifier);
+				Identifier property = (expr.property as Identifier);
 
 
 				if (!obj.properties.ContainsKey(property.symbol))
 				{
-					error($"{(expr.Object as AST.Identifier).symbol} doesnt contain property {property.symbol}");
-					return new VT.NullVal();
+					error($"{(expr.Object as Identifier).symbol} doesnt contain property {property.symbol}", expr.property);
+					return new NullVal();
 				}
 
                  
@@ -86,17 +87,17 @@ public partial class interpreter
 				bool isNum = expr.property.type == "NumericLiteral";
 				if (!isNum)
 				{
-					error($"excepeted index of property in object {(expr.Object as AST.Identifier).symbol}");
-					return new VT.NullVal();
+					error($"excepeted index of property in object {(expr.Object as Identifier).symbol}", expr.Object);
+					return new NullVal();
 				}
 
-				int Index = (expr.property as AST.NumericLiteral).value;
+				int Index = (expr.property as NumericLiteral).value;
 
 				bool IsVaildIndex = obj.properties.Count - 1 >= Index;
 				if (!IsVaildIndex)
 				{
-					error($"{(expr.Object as AST.Identifier).symbol} doesnt contains an index of {Index}");
-					return new VT.NullVal();
+					error($"{(expr.Object as Identifier).symbol} doesnt contains an index of {Index}", expr.Object);
+					return new NullVal();
 				}
 				var name = obj.properties.ElementAt(Index).Key;
 				obj.properties[name] = evaluate(node.value,env);
@@ -106,58 +107,58 @@ public partial class interpreter
 		}
 		else
 		{
-			error($"invaild token type in assignment\ngot type => {node.assigne.type}");
-			return new VT.NullVal();
+			error($"invaild token type in assignment\ngot type => {node.assigne.type}", node.assigne);
+			return new NullVal();
 		}
 	}
 
-	public static VT.RuntimeVal eval_call_expr(AST.CallExpr expr, Enviroment env)
+	public static RuntimeVal eval_call_expr(CallExpr expr, Enviroment env)
 	{
-		var args = expr.args.ConvertAll<VT.RuntimeVal>(arg => evaluate(arg, env)).ToArray();
+		var args = expr.args.ConvertAll<RuntimeVal>(arg => evaluate(arg, env)).ToArray();
 
 		var fn = evaluate(expr.caller, env);
 
 		switch(fn.type) {
 			case "native-fn":
-				var results = (fn as VT.NativeFnVal).call(args, env);
+				var results = (fn as NativeFnVal).call(args, env);
 				return results;
 			case "func":
-				var func = (fn as VT.FuncVal);
+				var func = (fn as FuncVal);
 				var funcEnv = new Enviroment(func.env);
 				
 				for(int x = 0; x < func.parameters.Count; x++) {
 					var name = func.parameters[x];
 					
-					funcEnv.declareVar(name, args[x], false);
+					funcEnv.declareVar(name, args[x], false,expr);
 				}
-				VT.RuntimeVal result = VT.MK_NULL();
-				VT.RuntimeVal last;
-				foreach(AST.Statement stmt in func.body) {
+				RuntimeVal result = MK_NULL();
+				RuntimeVal last;
+				foreach(Statement stmt in func.body) {
 					//TODO add unreachable code warning
 					last = evaluate(stmt, funcEnv);
 					if(last.type == "return") {
-						result = (last as VT.ReturnVal).value;
+						result = (last as ReturnVal).value;
 						break;
 					}
 				}
 				return result;
 			default:
-				error("Cannot call a value that is not a Function \ngot => " + fn.type);
-				return new VT.NullVal();
+				error("Cannot call a value that is not a Function \ngot => " + fn.type,expr);
+				return new NullVal();
 		}
 	}
 
-	public static VT.RuntimeVal eval_object_expr(AST.ObjectLiteral obj, Enviroment env)
+	public static RuntimeVal eval_object_expr(ObjectLiteral obj, Enviroment env)
 	{
-		VT.ObjectVal Obj = new VT.ObjectVal(); Obj.properties = new Dictionary<string, VT.RuntimeVal>();
+		ObjectVal Obj = new ObjectVal(); Obj.properties = new Dictionary<string, RuntimeVal>();
 
-		foreach (AST.Property property in obj.properties)
+		foreach (Property property in obj.properties)
 		{
-			VT.RuntimeVal runtimeVal = new VT.RuntimeVal();
+			RuntimeVal runtimeVal = new RuntimeVal();
 
 			if (property.value == null)
 			{
-				runtimeVal = env.findVar(property.key);
+				runtimeVal = env.findVar(property.key,property);
 			}
 			else
 			{
@@ -169,26 +170,26 @@ public partial class interpreter
 		return Obj;
 	}
 
-	public static VT.RuntimeVal eval_member_expr(AST.MemberExpr expr, Enviroment env)
+	public static RuntimeVal eval_member_expr(MemberExpr expr, Enviroment env)
 	{
-		var Obj = eval_id(expr.Object as AST.Identifier, env);
+		var Obj = eval_id(expr.Object as Identifier, env);
 
 		if (Obj.type != "obj")
 		{
-			error($"excepted 'obj'\ngot => {expr.Object.type}");
-			return new VT.NullVal();
+			error($"excepted 'obj'\ngot => {expr.Object.type}", expr.Object);
+			return new NullVal();
 		}
 
-		VT.ObjectVal obj = Obj as VT.ObjectVal;
+		ObjectVal obj = Obj as ObjectVal;
 		if (!expr.computed)
 		{
-			AST.Identifier property = (expr.property as AST.Identifier);
+			Identifier property = (expr.property as Identifier);
 
 
 			if (!obj.properties.ContainsKey(property.symbol))
 			{
-				error($"{(expr.Object as AST.Identifier).symbol} doesnt contain property {property.symbol}");
-				return new VT.NullVal();
+				error($"{(expr.Object as Identifier).symbol} doesnt contain property {property.symbol}", expr.property);
+				return new NullVal();
 			}
 
 
@@ -199,23 +200,23 @@ public partial class interpreter
 			bool isNum = expr.property.type == "NumericLiteral";
 			if (!isNum)
 			{
-				error($"excepeted index of property in object {(expr.Object as AST.Identifier).symbol}");
-				return new VT.NullVal();
+				error($"excepeted index of property in object {(expr.Object as Identifier).symbol}",expr.Object);
+				return new NullVal();
 			}
 
-			int Index = (expr.property as AST.NumericLiteral).value;
+			int Index = (expr.property as NumericLiteral).value;
 
 			bool IsVaildIndex = obj.properties.Count - 1 >= Index;
 			if (!IsVaildIndex)
 			{
-				error($"{(expr.Object as AST.Identifier).symbol} doesnt contains an index of {Index}");
-				return new VT.NullVal();
+				error($"{(expr.Object as Identifier).symbol} doesnt contains an index of {Index}",expr.Object);
+				return new NullVal();
 			}
 			return obj.properties.ElementAt(Index).Value;
 		}
 	}
 
-	public static VT.RuntimeVal eval_numeric_binary_expr(VT.NumValue lhs, VT.NumValue rhs, string ooperator)
+	public static RuntimeVal eval_numeric_binary_expr(NumValue lhs, NumValue rhs, string ooperator, Expression expr)
 	{
 
         object? results = null;
@@ -247,7 +248,7 @@ public partial class interpreter
 				results = lhs.value < rhs.value;
 				break;
 			default:
-				error($"Operation '{ooperator}' cannot be aplied on numbers\ngot => {rhs.value} {ooperator} {lhs.value}");
+				error($"Operation '{ooperator}' cannot be aplied on numbers\ngot => {rhs.value} {ooperator} {lhs.value}",expr);
 				break;
 		}
 		
@@ -259,11 +260,11 @@ public partial class interpreter
 			return VT.MK_BOOL((bool) results);
 		}
 		else {
-			return VT.MK_NUM();
+			return MK_NUM();
 		}
 	}
 
-	public static VT.RuntimeVal eval_bool_binary_expr(VT.BooleanVal lhs, VT.BooleanVal rhs, string ooperator) {
+	public static RuntimeVal eval_bool_binary_expr(BooleanVal lhs, BooleanVal rhs, string ooperator, Expression expr) {
 		bool results = false;
 		switch(ooperator) {
 			case "&":
@@ -282,12 +283,12 @@ public partial class interpreter
 				results = lhs.value == rhs.value;
 				break;
 			default:
-				error($"cannot do operation {ooperator} on booleans\ngot => {rhs.value} {ooperator} {lhs.value}");
+				error($"cannot do operation {ooperator} on booleans\ngot => {rhs.value} {ooperator} {lhs.value}", expr);
 				break;
 		}
-		return VT.MK_BOOL(results);
+		return MK_BOOL(results);
 	}
-	public static VT.RuntimeVal eval_string_binary_expr(VT.StringVal lhs,VT.StringVal rhs, string ooperator) {
+	public static RuntimeVal eval_string_binary_expr(StringVal lhs,StringVal rhs, string ooperator,Expression expr) {
 		object? results = null;
 		
 		switch(ooperator)
@@ -299,12 +300,12 @@ public partial class interpreter
 				results = lhs.value == rhs.value;
 				break;
 			default:
-				error($"cannot peform operation {ooperator} on string\ngot => {lhs.value} {ooperator} {rhs.value}");
-				return new VT.NullVal();
+				error($"cannot peform operation {ooperator} on string\ngot => {lhs.value} {ooperator} {rhs.value}", expr);
+				return new NullVal();
 		}
 		
 		if(results is string) {
-			return VT.MK_NUM((int) results);
+			return VT.MK_STR((string) results);
 		}
 		else if(results is bool) {
 			return VT.MK_BOOL((bool) results);
@@ -312,5 +313,31 @@ public partial class interpreter
 		else {
 			return VT.MK_NULL();
 		}
+	}
+	public static RuntimeVal eval_if_expr(ifExpr expr, Enviroment env) {
+		var test = evaluate(expr.test, env);
+		if(test.type != "bool") {
+			error("excepted test of type bool in if-else expr",expr.test);
+			return MK_NULL();
+		}
+		RuntimeVal results = MK_NULL();
+		switch((test as BooleanVal).value) {
+			case true:
+				foreach(Statement stmt in expr.body) {
+					results = evaluate(stmt,env);
+				}
+				break;
+			case false:
+				if(expr.alternative.type == "ifExpr") {
+					results = eval_if_expr(expr.alternative as ifExpr, env);
+				}
+				else {
+					foreach(Statement stmt in (expr.alternative as elseExpr).body) {
+						results = evaluate(stmt, env);
+					}
+				}
+				break;
+		}
+		return results;
 	}
 }

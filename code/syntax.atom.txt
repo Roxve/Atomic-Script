@@ -1,0 +1,38 @@
+﻿# comment
+#* this file contains the syntax
+   i want to achieve this might change
+   or might not be runnable           *#
+
+
+# declaration
+set var >> value
+var >> newvalue
+
+# if expr
+if true: {
+	write("first one is truw")
+}
+else if false: {
+	write("second is true")
+}
+else {
+	write("none is true")
+}
+
+# function declaration
+set func() {
+	return thing
+}
+
+# not sure which one should i use but for now this is the one
+func name() {
+	return thing;
+}
+
+# switch
+switch x: {
+	case value:
+		break;
+	default:
+		break;
+}

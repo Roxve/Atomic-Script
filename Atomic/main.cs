@@ -1,139 +1,137 @@
 ﻿using System;
 using System.Linq;
-using System.IO;
-using Atomic;
-using Atomic_AST;
-using System.ComponentModel;
 using Atomic_debugger;
-using System.Threading;
+using System.Drawing;
+using Pastel;
 using ValueTypes;
-using static Atomic_AST.AST;
-namespace Atomic;
+using System.IO;
+using System.Diagnostics;
+
+
+
+
+namespace Atomic_lang;
 
 public static class Run
 {
-
 	public static void Main(String[] args)
 	{
-		string code;
-		if (args.Count() <= 0 || args == null)
+		if (args is null || args.Length <= 0)
 		{
-			repl();
+			Repl();
 		}
 		else
 		{
 			switch (args[0])
 			{
+				case "help":
+				case "?":
+				case "-h":
+					Console.WriteLine("commands:\nno args: enter repl mode\nrun: runs a file\nrun?: runs a file and disaplays AST/IONS(tokens) for dev reasons");
+					break;
 				case "run":
 					if (args.Length < 2)
 					{
-						Console.WriteLine("please give file to run");
-						return;
+						Console.WriteLine("excepted file path to run at the next arg!");
+						break;
 					}
-					code = File.ReadAllText(@"" + args[1]);
-					Runp(code);
+					string code = File.ReadAllText(args[1]);
+					Run.aFile(code);
 					break;
 				case "run?":
 					if (args.Length < 2)
 					{
-						Console.WriteLine("please give file to run");
-						return;
+						Console.WriteLine("excepted file path to run at the next arg!");
+						break;
 					}
-					code = File.ReadAllText(@"" + args[1]);
-
-					TestRun(code);
-					return;
-				case "help":
-					Console.WriteLine("usage 'atomic [command]'\nhelp or ?: disaplys this\nrun [file]: runs the file");
-					return;
-				case "?":
-					Console.WriteLine("usage 'atomic [command]'\nhelp or ?: disaplys this\nrun [file]: runs the file");
-					return;
+					string codet = File.ReadAllText(args[1]);
+					Run.Test(codet);
+					break;
 				default:
-					repl();
-					return;
+					Repl();
+					break;
 			}
 		}
 	}
-	public static void Runp(string code)
+	public static int Repl()
 	{
-		var env = Global.createEnv();
-		var ionize = new Ionizing(code);
-		var ionized_code = ionize.ionize();
-		var parse = new Parser(ionized_code);
-		
-		AST.Program Program = parse.productAST();
-		if (Global.Var.error)
-		{
-			Console.WriteLine("duo to errors, press anything to exit");
-			Console.ReadKey();
-			Thread.CurrentThread.Interrupt();
-		}
-		var result = interpreter.evaluate(Program, env);
-		
-	}
-	public static void TestRun(string code)
-	{
-		var env = Global.createEnv();
-		vars.test = true;
-		Console.WriteLine("running?: {0}", true);
-
-		var ionize = new Ionizing(code);
-		var ionized_code = ionize.ionize();
-		Console.WriteLine("ionized?: {0}", true);
-		Console.WriteLine(string.Join(',', ionized_code));
-		var parse = new Parser(ionized_code);
-		AST.Program Program = parse.productAST();
-		Console.WriteLine("parsed?: {0}", true);
-
-		var dump = ObjectDumper.Dump(Program);
-		File.WriteAllText(@"last_testrun.txt", dump);
-		Console.WriteLine("Program?");
-		Console.WriteLine(dump);
-
-		var result = interpreter.evaluate(Program, env);
-
-		Console.WriteLine("results?");
-		var dump_results = ObjectDumper.Dump(result);
-
-		Console.WriteLine(dump_results);
-	}
-	public static void repl()
-	{
-		var env = Global.createEnv();
-
-		//default vars for testing
-		Global.Var.mode = "repl";
+		ConsoleExtensions.Enable();
+		var env = Enviroment.createEnv();
+		Console.WriteLine("entered repl mode! use '?' for commands(outside repl)\n.exit to exit".Pastel(Color.DarkOrange));
 		string code;
-		Console.ForegroundColor = ConsoleColor.Green;
-		Console.WriteLine("Type Commands to run in atomic! (.exit to exit)");
-		while (true)
+		Vars.mode = "repl";		while (true)
 		{
-			//for now you can write one expr and it returns correctly but after that one it returns null?
-			Console.ForegroundColor = ConsoleColor.Magenta;
-			Console.WriteLine("Atomic");
-			Console.Write("=>");
-			Console.ForegroundColor = ConsoleColor.White;
+			
+			Console.WriteLine("Atomic".Pastel(Color.Magenta));
+			Console.Write("=>".Pastel(Color.Magenta));
 			code = Console.ReadLine();
-			code = code.Trim();
 			if (code == ".exit")
 			{
-				Thread.CurrentThread.Interrupt();
+				break;
 			}
 			else
 			{
-				var ionize = new Ionizing(code);
-				var ionized_code = ionize.ionize();
-				var parse = new Parser(ionized_code);
-				AST.Program Program = parse.productAST();
-				if (Global.Var.error)
-				{
-					Global.Var.error = false;
-					continue;
-				}
 				
-				var result = interpreter.evaluate(Program, env);
+
+				var ionizer = new Ionizer(code);
+				var ionized_atoms = ionizer.ionize();
+
+
+				var parser = new Parser(ionized_atoms);
+				var parsed_ions = parser.productAST();
+
+				var run = Interpreter.evaluate(parsed_ions, env);
+
+				switch (run.type)
+				{
+					case "num":
+						Console.WriteLine((run as NumValue).value.ToString().Pastel(Color.Gold));
+						continue;
+					case "str":
+						Console.WriteLine((run as StringVal).value.Pastel(Color.Gold));
+						continue;
+					default:
+						continue;
+				}
 			}
+		}
+		return 0;
+	}
+	public static int Test(string code)
+	{
+		var env = Enviroment.createEnv();
+
+		var ionizer = new Ionizer(code);
+		var ionized_atoms = ionizer.ionize();
+		Console.WriteLine(IonDumper.Dump(ionized_atoms));
+		
+		var parser = new Parser(ionized_atoms);
+		var parsed_ions = parser.productAST();
+		Console.WriteLine(ObjectDumper.Dump(parsed_ions));
+
+		var run = Interpreter.evaluate(parsed_ions, env);
+
+		return 0;
+	}
+	public static int aFile(string code)
+	{
+		var env = Enviroment.createEnv();
+
+		var ionizer = new Ionizer(code);
+		var ionized_atoms = ionizer.ionize();
+		
+		
+		var parser = new Parser(ionized_atoms);
+		var parsed_ions = parser.productAST();
+		if(Vars.error) {
+			return 1;
+		}
+		else {
+			var run = Interpreter.evaluate(parsed_ions, env);
+			if(Vars.error) {
+				return 1;
+			}
+			return 0;
 		}
 	}
 }

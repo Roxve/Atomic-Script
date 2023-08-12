@@ -2,20 +2,21 @@
 using System.Linq;
 using System.Collections.Generic;
 using ValueTypes;
+using static ValueTypes.VT;
 using Atomic_debugger;
 using Atomic_AST;
 
-namespace Atomic;
+namespace Atomic_lang;
 
-public partial class interpreter
+public partial class Interpreter
 {
-	public static VT.RuntimeVal eval_program(AST.Program program, Enviroment env)
+	public static RuntimeVal eval_program(Program program, Enviroment env)
 	{
-		VT.RuntimeVal lastEvaluated = new VT.NullVal();
-		foreach (AST.Statement statement in program.body)
+		RuntimeVal lastEvaluated = new NullVal();
+		foreach (Statement statement in program.body)
 		{
 			lastEvaluated = evaluate(statement, env);
-			if (vars.test)
+			if (Vars.test)
 			{
 				Console.WriteLine("current evaluated:");
 				Console.WriteLine(ObjectDumper.Dump(lastEvaluated));
@@ -24,9 +25,9 @@ public partial class interpreter
 		return lastEvaluated;
 	}
 
-	public static VT.RuntimeVal eval_var_declaration(AST.VarDeclaration declaration, Enviroment env)
+	public static RuntimeVal eval_var_declaration(VarDeclaration declaration, Enviroment env)
 	{
-		VT.RuntimeVal value;
+		RuntimeVal value;
 
 		if (declaration.value != null)
 		{
@@ -34,77 +35,22 @@ public partial class interpreter
 		}
 		else
 		{
-			value = VT.MK_NULL();
+			value = MK_NULL();
 		}
 
-		return env.declareVar(declaration.Id, value, declaration.locked);
+		return env.declareVar(declaration.Id, value, declaration.locked, declaration.value);
 	}
-	public static VT.RuntimeVal eval_func_declaration(AST.FuncDeclarartion declaration, Enviroment env) {
-		VT.FuncVal fn = new VT.FuncVal();
+	public static RuntimeVal eval_func_declaration(FuncDeclarartion declaration, Enviroment env) {
+		FuncVal fn = new FuncVal();
 		fn.name = declaration.name;fn.parameters = declaration.parameters; fn.body = declaration.body; fn.env = env;
 		
-		return env.declareVar(declaration.name, fn ,true);
+		return env.declareVar(declaration.name, fn ,true,declaration);
 	}
 	
-	public static VT.RuntimeVal eval_return_stmt(AST.ReturnStmt stmt, Enviroment env) {
-		VT.ReturnVal toReturn = new VT.ReturnVal();
+	public static RuntimeVal eval_return_stmt(ReturnStmt stmt, Enviroment env) {
+		ReturnVal toReturn = new ReturnVal();
 		toReturn.value = evaluate(stmt.value, env);
 		return toReturn;
 	}
-	public static VT.RuntimeVal eval_if_stmt(AST.ifStmt Stmt, Enviroment env) {
-		VT.RuntimeVal results = VT.MK_NULL();
-		foreach(AST.Statement stmt in Stmt.body) {
-					results = evaluate(stmt, env);
-					if(results.type == "return") {
-						break;
-					}
-	    }
-		return results;
-	}
 	
-	public static VT.RuntimeVal eval_else_stmts(List<AST.elseStmt> Stmts,Enviroment env) {
-		VT.RuntimeVal results = VT.MK_NULL();
-		foreach(AST.elseStmt Else in Stmts) {
-			if(Else.body.Count > 0) {
-				foreach(AST.Statement stmt in Else.body) {
-					results = evaluate(stmt, env);
-					if(results.type == "return") {
-						break;
-					}
-				}
-				return results;
-			}
-			else {
-				var Condition = evaluate(Else.elseIfStmt.condition, env);
-				if(Condition.type != "bool") {
-					error($"excepted bool in if condition?\ngot => {Condition.type}");
-				}
-				switch((Condition as VT.BooleanVal).value) {
-					case true:
-						results = eval_if_stmt(Else.elseIfStmt,env);
-						return results;
-					case false:
-						continue;
-				}
-			}
-		}
-		return results;
-	}
-	public static VT.RuntimeVal eval_if_else_block(AST.ifElseBlock Block, Enviroment env) {
-		var mainCondition = evaluate(Block.mainIfStmt.condition, env);
-		
-		if(mainCondition.type != "bool") {
-			error($"excepted bool in if condition?\ngot => {mainCondition.type}");
-		}
-		VT.RuntimeVal results = VT.MK_NULL();
-		switch((mainCondition as VT.BooleanVal).value) {
-			case true:
-				results = eval_if_stmt(Block.mainIfStmt,env);
-				break;
-			case false:
-				 results = eval_else_stmts(Block.elseStmts, env);
-				 break;
-		}
-		return results;
-	}
 }

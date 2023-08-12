@@ -4,76 +4,76 @@ using System.Collections.Generic;
 
 namespace Atomic_AST;
 
-public partial class AST
+#nullable enable annotations
+
+public class Identifier : Expression
 {
-	public class Identifier : Expression
+	public Identifier()
 	{
-		public Identifier()
-		{
-			type = "Identifier";
-		}
-		public string symbol { get; set; }
-		public bool locked = false;
+		type = "Identifier";
 	}
+	public string symbol { get; set; }
+	public bool locked = false;
+}
 
-	public class Property : Expression
+public class Property : Expression
+{
+	public Property()
 	{
-		public Property()
-		{
-			type = "Property";
-		}
-		public string key { get; set; }
-		public Expression? value { get; set; }
+		type = "Property";
 	}
+	public string key { get; set; }
+	public Expression? value { get; set; }
+}
 
-	public class ObjectLiteral : Expression
+public class ObjectLiteral : Expression
+{
+	public ObjectLiteral()
 	{
-		public ObjectLiteral()
-		{
-			type = "ObjectLiteral";
-		}
-		public List<Property> properties { get; set; }
+		type = "ObjectLiteral";
 	}
+	public List<Property> properties { get; set; }
+}
 
 
-	public class NumericLiteral : Expression
+public class NumericLiteral : Expression
+{
+	public NumericLiteral()
 	{
-		public NumericLiteral()
-		{
-			type = "NumericLiteral";
-		}
-		public int value { get; set; }
+		type = "NumericLiteral";
 	}
-	
-	public class Bool : Expression {
-		public Bool() {
-			type = "Bool";
-		}
-		
-		public bool value {get; set;}
-	}
-	public class StringLiteral : Expression
+	public int value { get; set; }
+}
+
+public class Bool : Expression
+{
+	public Bool()
 	{
-		public StringLiteral()
-		{
-			type = "StringLiteral";
-		}
-		public string value { get; set; }
+		type = "Bool";
 	}
-	public class NullLiteral : Expression
+
+	public bool value { get; set; }
+}
+public class StringLiteral : Expression
+{
+	public StringLiteral()
 	{
-		public NullLiteral()
-		{
-			type = "NullLiteral";
-		}
-		public string value = "null";
+		type = "StringLiteral";
 	}
-	
-	public class Line : Expression {
-		public Line()
-		{
-			type = "line";
-		}
-		public int line {get; set;}
+	public string value { get; set; }
+}
+public class NullLiteral : Expression
+{
+	public NullLiteral()
+	{
+		type = "NullLiteral";
 	}
+	public string value = "null";
+}
+
+public class BinaryOperator : Statement {
+	public BinaryOperator() {
+		type = "BinaryOp";
+	}
+	public string value {get; set;}
 }
