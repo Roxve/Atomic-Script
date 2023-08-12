@@ -19,18 +19,22 @@ func add(a,b) {
 write("8 + 8 is equal to",add(8,8))
 ```
 🦜
-- if-else statement (making them an expression in the next update for more creativity)
+- if-else expressions
 ```cs
 set name >> prompt("enter your name: ")
-if(name = "Ahmed") {
+if name = "Ahmed":  {
      write("you are an admins friend")
 }
-else if(name = "Thomas") {
+else if name = "Thomas": {
       write("you are an admin :)")
 }
 else {
  write("you are not an admin ):")
 }
+set isRobotQ >> toLower(prompt("are you a robot? Y/n"))
+
+# true if user gave y as an answer false if anything else
+set isRobotA >> if isRobotQ = y: { true } else { false }
 ```
 ✅
 # Features(i want):
