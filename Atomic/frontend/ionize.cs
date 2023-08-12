@@ -90,6 +90,7 @@ public class Ionizer
 			("if", IonType.if_kw),
 			("else", IonType.else_kw),
 			("func", IonType.func_kw),
+			("return", IonType.return_kw),
 			("null", IonType.null_type),
 			("true", IonType.bool_type),
 			("false", IonType.bool_type)
@@ -109,7 +110,7 @@ public class Ionizer
 	
 	public bool isOp(char x) {
 		//no > because it can be a setter '>>'
-		return "+-/*=<&|".Contains(x);
+		return "+-/*=<&".Contains(x);
 	}
 	
 	public bool isSkippableChar(char i)
@@ -179,6 +180,16 @@ public class Ionizer
 			{
 				add(atom().ToString(), IonType.Comma);
 				take();
+			}
+			else if (atom() == '|') {
+				take();
+				if(atom() == '|') {
+					take();
+					add("||", IonType.ooperator);
+				}
+				else {
+					add("|", IonType.ooperator);
+				}
 			}
 			
 			

@@ -107,6 +107,8 @@ public partial class Parser
 				return this.parse_func_declaration();
 			case IonType.set_kw:
 				return this.parse_var_declaration();
+			case IonType.return_kw:
+			    return this.parse_return_stmt();
 			default:
 				return this.parse_expr();
 		}

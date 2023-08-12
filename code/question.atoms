@@ -1,0 +1,17 @@
+func question(message) {
+   set results >> toLower(prompt(message + " Y/n?"))
+   return if results = "y": { true } else { false }
+}
+
+set isRobot
+isRobot >> question("are you a robot?")
+
+if isRobot: {
+   write("You are a robot ):")
+}
+else if isRobot = false: {
+   write("Yay you are not a robot (:")
+}
+else {
+  write("this is not possible?")
+}

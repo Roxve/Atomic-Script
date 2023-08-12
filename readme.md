@@ -34,7 +34,7 @@ else {
 set isRobotQ >> toLower(prompt("are you a robot? Y/n"))
 
 # true if user gave y as an answer false if anything else
-set isRobotA >> if isRobotQ = y: { true } else { false }
+set isRobotA >> if isRobotQ = 'y': { true } else { false }
 ```
 ✅
 # Features(i want):

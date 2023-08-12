@@ -273,11 +273,8 @@ public partial class Interpreter
 			case "&&":
 				results = lhs.value & rhs.value;
 				break;
-			case "|":
-				results = lhs.value || rhs.value;
-				break;
 			case "||":
-				results = lhs.value | rhs.value;
+				results = lhs.value || rhs.value;
 				break;
 			case "=":
 				results = lhs.value == rhs.value;
