@@ -2,3 +2,9 @@ body {
   background-color: #24231f;
   color: white;
 }
+.header {
+  margin-left: auto;
+  margin-right: 0;
+  color: deepskyblue;
+  text-align: center;
+}

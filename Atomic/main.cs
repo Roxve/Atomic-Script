@@ -59,7 +59,8 @@ public static class Run
 		var env = Enviroment.createEnv();
 		Console.WriteLine("entered repl mode! use '?' for commands(outside repl)\n.exit to exit".Pastel(Color.DarkOrange));
 		string code;
-		Vars.mode = "repl";		while (true)
+		Vars.mode = "repl";
+		while (true)
 		{
 			
 			Console.WriteLine("Atomic".Pastel(Color.Magenta));
