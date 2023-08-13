@@ -1,5 +1,5 @@
-# Atomic
-Atomic is a simple small dynamic programming lang made for fun! built-on c#
+# Atomic-Script
+Atomic-Script is a simple small dynamic scripting language made for fun! built-on c#
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
 # Features(basic syntax):
