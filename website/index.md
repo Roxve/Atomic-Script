@@ -14,4 +14,4 @@ excerpt: >
       A typescript,c#,python syntax inspired Atomic scripting language!.<br/>
 ---
 
-# <img src="/res/logo.jpg" width = "10%" height = "10%"> Atomic Script
+# Atomic Script
