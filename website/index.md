@@ -6,12 +6,12 @@ layout: splash
 permalink: /
 
 header:
-  overlay_color: "#5e616c"
+  overlay_color: "#a34046"
   actions:
     - label: "<i class='fas fa-download'></i>github"
       url: "https://github.com/Atonix0/Atomic-Script"
-excerpt: >
-      A typescript,c#,python syntax inspired Atomic scripting language!.<br/>
+excerpt: "A typescript,c#,python syntax inspired Atomic scripting language!."
 ---
 
-# Atomic Script
+# [<img src="./res/logo.png" height="10%" width = "10%">](./res/logo.png) Atomic Script
+### Features:

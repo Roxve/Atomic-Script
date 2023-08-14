@@ -1,9 +1,9 @@
 main:
-  - title: "Posts"
-    url: /posts/
-  - title: "Categories"
-    url: /categories/
-  - title: "Tags"
-    url: /tags/
+  - title: "Basic Syntax"
+    url: /docs/basic_syntax/
+  - title: "Docs"
+    url: /docs/
+  - title: "More..."
+    url: "https://atonix0.github.io/"
   - title: "About"
     url: /about/
