@@ -1,4 +1,4 @@
-# [<img src = "/website/res/logo.png" width="10%" height="10%">](/website/res/logo.png) Atomic-Script
+# [<img src = "/website/res/logo.png" width="15%" height="15%">](/website/res/logo.png) Atomic-Script
 Atomic-Script is a simple small dynamic scripting language made for fun! built-on c#
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
