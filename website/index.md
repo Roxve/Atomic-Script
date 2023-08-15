@@ -16,29 +16,66 @@ excerpt: "A typescript,c#,python syntax inspired Atomic scripting language!."
 # [<img src="./res/logo.png" height="10%" width = "10%">](./res/logo.png) Atomic Script
 # Features:
 
-### this is just an overview go to [basic ayntax](/docs/basic_syntax) for more info about the syntax
+### this is just an overview go to [basic syntax](/docs/basic_syntax) for more info about the syntax
+
+
+### basic info:
+### Ooperators(not operators):
+
+    - "+":plus,
+    - "-":minus,
+    - "*":multiply,
+    - "/":divide,
+    - "%": module,
+    - "&":and?,
+    - ">>":setter,
+    - "||": or-or?
+    - "=": equals?,
+    - "|": or: coming soon used with =:
+
+    ```  
+      x = value1 | value2 | value3
+    ```  
+    ,
+    - ">":bigger,
+    - "<":smaller,
+
+- user definded functions & varibales with enviroments, objects[wip],easily add built-in functions!
+- if-else exprs!
+
+
+### Atomic-Script Only:
+- (coming soon) | ooperator! have multiplier values you wanna check if a var is equal to? use the | ooperator
+    ```
+    set userid >> prompt("enter your id:")
+    if userid = 7788 | 7782 | 2783: {
+        # do stuff
+    }
+
+    ```
 
 - semicolon? no semicolon? choose what you want cuz semicolon is a skippable char!
 
-```
-# this works!
-write("Hello world!");
-write("nah huh") # this also works!
+    ```
+    # this works!
+    write("Hello world!");
+    write("nah huh") # this also works!
 
-;;;;;;;;;;;;;;;;;;;;;;;
-;;write("cutomozied");;
-;;;;;;;;;;;;;;;;;;;;;;;
-# this also works!
-```
+    ;;;;;;;;;;;;;;;;;;;;;;;
+    ;;write("cutomozied");;
+    ;;;;;;;;;;;;;;;;;;;;;;;
+    # this also works!
+    ```
 - human understable! wtf is fn fun func var print put etc... we got write and set!
+- *less keywords:*
 - one keyword for setting everything!
 
-```
- set name >> peompt("enter your name:");
- set writeName(message) {
-    write(message " " + name);
-    return "succes!";
- }
- writeName("Hello!")
-```
+    ```
+    set name >> prompt("enter your name:");
+    set writeName(message) {
+        write(message " " + name);
+        return "succes!";
+    }
+    writeName("Hello!")
+    ```
 - more...
