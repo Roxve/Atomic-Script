@@ -16,30 +16,10 @@ excerpt: "A typescript,c#,python syntax inspired Atomic scripting language!."
 # [<img src="./res/logo.png" height="10%" width = "10%">](./res/logo.png) Atomic Script
 # Features:
 
-### this is just an overview go to [basic syntax](/docs/basic_syntax) for more info about the syntax
+### this is just an overview go to [basic syntax](/Atomic-Script/docs/basic_syntax) for more info about the syntax
 
 
 ### basic info:
-### Ooperators(not operators):
-
-    - "+":plus,
-    - "-":minus,
-    - "*":multiply,
-    - "/":divide,
-    - "%": module,
-    - "&":and?,
-    - ">>":setter,
-    - "||": or-or?
-    - "=": equals?,
-    - "|": or: coming soon used with =:
-
-    ```  
-      x = value1 | value2 | value3
-    ```  
-    ,
-    - ">":bigger,
-    - "<":smaller,
-
 - user definded functions & varibales with enviroments, objects[wip],easily add built-in functions!
 - if-else exprs!
 
