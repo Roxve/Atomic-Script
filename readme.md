@@ -7,43 +7,14 @@
 Atomic-Script is a simple small dynamic scripting language made for fun! built-on c#
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
-# Features(basic syntax):
-### TODO move the basic syntax to a website
-- customize your code with semicolons! Because i don't like the requirements of adding ; at the end of lines but i like how they look so i added ';' as a skippable character if you want to end a line with semicolon do it if you don't don't!
-- enviroments and vars! declared with ```set varname >> value``` and to change values use ```varname >> value```😁
-atomic also support immutable variables with ```set locked varname >> value``` ✅✅
-- objects! Declared and assign the same way as vars but they contains properties ```set locked user >> {num: 1,pass: 2235}```;
-- built-in functions
-- comments currently there is only one line comments using '#'
-- user defined functions, example
-```cs
-write("Hello, world!")
-set add(a,b) {
-  return a + b;
-}
-write("8 + 8 is equal to",add(8,8))
-```
-🦜
-- if-else expressions
-```cs
-set name >> prompt("enter your name: ")
-if name = "Ahmed":  {
-     write("you are an admins friend")
-}
-else if name = "Thomas": {
-      write("you are an admin :)")
-}
-else {
- write("you are not an admin ):")
-}
-set isRobotQ >> toLower(prompt("are you a robot? Y/n"))
+# Features:
+### this is list of avaliable features to help me on dev go to [website](atonix0.github.io/Atomic-Script) for overview, or to [basic syntax](atonix0.github.io/Atomic-Script/docs/basic_syntax) for more detalied view
 
-# true if user gave y as an answer false if anything else
-set isRobotA >> if isRobotQ = 'y': { true } else { false }
-```
-✅
+
 # Features(i want):
+
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
+
 # TODO(next update):
 - make a website for the language as it's going tough it's early usable stage faster than i tough
 # trying atomic:
