@@ -10,6 +10,7 @@ Atomic-Script is a simple small dynamic scripting language made for fun! built-o
 # Features:
 ### this is list of avaliable features to help me on dev go to [website](https://atonix0.github.io/Atomic-Script) for overview, or to [basic syntax](https://atonix0.github.io/Atomic-Script/docs/basic_syntax) for more detalied view
 - environments variables objects[wip]
+- all operators in any programming language
 - user functions ,built-in functions
 - if-else expressions
 
