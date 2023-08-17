@@ -8,7 +8,7 @@ Atomic-Script is a simple small dynamic scripting language made for fun! built-o
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
 # Features:
-### this is list of avaliable features to help me on dev go to [website](atonix0.github.io/Atomic-Script) for overview, or to [basic syntax](atonix0.github.io/Atomic-Script/docs/basic_syntax) for more detalied view
+### this is list of avaliable features to help me on dev go to [website](https://atonix0.github.io/Atomic-Script) for overview, or to [basic syntax](https://atonix0.github.io/Atomic-Script/docs/basic_syntax) for more detalied view
 
 
 # Features(i want):
