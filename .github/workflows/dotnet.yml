@@ -28,6 +28,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: atomic_linux.zip
-        path: Atomic/bin/*/net*
+        path: Atomic/bin/Debug/net7.0/
     - name: Test
       run: dotnet test --no-build --verbosity normal Atomic/atomic.csproj
