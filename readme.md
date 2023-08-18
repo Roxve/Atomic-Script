@@ -19,7 +19,7 @@ Atomic-Script is a simple small dynamic scripting language made for fun! built-o
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
 
 # TODO(next update):
-- 
+- module system!
 # trying atomic:
 simply use the command in your terminal ```dotnet run``` to enter repl mode
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
