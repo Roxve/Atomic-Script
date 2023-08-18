@@ -1,4 +1,4 @@
-us<p align="center" width="100% height="100%">
+<p align="center" width="100% height="100%">
 <img src="/website/res/logo.png" width="45%" height="45%">
 </p>
 
@@ -19,7 +19,7 @@ Atomic-Script is a simple small dynamic scripting language made for fun! built-o
 - full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
 
 # TODO(next update):
-- make a website for the language as it's going tough it's early 
+- 
 # trying atomic:
 simply use the command in your terminal ```dotnet run``` to enter repl mode
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
