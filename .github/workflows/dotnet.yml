@@ -23,8 +23,8 @@ jobs:
     - name: ProjectDir
       run: cd Atomic/
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Atomic/atomic.csproj
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore Atomic/atomic.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal Atomic/atomic.csproj
