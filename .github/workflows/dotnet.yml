@@ -26,5 +26,10 @@ jobs:
       run: dotnet restore Atomic/atomic.csproj
     - name: Build
       run: dotnet build --no-restore Atomic/atomic.csproj
+    - name: upload_build_results
+      uses: actions/upload-artifact@v3
+      with:
+        name: bin 
+        path: Atomic/bin
     - name: Test
       run: dotnet test --no-build --verbosity normal Atomic/atomic.csproj
