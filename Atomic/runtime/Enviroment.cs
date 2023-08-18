@@ -21,32 +21,36 @@ namespace Atomic_lang;
 
 public class Enviroment
 {
-	
+
+	private static void createFunc(string name, Func<RuntimeVal[],Enviroment,RuntimeVal> execute,Enviroment env) {
+		var Call = new functionCall();
+		Call.execute = execute;
+		env.declareVar(name, MK_NATIVE_FN(Call), true, null);
+	}
+
 	public static Enviroment createEnv()
 	{
 		Enviroment env = new Enviroment(null);
 
 
-
 		//functions
 		
 		//write
-
-		var writeCall = new functionCall();
-		writeCall.execute = NativeFunc.write; env.declareVar("write", MK_NATIVE_FN(writeCall), true, null);
+		createFunc("write", NativeFunc.write,env);
 		
 		//prompt
-		var promptCall = new functionCall();
-		promptCall.execute = NativeFunc.prompt; env.declareVar("prompt", MK_NATIVE_FN(promptCall), true, null);
-		
+		createFunc("prompt", NativeFunc.prompt, env);
 		
 		//read
-		var readCall = new functionCall();
-		readCall.execute = NativeFunc.read; env.declareVar("read", MK_NATIVE_FN(readCall), true, null);
+		createFunc("read", NativeFunc.read, env);
 		
 		//toLower
-		var toLowerCall = new functionCall();
-		toLowerCall.execute = NativeFunc.toLower; env.declareVar("toLower", MK_NATIVE_FN(toLowerCall), true, null);
+		createFunc("toLower",NativeFunc.toLower,env);
+
+		//toUpper
+		createFunc("toUpper", NativeFunc.toUpper, env);
+
+
 		return env;
 	}
 	private void error(string message, Statement? stmt)
