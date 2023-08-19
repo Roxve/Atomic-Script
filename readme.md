@@ -16,7 +16,7 @@ Atomic-Script is a simple small dynamic scripting language made for fun! built-o
 
 # Features(i want):
 
-- full basic working programming lang c# typescript golang f#(less to do more) inspired syntax
+- full basic working programming lang c# typescript golang python inspired syntax
 
 # TODO(next update):
 - module system!
