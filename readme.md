@@ -4,7 +4,7 @@
 
 # Atomic-Script
 
-Atomic-Script is a simple small dynamic scripting language made for fun! built-on c# (with a goal that i probably won't achieve which is easily developing on your low end android device (like me) or anything else! (ui support and a code editor for Android))
+Atomic-Script is an actual (every unpopular programming language i found is not really one like my old one) simple small dynamic scripting language made for fun! built-on c# (with a goal that i probably won't achieve which is easily developing on your low end android device (like me) or anything else! (ui support and a code editor for Android))
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
 # Features:
