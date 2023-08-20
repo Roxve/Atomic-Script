@@ -25,15 +25,7 @@ excerpt: "A typescript,c#,python syntax inspired Atomic scripting language!."
 
 
 ### Atomic-Script Only:
-- (coming soon) | ooperator! have multiplier values you wanna check if a var is equal to? use the | ooperator
-    ```
-    set userid >> prompt("enter your id:")
-    if userid = 7788 | 7782 | 2783: {
-        # do stuff
-    }
-
-    ```
-
+- more excepted soon!
 - semicolon? no semicolon? choose what you want cuz semicolon is a skippable char!
 
     ```

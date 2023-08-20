@@ -96,6 +96,9 @@ public class Enviroment
 	public RuntimeVal setVar(string name, RuntimeVal value, Statement stmt)
 	{
 		var env = this.resolve(name, stmt);
+		if (env is null) {
+			return MK_NULL();
+		}
 		if (env.locked_variables.Any(t => t == name))
 		{
 			error("cannot assign a value to a locked var!", stmt);
@@ -107,11 +110,14 @@ public class Enviroment
 	public RuntimeVal findVar(string name, Statement stmt)
 	{
 		var env = this.resolve(name, stmt);
+		if(env is null) {
+			return MK_NULL();
+		}
 		return env.variables[name] as RuntimeVal;
 	}
 
 
-	public Enviroment resolve(string name, Statement stmt)
+	public Enviroment? resolve(string name, Statement stmt)
 	{
 		if (this.variables.ContainsKey(name))
 		{
@@ -125,7 +131,7 @@ public class Enviroment
 		if (this.parent == null)
 		{
 			 error("cannot resolve " + name, stmt);
-		     return this;
+		   return null;
 		}
 		
 		return this.parent.resolve(name, stmt);

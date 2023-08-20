@@ -91,6 +91,9 @@ public static class Run
 					case "str":
 						Console.WriteLine((run as StringVal).value.Pastel(Color.Gold));
 						continue;
+					case "null":
+						Console.WriteLine("null".Pastel(Color.OrangeRed));
+						continue;
 					default:
 						continue;
 				}

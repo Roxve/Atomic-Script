@@ -22,6 +22,14 @@ toc_label: Syntax
     }
     write(writeSum(5));
     # outputs 20
+
+    # set object_name >> {[object properties]} (objs are wip and their code is so bloated and a little bit slow)
+    set user >> {
+        name: prompt("enter your name: "),
+        pass: prompt("enter your password: ")
+    }
+    # access object properties by ethier using obj.property or obj[index]
+    write("name: ", user.name, " pass: ",user[1])
     ```
 - assinge
     ```
