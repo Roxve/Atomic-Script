@@ -6,6 +6,11 @@
   <PropertyGroup>
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Protons\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>  
+  </ItemGroup>
   <PropertyGroup>
     <LangVersion>
     </LangVersion>

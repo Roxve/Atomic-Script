@@ -1,0 +1,12 @@
+set question(message) {
+  set results >> prompt(message + " Y/n ");
+  if results = 'y': {
+    return true;
+  }
+  else if results = 'n' {
+    return false;
+  }
+  else {
+    return null;
+  }
+}

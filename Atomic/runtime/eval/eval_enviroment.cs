@@ -26,6 +26,8 @@ public partial class Interpreter
 				return eval_var_declaration(Statement as VarDeclaration, env);
 			case "FuncDeclarartion":
 				return eval_func_declaration(Statement as FuncDeclarartion, env);
+			case "useStmt":
+				return eval_use_stmt(Statement as useStmt, env);
 			default:
 				return new NullVal();
 		}

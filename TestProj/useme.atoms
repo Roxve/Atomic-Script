@@ -1,3 +1,0 @@
-set useme() {
-  write("you used me!");
-}

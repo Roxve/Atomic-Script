@@ -1,3 +1,5 @@
-use "useme.atoms";
+use "./question.atoms";
 
-useme();
+set isRobo >> question("are you a robot?");
+
+write("isRobot: ", isRobo);

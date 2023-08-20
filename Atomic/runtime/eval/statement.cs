@@ -63,7 +63,7 @@ public partial class Interpreter
 				code = File.ReadAllText(stmt.path);
 			}
 			catch {
-				error($"file at '{stmt.path}' in use stmt", stmt);
+				error($"file not found at '{stmt.path}' in use stmt", stmt);
 			}
 			var ionized_code = new Ionizer(code).ionize();
       Program prog = new Parser(ionized_code).productAST();

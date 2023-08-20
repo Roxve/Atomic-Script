@@ -48,7 +48,7 @@ public partial class Interpreter
 				BooleanVal Bool = new BooleanVal();
 				Bool.value = (Statement as Bool).value;
 				return Bool;
-		    case "ifExpr":
+		  case "ifExpr":
 				return eval_if_expr(Statement as ifExpr, env);
 			case "Identifier":
 				return eval_id(Statement as Identifier, env);
