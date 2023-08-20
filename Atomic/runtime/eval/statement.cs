@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using ValueTypes;
@@ -52,5 +53,24 @@ public partial class Interpreter
 		toReturn.value = evaluate(stmt.value, env);
 		return toReturn;
 	}
-	
+	public static	RuntimeVal eval_use_stmt(useStmt stmt, Enviroment env) {
+		if(stmt.isModule) {
+
+		}
+		else {
+			string code = "null";
+			try {
+				code = File.ReadAllText(stmt.path);
+			}
+			catch {
+				error($"file at '{stmt.path}' in use stmt", stmt);
+			}
+			var ionized_code = new Ionizer(code).ionize();
+      Program prog = new Parser(ionized_code).productAST();
+
+			Enviroment addEnv = eval_enviroment(prog);
+			env.addEnv(addEnv);
+		}
+		return new NullVal();
+	}
 }

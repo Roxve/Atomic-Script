@@ -75,7 +75,20 @@ public class Enviroment
 		this.locked_variables = new List<string>();
 		this.available_envs = new List<Enviroment>();
 	}
+	
 
+	public void addEnv(Enviroment env) {
+	  //TODO: add to available_envs instead	
+		foreach(var variable in env.variables) {
+			if(this.variables.ContainsKey(variable.Key)) {
+				continue;
+			}
+			else if(env.locked_variables.Contains(variable.Key)) {
+				this.locked_variables.Add(variable.Key);
+			}
+			this.variables.Add(variable.Key,variable.Value);
+		}
+	}
 	public RuntimeVal declareVar(string name, RuntimeVal value, bool isLocked, Statement? stmt)
 	{
 		if (this.variables.ContainsKey(name))
@@ -91,7 +104,7 @@ public class Enviroment
 		}
 		return value;
 	}
-
+ 
 
 	public RuntimeVal setVar(string name, RuntimeVal value, Statement stmt)
 	{

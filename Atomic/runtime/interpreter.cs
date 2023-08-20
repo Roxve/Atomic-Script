@@ -58,6 +58,8 @@ public partial class Interpreter
 				return eval_func_declaration(Statement as FuncDeclarartion, env);
 			case "ReturnStmt":
 				return eval_return_stmt(Statement as ReturnStmt, env);
+			case "useStmt":
+				return eval_use_stmt(Statement as useStmt, env);
 			case "CallExpr":
 				return eval_call_expr(Statement as CallExpr, env);
 			case "MemberExpr":

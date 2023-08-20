@@ -1,0 +1,3 @@
+use "useme.atoms";
+
+useme();
