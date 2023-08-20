@@ -85,11 +85,12 @@ public class Ionizer
 
 	//keywords and their tokens
 	private List<(string value, IonType type)> keywords = new List<(string value, IonType type)> {
-			("set", IonType.set_kw),
+			("use", IonType.use_kw),
+			("using", IonType.using_kw),
+		  ("set", IonType.set_kw),
 			("locked", IonType.locked_kw),
 			("if", IonType.if_kw),
 			("else", IonType.else_kw),
-			("func", IonType.func_kw),
 			("return", IonType.return_kw),
 			("null", IonType.null_type),
 			("true", IonType.bool_type),

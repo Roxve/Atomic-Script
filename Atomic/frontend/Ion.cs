@@ -23,6 +23,8 @@ public enum IonType {
 	set_kw,
 	func_kw,
 	locked_kw,
+	use_kw,
+	using_kw,
 	
 	//types
 	null_type,

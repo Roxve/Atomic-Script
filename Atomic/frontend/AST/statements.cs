@@ -76,3 +76,14 @@ public class ReturnStmt : Statement
 	}
 	public Expression value { get; set; }
 }
+
+//use [string.file_path] || using [moudle]
+
+public class useStmt : Statement
+{
+	public useStmt() {
+		type = "useStmt";
+	}
+	public string path {get; set;}
+	public bool isModule {get; set;}
+}

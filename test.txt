@@ -1,2 +1,0 @@
-﻿set user >> { name: prompt("enter your name: ")}
-write(user.name)

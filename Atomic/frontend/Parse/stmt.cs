@@ -94,6 +94,27 @@ public partial class Parser
 
 		return stmt;
 	}
+	private Statement parse_use_stmt() {
+		this.take();
+		var path = this.except(IonType.str_type).value;
 
+		useStmt stmt = Create<useStmt>();
+		stmt.path = path;
+		stmt.isModule = false;
+		
+		return stmt;
+	}
+	//in the future use and using will be the sane kw (use) but for dev properses
+	private Statement parse_using_stmt() {
+		this.take();
 
+		var name = this.except(IonType.id).value;
+
+		useStmt stmt = Create<useStmt>();
+
+		stmt.path = name;
+		stmt.isModule = true;
+
+		return stmt;
+	}
 }

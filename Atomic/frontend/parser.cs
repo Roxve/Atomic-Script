@@ -56,7 +56,7 @@ public partial class Parser
 	// allows me to provid values and maybe set default values later on
 	private T Create<T>() where T : new() {
 		T stmt = new T();
-		
+	  Update();
 		(stmt as Statement).line = this.at().line; (stmt as Statement).column = this.at().column;
 		return stmt;
 	}
@@ -105,6 +105,10 @@ public partial class Parser
 		switch(this.at().type) {
 			case IonType.set_kw:
 				return this.parse_var_declaration();
+			case IonType.use_kw:
+				return this.parse_use_stmt();
+			case IonType.using_kw:
+					return this.parse_using_stmt();
 			case IonType.return_kw:
 			    return this.parse_return_stmt();
 			default:
