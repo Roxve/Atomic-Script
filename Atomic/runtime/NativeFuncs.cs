@@ -120,7 +120,6 @@ public class NativeFunc
 	public RuntimeVal CreatedFunc(RuntimeVal[] args, Enviroment env) {
 		var Context = new EvalContext();
 		Context.RegisterAssembly(typeof(RuntimeVal).Assembly);
-		Context.RegisterAssembly(typeof(env).Assembly);
 
 		return Context.Execute<RuntimeVal>(@CSCode);
 	}
