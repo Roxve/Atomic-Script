@@ -19,7 +19,8 @@ Atomic-Script is an actual (every unpopular programming language i found is not 
 - full basic working programming lang c# typescript golang python inspired syntax
 
 # TODO(next update):
-- module system!
+- update info about module system in website
+- test Trimed (link mode) and (copy used mode) published application to see which is the most bugless (cannot live without tirm cuz without that file size is like 200mb)
 # trying atomic:
 simply use the command in your terminal ```dotnet run``` to enter repl mode
 (make sure you have dotnet-sdk installed and to exit press ```ctrl+c``` in your terminal)
