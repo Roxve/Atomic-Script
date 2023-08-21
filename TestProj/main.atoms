@@ -1,5 +1,11 @@
-use "./question.atoms";
+# using proton 'extra' (proton names arent case-senstive)
+
+use Extra; # same as use extra: use EXtra;
+
+use "./useme.atoms";
 
 set isRobo >> question("are you a robot?");
 
 write("isRobot: ", isRobo);
+
+useME();

@@ -85,5 +85,4 @@ public class useStmt : Statement
 		type = "useStmt";
 	}
 	public string path {get; set;}
-	public bool isModule {get; set;}
 }

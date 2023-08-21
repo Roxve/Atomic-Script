@@ -3,7 +3,7 @@ set question(message) {
   if results = 'y': {
     return true;
   }
-  else if results = 'n' {
+  else if results = 'n': {
     return false;
   }
   else {

@@ -94,6 +94,9 @@ public static class Run
 					case "null":
 						Console.WriteLine("null".Pastel(Color.OrangeRed));
 						continue;
+					case "bool":
+						Console.WriteLine((run as BooleanVal).value.ToString().Pastel(Color.DarkCyan));
+						continue;
 					default:
 						continue;
 				}

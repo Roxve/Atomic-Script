@@ -54,23 +54,19 @@ public partial class Interpreter
 		return toReturn;
 	}
 	public static	RuntimeVal eval_use_stmt(useStmt stmt, Enviroment env) {
-		if(stmt.isModule) {
-
+		string code = "null";
+		try {
+			code = File.ReadAllText(stmt.path);
 		}
-		else {
-			string code = "null";
-			try {
-				code = File.ReadAllText(stmt.path);
-			}
-			catch {
-				error($"file not found at '{stmt.path}' in use stmt", stmt);
-			}
-			var ionized_code = new Ionizer(code).ionize();
-      Program prog = new Parser(ionized_code).productAST();
-
-			Enviroment addEnv = eval_enviroment(prog);
-			env.addEnv(addEnv);
+		catch {
+			error($"file not found at '{stmt.path}' in use stmt", stmt);
 		}
+		var ionized_code = new Ionizer(code).ionize();
+    Program prog = new Parser(ionized_code).productAST();
+
+		Enviroment addEnv = eval_enviroment(prog);
+		env.addEnv(addEnv);
+
 		return new NullVal();
 	}
 }

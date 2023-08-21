@@ -96,11 +96,19 @@ public partial class Parser
 	}
 	private Statement parse_use_stmt() {
 		this.take();
-		var path = this.except(IonType.str_type).value;
-
+		string path = "null";
+		if(this.at().type == IonType.str_type) {
+				path = this.at().value;	
+				this.take();
+		}
+		else if(this.at().type == IonType.id) {
+			path = AppDomain.CurrentDomain.BaseDirectory.ToString() + "Protons/" + this.at().value.ToLower() + ".proton";
+			this.take();
+		}
+		
 		useStmt stmt = Create<useStmt>();
 		stmt.path = path;
-		stmt.isModule = false;
+		
 		
 		return stmt;
 	}
@@ -113,7 +121,6 @@ public partial class Parser
 		useStmt stmt = Create<useStmt>();
 
 		stmt.path = name;
-		stmt.isModule = true;
 
 		return stmt;
 	}
