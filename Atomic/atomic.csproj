@@ -12,6 +12,9 @@
     </Content>  
   </ItemGroup>
   <PropertyGroup>
+    <InvariantGlobalization>true</InvariantGlobalization>
+</PropertyGroup>
+  <PropertyGroup>
     <LangVersion>
     </LangVersion>
   </PropertyGroup>
