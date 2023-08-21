@@ -30,7 +30,7 @@ jobs:
         name: atomic_linux.x64.build.zip
         path: Atomic/bin/Debug/net7.0/
     - name: Publish
-      run: dotnet publish Atomic/atomic.csproj -r linux-arm64 --self-contained
+      run: dotnet publish Atomic/atomic.csproj -r linux-arm64 --no-self-contained
     - name: upload publish results
       uses: actions/upload-artifact@v3
       with:
