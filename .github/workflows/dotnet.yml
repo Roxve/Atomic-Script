@@ -35,5 +35,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
        name: Atomic-Script.linux_arm64
-       path: Atomic/bin/alpha/net7.0/
+       path: Atomic/bin/alpha/net7.0/linux-arm64/publish/
       
