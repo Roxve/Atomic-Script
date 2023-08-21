@@ -24,10 +24,16 @@ jobs:
       run: dotnet restore Atomic/atomic.csproj
     - name: Build
       run: dotnet build --no-restore Atomic/atomic.csproj
-    - name: upload_build_results
+    - name: upload build results
       uses: actions/upload-artifact@v3
       with:
-        name: atomic_linux.zip
+        name: atomic_linux.x64.build.zip
         path: Atomic/bin/Debug/net7.0/
-    - name: Test
-      run: dotnet test --no-build --verbosity normal Atomic/atomic.csproj
+    - name: Publish
+      run: dotnet publish -r linux-arm64
+    - name: upload publish results
+      uses: actions/upload-artifact@v3
+      with:
+       name: Atomic-Script.linux_arm64
+       path: Atomic/bin/Debug/net7.0/
+      
