@@ -15,7 +15,8 @@ namespace Atomic_lang;
 public static class Run
 {
 	public static void Main(String[] args)
-	{
+  {
+		string code = "null";
 		if (args is null || args.Length <= 0)
 		{
 			Repl();
@@ -32,20 +33,35 @@ public static class Run
 				case "run":
 					if (args.Length < 2)
 					{
-						Console.WriteLine("excepted file path to run at the next arg!");
+						Console.WriteLine("excepted file path to run at the next arg!".Pastel(Color.Red));
 						break;
 					}
-					string code = File.ReadAllText(args[1]);
+					try {
+						code = File.ReadAllText(args[1]);
+					}
+					catch {
+						Console.WriteLine("File {args[1]} not found or cannot read it?".Pastel(Color.Red));
+						break;
+					}
+					Directory.SetCurrentDirectory(Path.GetDirectoryName(args[1]));
 					Run.aFile(code);
 					break;
 				case "run?":
 					if (args.Length < 2)
 					{
-						Console.WriteLine("excepted file path to run at the next arg!");
+						Console.WriteLine("excepted file path to run at the next arg!".Pastel(Color.Red));
 						break;
 					}
-					string codet = File.ReadAllText(args[1]);
-					Run.Test(codet);
+					try {
+						code = File.ReadAllText(args[1]);
+					}
+					catch {
+				    Console.WriteLine("File {args[1]} not found or cannot read it?".Pastel(Color.Red));	
+						break;
+					}
+					// set the working Directory to the file Directory
+					Directory.SetCurrentDirectory(Path.GetDirectoryName(args[1]));
+					Run.Test(code);
 					break;
 				default:
 					Repl();

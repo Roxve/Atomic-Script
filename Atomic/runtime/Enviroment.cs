@@ -22,10 +22,10 @@ namespace Atomic_lang;
 public class Enviroment
 {
 
-	private static void createFunc(string name, Func<RuntimeVal[],Enviroment,RuntimeVal> execute,Enviroment env) {
+	public void createFunc(string name, Func<RuntimeVal[],Enviroment,RuntimeVal> execute,Enviroment env) {
 		var Call = new functionCall();
 		Call.execute = execute;
-		env.declareVar(name, MK_NATIVE_FN(Call), true, null);
+		this.declareVar(name, MK_NATIVE_FN(Call), true, null);
 	}
 
 	public static Enviroment createEnv()
@@ -36,20 +36,21 @@ public class Enviroment
 		//functions
 		
 		//write
-		createFunc("write", NativeFunc.write,env);
+		env.createFunc("write", NativeFunc.write,env);
 		
 		//prompt
-		createFunc("prompt", NativeFunc.prompt, env);
+		env.createFunc("prompt", NativeFunc.prompt, env);
 		
 		//read
-		createFunc("read", NativeFunc.read, env);
+		env.createFunc("read", NativeFunc.read, env);
 		
 		//toLower
-		createFunc("toLower",NativeFunc.toLower,env);
+		env.createFunc("toLower",NativeFunc.toLower,env);
 
 		//toUpper
-		createFunc("toUpper", NativeFunc.toUpper, env);
-
+		env.createFunc("toUpper", NativeFunc.toUpper, env);
+    //CreateCSFunc
+		env.createFunc("CreateCSFunc", NativeFunc.CreateCSFunc, env);
 
 		return env;
 	}

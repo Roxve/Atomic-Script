@@ -27,6 +27,10 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
+    
     <PackageReference Include="Pastel" Version="4.1.0" />
+    
+    <PackageReference Include="Z.Expressions.Eval" Version="5.0.8" />
   </ItemGroup>
 </Project>

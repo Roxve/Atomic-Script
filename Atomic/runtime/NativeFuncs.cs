@@ -1,13 +1,19 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using ValueTypes;
+using System.Diagnostics;
+using Z.Expressions;
 
 
 namespace Atomic_lang;
 
-public static class NativeFunc
+public class NativeFunc
 {
+	public NativeFunc(string str) {
+		this.CSCode = str;
+	}
 	private static NullVal error(string message)
 	{
 		Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -101,4 +107,22 @@ public static class NativeFunc
 		}
 		return VT.MK_STR((args[0] as StringVal).value.ToUpper());
 	}
+	
+	//thia function shouldnot be used wrong
+	private string CSCode = "null";
+	public static RuntimeVal CreateCSFunc(RuntimeVal[] args, Enviroment env) {
+	  string Code = (args[1] as StringVal).value;
+		var Instance = new NativeFunc(Code);
+		var exec = Instance.CreatedFunc;
+		env.createFunc((args[0] as StringVal).value, exec, env);
+		return new NullVal();
+	}
+	public RuntimeVal CreatedFunc(RuntimeVal[] args, Enviroment env) {
+		var Context = new EvalContext();
+		Context.RegisterAssembly(typeof(RuntimeVal).Assembly);
+		Context.RegisterAssembly(typeof(env).Assembly);
+
+		return Context.Execute<RuntimeVal>(@CSCode);
+	}
+	
 }

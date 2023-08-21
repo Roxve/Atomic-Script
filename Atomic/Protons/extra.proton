@@ -1,5 +1,7 @@
 set question(message) {
   set results >> prompt(message + " Y/n ");
+
+  results >> toLower(results);
   if results = 'y': {
     return true;
   }
