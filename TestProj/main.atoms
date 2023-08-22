@@ -1,2 +1,0 @@
-CreateCSFunc("test", 'Console.WriteLine("test"); return VT.MK_STR("test");')
-write(test())

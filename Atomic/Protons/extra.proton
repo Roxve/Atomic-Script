@@ -1,3 +1,11 @@
+
+
+# CSharp
+set random() {
+  return EXCSFunc('Console.WriteLine("random"); return new NullVal();', null);
+}
+
+
 set question(message) {
   set results >> prompt(message + " Y/n ");
 

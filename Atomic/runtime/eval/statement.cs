@@ -55,18 +55,23 @@ public partial class Interpreter
 	}
 	public static	RuntimeVal eval_use_stmt(useStmt stmt, Enviroment env) {
 		string code = "null";
+		string prev_directory = Directory.GetCurrentDirectory();
+
+
 		try {
 			code = File.ReadAllText(stmt.path);
 		}
 		catch {
 			error($"file not found at '{stmt.path}' in use stmt", stmt);
 		}
+		Directory.SetCurrentDirectory(Path.GetDirectoryName(stmt.path));
 		var ionized_code = new Ionizer(code).ionize();
     Program prog = new Parser(ionized_code).productAST();
 
 		Enviroment addEnv = eval_enviroment(prog);
 		env.addEnv(addEnv);
-
+		
+		Directory.SetCurrentDirectory(prev_directory);
 		return new NullVal();
 	}
 }

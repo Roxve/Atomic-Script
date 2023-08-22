@@ -50,7 +50,7 @@ public class Enviroment
 		//toUpper
 		env.createFunc("toUpper", NativeFunc.toUpper, env);
     //CreateCSFunc
-		env.createFunc("CreateCSFunc", NativeFunc.CreateCSFunc, env);
+		env.createFunc("EXCSFunc", NativeFunc.EXCSFunc, env);
 
 		return env;
 	}

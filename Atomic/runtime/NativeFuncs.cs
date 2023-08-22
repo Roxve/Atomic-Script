@@ -110,12 +110,10 @@ public class NativeFunc
 	
 	//thia function shouldnot be used wrong
 	private string CSCode = "null";
-	public static RuntimeVal CreateCSFunc(RuntimeVal[] args, Enviroment env) {
-	  string Code = (args[1] as StringVal).value;
+	public static RuntimeVal EXCSFunc(RuntimeVal[] args, Enviroment env) {
+	  string Code = (args[0] as StringVal).value;
 		var Instance = new NativeFunc(Code);
-		var exec = Instance.CreatedFunc;
-		env.createFunc((args[0] as StringVal).value, exec, env);
-		return new NullVal();
+		return Instance.CreatedFunc(args.Where((val, idx) => idx != 0).ToArray(),env);
 	}
 	public RuntimeVal CreatedFunc(RuntimeVal[] args, Enviroment env) {
 		var Context = new EvalContext();
