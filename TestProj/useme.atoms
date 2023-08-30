@@ -1,4 +1,0 @@
-set useME() {
-  write("thank you!!");
-}
-write("not printed!")

@@ -1,0 +1,56 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow will install Deno then run `deno lint` and `deno test`.
+# For more information see: https://github.com/denoland/setup-deno
+
+name: Deno
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  test_and_compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v3
+
+      - name: Setup Deno
+        # uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31  # v1.1.2
+        with:
+          deno-version: v1.x
+
+      # Uncomment this step to verify the use of 'deno fmt' on each commit.
+      # - name: Verify formatting
+      #   run: deno fmt --check
+
+     # - name: Run linter
+        # run: deno lint
+
+      - name: Run tests
+        run: cd ./src/ && deno test --allow-read
+      - name: prepare
+        run: mkdir ./out ./out/linux-x64/ ./out/linux-arm64
+      - name: Compile For linux-x64
+        run: deno compile --allow-read ./src/main.ts --output ./out/linux-x64/atomic
+     # - name: Compile For linux-arm64
+       # run: deno compile --allow-read ./src/main.ts --output ./out/linux-arm64/atomic --target aarch64-unknown-linux-gnu
+      # - name: zip arm64 files
+        # run: tar cvf - ./out/linux-arm64/ | gzip -7 - > atomic-arm64.tar.gz
+      - name: zip x64 files
+        run: tar cvf - ./out/linux-x64/ | gzip -7 - > atomic-linux-x64.tar.gz
+      - uses: actions/upload-artifact@v3
+        with:
+          name: atomic-linux-x64
+          path: ./atomic-linux-x64.tar.gz
