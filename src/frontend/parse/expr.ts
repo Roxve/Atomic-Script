@@ -360,10 +360,7 @@ export class ParserExpr extends ParserStmt {
 
         property = this.parse_primary_expr();
         if (property.type != "Id") {
-          this.error(
-            "excepted id of a property in a non indexed member expr",
-            "AT1007",
-          );
+          this.error.unexcepted_ION_exception(this.at(), Type.id);
           return { type: "Null", value: null } as Null;
         }
       } //excepts '['
@@ -429,7 +426,7 @@ export class ParserExpr extends ParserStmt {
           colmun: this.colmun,
         } as Null;
       default:
-        this.error("unexcepted ION", "AT1001");
+        this.error.unexcepted_ION_exception(this.at());
         this.take();
         return {
           type: "Null",

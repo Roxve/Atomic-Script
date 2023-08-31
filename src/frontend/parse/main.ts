@@ -10,6 +10,49 @@ export class ParserMain {
   public constructor(ions: Ion[]) {
     this.ions = ions;
   }
+  protected ErrorEngine = class {
+    private superThis;
+    constructor(superThis: ParserMain) {
+      this.superThis = superThis
+    }
+
+
+    unexcepted_ION_exception(not_excepted: Ion, excepted?: Type) {
+      if(excepted) {
+        createError(
+          `excepted ION of type:${
+            this.superThis.getTypeName(excepted)
+          }, but got:${this.superThis.getTypeName(not_excepted.type)}\nat => line:${not_excepted.line},colmun:${not_excepted.colmun}\nError:AT1001`
+        );
+      }
+      else {
+        createError( 
+          `unexcepted ion => value:${not_excepted.value}, type:${
+            this.superThis.getTypeName(not_excepted.type)
+          }\nat => line:${not_excepted.line}, colmun:${not_excepted.colmun}\nError:AT1001`
+        );
+      }
+    }
+
+    cannot_declare_exception(msg: string, didyoumean?: string) {
+      createError(
+        `cannot declare ${msg} ${didyoumean ? `,did you mean ${didyoumean}` : ""}\n,at => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1002`
+      )
+    }
+
+    inside_function_creation_exception(msg: string) {
+      createError(
+        `inside function creation ${msg}\nat => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1003`
+      )
+    }
+
+    excepted_ethier_exception(one: string, two: string, ina: string) {
+      createError(
+        `excepted ethier ${one} or ${two}, in ${ina}\nat => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1004`
+      )
+    }
+  }
+  error = new this.ErrorEngine(this);
 
   protected getTypeName(T: Type): string {
     let name: string = Type[T];
@@ -22,13 +65,7 @@ export class ParserMain {
       return name;
     }
   }
-  protected error(msg: string, code: string = "AT000") {
-    createError(
-      `Parser Error:${msg}\nat => line: ${this.line}, colmun:${this.colmun}\ngot => value:${this.at().value}, type:${
-        this.getTypeName(this.at().type)
-      }, ErrorCode:${code}`,
-    );
-  }
+
   protected take(): Ion {
     if (this.ions.length <= 0) {
       return {
@@ -46,10 +83,7 @@ export class ParserMain {
   }
   protected except(correct_type: Type): Ion {
     if (this.at().type != correct_type) {
-      this.error(
-        `unexcepted ION, excepted type:${this.getTypeName(correct_type)}`,
-        "AT1002",
-      );
+      this.error.unexcepted_ION_exception(this.at(), correct_type);
       return this.take();
     } else {
       return this.take();
