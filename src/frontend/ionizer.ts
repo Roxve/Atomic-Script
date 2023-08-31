@@ -16,18 +16,28 @@ export class Ionizer {
     this.ions = new Array<Ion>();
   }
 
-  error(message: string, code: string) {
-    createError(
-      `${message}\nat => line:${this.line}, colmun:${this.colmun}\ngot => char:${
-        this.atoms[0]
-      }, error code:${code}`,
-    );
+  private ErrorEngine = class {
+    private superThis: Ionizer;
 
-    return {
-      message,
-      type: "error",
-    };
-  }
+    public constructor(superThis: Ionizer) {
+      this.superThis = superThis;
+    }
+
+    unknown_char_exception() {
+      createError(
+        `unknown char detected got char => '${
+          this.superThis.atoms[0]
+        }'\nat => line:${this.superThis.line},colmun:${this.superThis.colmun}\nError: "AT0001"`,
+      );
+    }
+    unterminated_type_exception(type: string) {
+      createError(
+        `unterminated ${type} at => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: "AT0002"`,
+      );
+    }
+  };
+
+  error = new this.ErrorEngine(this);
 
   private KEYWORDS: Record<string, Type> = {
     set: Type.set_kw,
@@ -154,20 +164,20 @@ export class Ionizer {
         case "'":
           let char = this.take();
           let res = "";
-          
+
           while (this.atoms[0] != char && this.atoms.length > 0) {
-            if(this.at() === "\\") {
+            if (this.at() === "\\") {
               this.take();
-              switch(this.at()) {
-                case "n": 
+              switch (this.at()) {
+                case "n":
                   this.take();
                   res += "\n";
                   continue;
-                case "t": 
+                case "t":
                   this.take();
                   res += "\t";
                   continue;
-                default: 
+                default:
                   res += this.take();
                   continue;
               }
@@ -175,7 +185,7 @@ export class Ionizer {
             res += this.take();
           }
           if (this.atoms[0] != char) {
-            this.error("reached end of file and didnt finish string", "AT0001");
+            this.error.unterminated_type_exception("string");
           } else {
             this.add(res, Type.str_type);
             this.take();
@@ -215,7 +225,7 @@ export class Ionizer {
               this.add(res, Type.id);
             }
           } else {
-            this.error("unknown char", "AT0002");
+            this.error.unknown_char_exception();
             this.take();
           }
           continue;
