@@ -14,7 +14,15 @@ import {
   IfExpr,
   MemberExpr,
 } from "../frontend/AST/exprs.ts";
-import { Bool, Id, Null, Num, Object, Str, List } from "../frontend/AST/values.ts";
+import {
+  Bool,
+  Id,
+  List,
+  Null,
+  Num,
+  Object,
+  Str,
+} from "../frontend/AST/values.ts";
 import { Enviroment } from "./enviroment.ts";
 import * as VT from "./values.ts";
 import * as expr from "./eval/expr.ts";
@@ -54,7 +62,7 @@ export function evaluate(node: Stmt, env: Enviroment): VT.RuntimeVal {
       return VT.MK_NUM((node as Num).value);
     case "Obj":
       return expr.eval_object(node as Object, env);
-    case "List": 
+    case "List":
       return expr.eval_list(node as List, env);
     case "VarCreation":
       return stmt.eval_var_creation(node as VarCreation, env);

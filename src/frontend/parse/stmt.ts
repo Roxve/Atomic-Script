@@ -25,7 +25,10 @@ export class ParserStmt extends ParserMain {
     switch (this.at().type) {
       case Type.OpenParen:
         if (isLocked) {
-          this.error.cannot_declare_exception("a locked function", "to declare a private function?");
+          this.error.cannot_declare_exception(
+            "a locked function",
+            "to declare a private function?",
+          );
           return { type: "Null", value: null } as Null;
         }
         return this.parse_func_creation(name);
@@ -74,7 +77,9 @@ export class ParserStmt extends ParserMain {
 
     for (let arg of args) {
       if (arg.type != "Id") {
-        this.error.inside_function_creation_exception("parameters must be of type ids!");
+        this.error.inside_function_creation_exception(
+          "parameters must be of type ids!",
+        );
         return { type: "Null", value: null } as Null;
       }
       parameters.push((arg as Id).symbol);
@@ -122,7 +127,11 @@ export class ParserStmt extends ParserMain {
       isProton = true;
       pathl = this.take().value.toLowerCase();
     } else {
-      this.error.excepted_ethier_exception("id for moudle name", "string for file path", "use stmt");
+      this.error.excepted_ethier_exception(
+        "id for moudle name",
+        "string for file path",
+        "use stmt",
+      );
       return { type: "Null", value: null } as Null;
     }
     return {

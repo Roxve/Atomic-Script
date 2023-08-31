@@ -33,7 +33,7 @@ export interface Object extends Expr {
   type: "Obj";
   properties: Property[];
 }
-export interface List extends Expr { 
+export interface List extends Expr {
   type: "List";
 
   values: Expr[];

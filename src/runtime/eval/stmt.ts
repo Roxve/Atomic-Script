@@ -11,7 +11,7 @@ import { green } from "https://deno.land/std@0.200.0/fmt/colors.ts";
 import { eval_env } from "./eval_enviroment.ts";
 import { Ionizer } from "../../frontend/ionizer.ts";
 import { Parser } from "../../frontend/parser.ts";
-import { currentPath, setPath, mainPath } from "../../etc.ts";
+import { currentPath, mainPath, setPath } from "../../etc.ts";
 import * as env_b from "../../etc/envs.ts";
 
 import * as path from "https://deno.land/std@0.188.0/path/mod.ts";
@@ -64,13 +64,12 @@ export function eval_use_stmt(
   if (stmt.isProton) {
     // check if its a built-in proton to redirect to built-in env(for speed)
     switch (stmt.path) {
-      case "extra": 
+      case "extra":
         env.addEnv(env_b.extra());
         return MK_NULL();
-      default: 
+      default:
         stmt.path = currentPath + "/Protons/" + stmt.path + ".proton";
         break;
-
     }
   }
 

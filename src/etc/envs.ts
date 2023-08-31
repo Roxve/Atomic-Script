@@ -24,7 +24,7 @@ export function extra(): Enviroment {
         env.error(
           "excepted args of num in function 'random' in proton extra",
           "EXTRA-ERROR-RANDOM0",
-          null
+          null,
         );
         return MK_NULL();
       }
@@ -50,7 +50,7 @@ export function extra(): Enviroment {
     }
     return MK_NULL();
   });
-  
-  env.declareVar("random", random, true, null)
+
+  env.declareVar("random", random, true, null);
   return env;
 }

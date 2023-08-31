@@ -13,45 +13,47 @@ export class ParserMain {
   protected ErrorEngine = class {
     private superThis;
     constructor(superThis: ParserMain) {
-      this.superThis = superThis
+      this.superThis = superThis;
     }
 
-
     unexcepted_ION_exception(not_excepted: Ion, excepted?: Type) {
-      if(excepted) {
+      if (excepted) {
         createError(
           `excepted ION of type:${
             this.superThis.getTypeName(excepted)
-          }, but got:${this.superThis.getTypeName(not_excepted.type)}\nat => line:${not_excepted.line},colmun:${not_excepted.colmun}\nError:AT1001`
+          }, but got:${
+            this.superThis.getTypeName(not_excepted.type)
+          }\nat => line:${not_excepted.line},colmun:${not_excepted.colmun}\nError:AT1001`,
         );
-      }
-      else {
-        createError( 
+      } else {
+        createError(
           `unexcepted ion => value:${not_excepted.value}, type:${
             this.superThis.getTypeName(not_excepted.type)
-          }\nat => line:${not_excepted.line}, colmun:${not_excepted.colmun}\nError:AT1001`
+          }\nat => line:${not_excepted.line}, colmun:${not_excepted.colmun}\nError:AT1001`,
         );
       }
     }
 
     cannot_declare_exception(msg: string, didyoumean?: string) {
       createError(
-        `cannot declare ${msg} ${didyoumean ? `,did you mean ${didyoumean}` : ""}\n,at => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1002`
-      )
+        `cannot declare ${msg} ${
+          didyoumean ? `,did you mean ${didyoumean}` : ""
+        }\n,at => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1002`,
+      );
     }
 
     inside_function_creation_exception(msg: string) {
       createError(
-        `inside function creation ${msg}\nat => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1003`
-      )
+        `inside function creation ${msg}\nat => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1003`,
+      );
     }
 
     excepted_ethier_exception(one: string, two: string, ina: string) {
       createError(
-        `excepted ethier ${one} or ${two}, in ${ina}\nat => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1004`
-      )
+        `excepted ethier ${one} or ${two}, in ${ina}\nat => line:${this.superThis.line}, colmun:${this.superThis.colmun}\nError: AT1004`,
+      );
     }
-  }
+  };
   error = new this.ErrorEngine(this);
 
   protected getTypeName(T: Type): string {

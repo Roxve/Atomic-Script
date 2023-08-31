@@ -40,7 +40,7 @@ export interface ObjVal extends RuntimeVal {
 }
 export interface ListVal extends RuntimeVal {
   type: "list";
-  value: RuntimeVal[]
+  value: RuntimeVal[];
 }
 export interface BoolVal extends RuntimeVal {
   type: "bool";

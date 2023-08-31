@@ -70,7 +70,7 @@ function Repl() {
 
     const run = evaluate(parsed, env);
     let value: string = RuntimeToStr(run);
-    
+
     console.log(`%c${value}`, `color: ${run.color}`);
   }
 }

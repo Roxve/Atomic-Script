@@ -1,5 +1,11 @@
 import boxen from "npm:boxen";
-import { RuntimeVal, NumVal, ListVal, StrVal, ObjVal } from "./runtime/values.ts";
+import {
+  ListVal,
+  NumVal,
+  ObjVal,
+  RuntimeVal,
+  StrVal,
+} from "./runtime/values.ts";
 
 export var isError: boolean = false;
 export var isTest: boolean = false;
@@ -37,20 +43,20 @@ export function createWarning(msg: string): string {
   return box;
 }
 
-export function RuntimeToStr(run: RuntimeVal) : string {
+export function RuntimeToStr(run: RuntimeVal): string {
   let value: string;
-  switch(run.type) {
-    case "list": 
+  switch (run.type) {
+    case "list":
       run = run as ListVal;
-      value = "["; 
-      for(let val of run.value) {
+      value = "[";
+      for (let val of run.value) {
         value += RuntimeToStr(val);
-        value += ","
+        value += ",";
       }
       value = value.substring(0, value.length - 1);
       value += "]";
       return value;
-    default: 
+    default:
       return String(run.value);
   }
 }
