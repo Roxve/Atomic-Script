@@ -3,7 +3,7 @@
 </p>
 
 # Atomic-Script
-#### this project is not abandoned! i will rewrite it in crystal when i finish my other fun language called Latinus it has an actual goal that i can do so
+#### this project is not abandoned! currently making a JVM like VM [to compile to](https://github.com/ptVoid/ArchX) the language name is being changed to covalent
 Atomic-Script is an actual (every unpopular programming language i found is not really one like my old one) simple small dynamic scripting language made for fun! built-on typescript (previsouly C#)
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
