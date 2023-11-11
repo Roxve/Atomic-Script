@@ -3,7 +3,7 @@
 </p>
 
 # Atomic-Script
-#### this project is not abandoned! currently making a JVM like VM [to compile to](https://github.com/ptVoid/ArchX) the language name is being changed to covalent
+#### this project is not abandoned! currently making a bytecode compiler [here](https://github.com/ptVoid/Atomic-Script-WIP) the language name is being changed to covalent
 Atomic-Script is an actual (every unpopular programming language i found is not really one like my old one) simple small dynamic scripting language made for fun! built-on typescript (previsouly C#)
 #### warning yes i know my code is shit this isn't a serious job or something please don't hate 🥳
 
