@@ -1,18 +1,1 @@
-use Extra;
-
-
-set user: {
-  name: "str",
-  password: 0,
-  id: 0
-}
-
-
-
-user.name = "laFam"
-user.password = 58298
-
-# generates a random id with a min of 0 max of 288 + pass * 929
-user.id = random(0,288 + user.password * 929) 
-
-write("got =>\nname: ",user.name," password: ",user.password, " id: ", user.id)
+(5 + 5 * 5) / (5 * 5 + 5) == 1
